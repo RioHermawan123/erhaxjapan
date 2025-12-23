@@ -4,35 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Belajar Hiragana Jepang</title>
-
     <style>
       :root {
         --red: #e53935;
         --bg: #f4f6f8;
       }
-
       * {
         box-sizing: border-box;
       }
-
       body {
         margin: 0;
         font-family: system-ui, Arial, sans-serif;
         background: var(--bg);
       }
-
       header {
         background: var(--red);
         color: white;
         padding: 16px;
         text-align: center;
       }
-
       header h1 {
         margin: 0;
         font-size: clamp(22px, 5vw, 32px);
       }
-
       header p {
         margin: 4px 0 0;
         font-size: clamp(14px, 3vw, 16px);
@@ -45,16 +39,12 @@
         padding: clamp(12px, 4vw, 24px);
         border-radius: 12px;
       }
-
-      /* MENU & GRID */
       .levels,
       .choices {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         gap: 12px;
       }
-
-      /* BUTTON */
       button {
         width: 100%;
         padding: 14px;
@@ -65,19 +55,15 @@
         color: white;
         cursor: pointer;
       }
-
       button:hover {
         opacity: 0.9;
       }
 
-      /* QUESTION */
       .question {
         font-size: clamp(20px, 5vw, 28px);
         margin-bottom: 16px;
         word-wrap: break-word;
       }
-
-      /* CHOICE */
       .choice {
         border: 2px solid var(--red);
         border-radius: 10px;
@@ -87,38 +73,31 @@
         background: white;
         text-align: center;
       }
-
+      .choice:hover {
+        background: #ffecec;
+      }
       .choice small {
         display: block;
         font-size: clamp(12px, 3vw, 14px);
         margin-top: 4px;
       }
-
-      .choice:hover {
-        background: #ffecec;
-      }
-
       .result {
         margin: 12px 0;
         font-weight: bold;
         font-size: clamp(14px, 3vw, 16px);
       }
-
       .hidden {
         display: none;
       }
 
-      /* Drag & Drop Styling */
-      #dragTargets .choice {
-        border-bottom: 3px dashed var(--red);
-        min-height: 50px;
+      canvas {
+        border: 1px solid #000;
+        display: block;
+        margin: auto;
+        touch-action: none;
+        background: white;
       }
 
-      #dragLetters .choice:hover {
-        background: #ffebee;
-      }
-
-      /* MOBILE OPTIMIZATION */
       @media (max-width: 480px) {
         .levels,
         .choices {
@@ -127,11 +106,10 @@
       }
     </style>
   </head>
-
   <body>
     <header>
       <h1>Belajar Hiragana 🇯🇵</h1>
-      <p>Level & Quest Mode & Drag & Drop</p>
+      <p>Level, Quest, Drag & Drop & Writing Mode</p>
     </header>
 
     <main>
@@ -155,10 +133,13 @@
           <button onclick="startDragDrop()">
             🎯 Drag & Drop<br /><small>Uji Hiragana</small>
           </button>
+          <button onclick="startWriting()">
+            ✍️ Tulis Hiragana<br /><small>Manual</small>
+          </button>
         </div>
       </div>
 
-      <!-- HIRAGANA PAGE -->
+      <!-- HIRAGANA LIST -->
       <div id="hiraganaPage" class="hidden">
         <h2>Daftar Hiragana</h2>
         <div class="choices" id="hiraganaList"></div>
@@ -187,7 +168,7 @@
         <button onclick="backToMenu()">⬅ Menu</button>
       </div>
 
-      <!-- DRAG & DROP MODE -->
+      <!-- DRAG & DROP -->
       <div id="dragDrop" class="hidden">
         <h2>Drag & Drop Mode</h2>
         <p>Tarik huruf ke tempat yang sesuai!</p>
@@ -196,6 +177,20 @@
         <div id="dragLetters" class="choices" style="margin-top: 12px"></div>
         <div class="result" id="dragResult"></div>
         <button onclick="newDragDrop()">Soal Baru</button>
+        <br /><br />
+        <button onclick="backToMenu()">⬅ Menu</button>
+      </div>
+
+      <!-- WRITING MODE -->
+      <div id="writing" class="hidden">
+        <h2>Menulis Hiragana Manual</h2>
+        <div class="question" id="writingQuestion"></div>
+        <canvas id="writingCanvas" width="300" height="300"></canvas>
+        <div class="result" id="writingResult"></div>
+        <br />
+        <button onclick="clearCanvas()">Clear</button>
+        <button onclick="checkWriting()">Cek Jawaban</button>
+        <button onclick="newWriting()">Soal Baru</button>
         <br /><br />
         <button onclick="backToMenu()">⬅ Menu</button>
       </div>
@@ -251,44 +246,66 @@
         ["n", "ん"],
       ];
 
+      // Template sederhana untuk cek Writing Mode
+      const templates = {
+        あ: [
+          [0, 0, 1, 1, 1, 0, 0],
+          [0, 1, 0, 0, 0, 1, 0],
+          [0, 0, 0, 0, 1, 0, 0],
+          [0, 0, 0, 1, 0, 0, 0],
+          [0, 0, 1, 0, 0, 0, 0],
+          [0, 1, 1, 1, 1, 1, 0],
+          [0, 0, 0, 0, 0, 0, 0],
+        ],
+        い: [
+          [0, 0, 1, 1, 0, 0, 0],
+          [0, 1, 0, 1, 0, 0, 0],
+          [0, 0, 0, 1, 0, 0, 0],
+          [0, 0, 0, 1, 0, 0, 0],
+          [0, 0, 0, 1, 0, 0, 0],
+          [0, 1, 1, 1, 1, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0],
+        ],
+        う: [
+          [0, 0, 1, 1, 0, 0, 0],
+          [0, 1, 0, 0, 1, 0, 0],
+          [0, 0, 0, 0, 1, 0, 0],
+          [0, 0, 0, 0, 1, 0, 0],
+          [0, 0, 0, 1, 0, 0, 0],
+          [0, 1, 1, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0],
+        ],
+      };
+
       let wordLength = 1;
       let correctAnswer = "";
 
+      // ================= Utility =================
       function shuffle(a) {
         return a.sort(() => Math.random() - 0.5);
       }
-
       function hideAll() {
-        ["menu", "quiz", "hiraganaPage", "quest", "dragDrop"].forEach((id) =>
-          document.getElementById(id).classList.add("hidden")
-        );
+        [
+          "menu",
+          "quiz",
+          "hiraganaPage",
+          "quest",
+          "dragDrop",
+          "writing",
+        ].forEach((id) => document.getElementById(id).classList.add("hidden"));
       }
-
       function backToMenu() {
         hideAll();
         document.getElementById("menu").classList.remove("hidden");
       }
 
-      function showHiragana() {
-        hideAll();
-        const list = document.getElementById("hiraganaList");
-        list.innerHTML = "";
-        hiragana.forEach((h) => {
-          const d = document.createElement("div");
-          d.className = "choice";
-          d.innerHTML = `<b>${h[1]}</b><small>${h[0]}</small>`;
-          list.appendChild(d);
-        });
-        document.getElementById("hiraganaPage").classList.remove("hidden");
-      }
-
+      // ================= LEVEL MODE =================
       function startLevel(len) {
         wordLength = len;
         hideAll();
         document.getElementById("quiz").classList.remove("hidden");
         loadQuestion();
       }
-
       function loadQuestion() {
         document.getElementById("result").innerText = "";
         const word = shuffle([...hiragana]).slice(0, wordLength);
@@ -298,17 +315,14 @@
         ).innerHTML = `Mana hiragana untuk: <b>${word
           .map((w) => w[0])
           .join(" ")}</b>?`;
-
         const opts = new Set([correctAnswer]);
-        while (opts.size < 4) {
+        while (opts.size < 4)
           opts.add(
             shuffle([...hiragana])
               .slice(0, wordLength)
               .map((w) => w[1])
               .join("")
           );
-        }
-
         const box = document.getElementById("choices");
         box.innerHTML = "";
         shuffle([...opts]).forEach((o) => {
@@ -319,19 +333,18 @@
           box.appendChild(d);
         });
       }
-
       function checkAnswer(sel) {
         const r = document.getElementById("result");
         r.innerText = sel === correctAnswer ? "✅ Benar" : "❌ Salah";
         r.style.color = sel === correctAnswer ? "green" : "red";
       }
 
+      // ================= QUEST MODE =================
       function startQuest() {
         hideAll();
         document.getElementById("quest").classList.remove("hidden");
         newQuest();
       }
-
       function newQuest() {
         const res = document.getElementById("questResult");
         res.innerText = "";
@@ -342,17 +355,14 @@
         ).innerHTML = `Manakah huruf untuk: <b>${word
           .map((w) => w[0])
           .join(" ")}</b>?`;
-
         const opts = new Set([correct]);
-        while (opts.size < 3) {
+        while (opts.size < 3)
           opts.add(
             shuffle([...hiragana])
               .slice(0, 3)
               .map((w) => w[1])
               .join("")
           );
-        }
-
         const box = document.getElementById("questChoices");
         box.innerHTML = "";
         shuffle([...opts]).forEach((o) => {
@@ -373,39 +383,43 @@
         });
       }
 
-      // ================================
-      // DRAG & DROP MODE
-      // ================================
+      // ================= DRAG & DROP =================
       function startDragDrop() {
         hideAll();
         document.getElementById("dragDrop").classList.remove("hidden");
         newDragDrop();
       }
-
       function newDragDrop() {
         const result = document.getElementById("dragResult");
         result.innerText = "";
-
         const words = shuffle([...hiragana]).slice(0, 3);
         const correct = words.map((w) => w[1]);
-
-        const questionDiv = document.getElementById("dragQuestion");
-        questionDiv.innerHTML = `Susun huruf untuk: <b>${words
+        document.getElementById(
+          "dragQuestion"
+        ).innerHTML = `Susun huruf untuk: <b>${words
           .map((w) => w[0])
           .join(" ")}</b>`;
-
         const targetsDiv = document.getElementById("dragTargets");
         targetsDiv.innerHTML = "";
         correct.forEach((letter) => {
           const target = document.createElement("div");
           target.className = "choice";
-          target.style.flex = "1";
           target.dataset.answer = letter;
           target.ondragover = (e) => e.preventDefault();
-          target.ondrop = (e) => handleDrop(e, target);
+          target.ondrop = (e) => {
+            e.preventDefault();
+            const l = e.dataTransfer.getData("text");
+            target.innerText = l;
+            const t = [...targetsDiv.children];
+            if (t.every((t) => t.innerText !== "")) {
+              const ok = t.every((t) => t.innerText === t.dataset.answer);
+              result.innerText = ok ? "✅ Benar" : "❌ Salah, coba soal baru";
+              result.style.color = ok ? "green" : "red";
+              if (!ok) setTimeout(newDragDrop, 1000);
+            }
+          };
           targetsDiv.appendChild(target);
         });
-
         const lettersDiv = document.getElementById("dragLetters");
         lettersDiv.innerHTML = "";
         shuffle([...correct]).forEach((letter) => {
@@ -418,26 +432,120 @@
         });
       }
 
-      function handleDrop(e, target) {
-        e.preventDefault();
-        const letter = e.dataTransfer.getData("text");
-        target.innerText = letter;
+      // ================= WRITING MODE =================
+      let currentWritingAnswer = "";
+      const canvas = document.getElementById("writingCanvas");
+      const ctx = canvas.getContext("2d");
+      let drawing = false;
 
-        const targets = [...document.getElementById("dragTargets").children];
-        if (targets.every((t) => t.innerText !== "")) {
-          const correct = targets.every(
-            (t) => t.innerText === t.dataset.answer
-          );
-          const res = document.getElementById("dragResult");
-          if (correct) {
-            res.innerText = "✅ Benar";
-            res.style.color = "green";
-          } else {
-            res.innerText = "❌ Salah, coba soal baru";
-            res.style.color = "red";
-            setTimeout(newDragDrop, 1000);
+      canvas.addEventListener("mousedown", (e) => {
+        drawing = true;
+        ctx.beginPath();
+        ctx.moveTo(e.offsetX, e.offsetY);
+      });
+      canvas.addEventListener("mousemove", (e) => {
+        if (drawing) {
+          ctx.lineTo(e.offsetX, e.offsetY);
+          ctx.stroke();
+        }
+      });
+      canvas.addEventListener("mouseup", (e) => (drawing = false));
+      canvas.addEventListener("mouseout", (e) => (drawing = false));
+      canvas.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        drawing = true;
+        const rect = canvas.getBoundingClientRect();
+        const t = e.touches[0];
+        ctx.beginPath();
+        ctx.moveTo(t.clientX - rect.left, t.clientY - rect.top);
+      });
+      canvas.addEventListener("touchmove", (e) => {
+        e.preventDefault();
+        if (!drawing) return;
+        const rect = canvas.getBoundingClientRect();
+        const t = e.touches[0];
+        ctx.lineTo(t.clientX - rect.left, t.clientY - rect.top);
+        ctx.stroke();
+      });
+      canvas.addEventListener("touchend", (e) => (drawing = false));
+
+      function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      function startWriting() {
+        hideAll();
+        document.getElementById("writing").classList.remove("hidden");
+        newWriting();
+      }
+      function newWriting() {
+        clearCanvas();
+        const word = shuffle([...hiragana]).slice(0, 1);
+        currentWritingAnswer = word.map((w) => w[1]).join("");
+        document.getElementById(
+          "writingQuestion"
+        ).innerHTML = `Tulis huruf untuk: <b>${word
+          .map((w) => w[0])
+          .join(" ")}</b>`;
+        document.getElementById("writingResult").innerText = "";
+      }
+
+      function checkWriting() {
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imgData.data;
+        const size = 7;
+        const sample = new Array(size)
+          .fill(0)
+          .map(() => new Array(size).fill(0));
+        for (let y = 0; y < size; y++) {
+          for (let x = 0; x < size; x++) {
+            let sum = 0,
+              count = 0;
+            const startX = Math.floor((x * canvas.width) / size);
+            const startY = Math.floor((y * canvas.height) / size);
+            const endX = Math.floor(((x + 1) * canvas.width) / size);
+            const endY = Math.floor(((y + 1) * canvas.height) / size);
+            for (let i = startY; i < endY; i++) {
+              for (let j = startX; j < endX; j++) {
+                const idx = (i * canvas.width + j) * 4;
+                const r = data[idx],
+                  g = data[idx + 1],
+                  b = data[idx + 2];
+                const brightness = (r + g + b) / 3;
+                if (brightness < 200) sum++;
+                count++;
+              }
+            }
+            sample[y][x] = sum / count > 0.2 ? 1 : 0;
           }
         }
+        const template = templates[currentWritingAnswer];
+        if (!template) {
+          document.getElementById("writingResult").innerText =
+            "Template belum tersedia untuk huruf ini";
+          return;
+        }
+        let match = 0;
+        for (let y = 0; y < size; y++)
+          for (let x = 0; x < size; x++)
+            if (sample[y][x] === template[y][x]) match++;
+        const percent = Math.floor((match / (size * size)) * 100);
+        const res = document.getElementById("writingResult");
+        res.innerText =
+          percent >= 60 ? `✅ Benar (${percent}%)` : `❌ Salah (${percent}%)`;
+      }
+
+      // ================= HIRAGANA LIST =================
+      function showHiragana() {
+        hideAll();
+        document.getElementById("hiraganaPage").classList.remove("hidden");
+        const list = document.getElementById("hiraganaList");
+        list.innerHTML = "";
+        hiragana.forEach((h) => {
+          const d = document.createElement("div");
+          d.className = "choice";
+          d.innerHTML = `<b>${h[1]}</b><small>${h[0]}</small>`;
+          list.appendChild(d);
+        });
       }
     </script>
   </body>
