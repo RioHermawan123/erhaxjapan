@@ -1,290 +1,444 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Belajar Hiragana Jepang</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Belajar Hiragana Jepang</title>
 
-<style>
-:root {
-  --red: #e53935;
-  --bg: #f4f6f8;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: system-ui, Arial, sans-serif;
-  background: var(--bg);
-}
-
-header {
-  background: var(--red);
-  color: white;
-  padding: 16px;
-  text-align: center;
-}
-
-header h1 {
-  margin: 0;
-  font-size: clamp(22px, 5vw, 32px);
-}
-
-header p {
-  margin: 4px 0 0;
-  font-size: clamp(14px, 3vw, 16px);
-}
-
-main {
-  max-width: 900px;
-  margin: 12px auto;
-  background: white;
-  padding: clamp(12px, 4vw, 24px);
-  border-radius: 12px;
-}
-
-/* MENU & GRID */
-.levels,
-.choices {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-}
-
-/* BUTTON */
-button {
-  width: 100%;
-  padding: 14px;
-  font-size: clamp(14px, 3vw, 16px);
-  border: none;
-  border-radius: 10px;
-  background: var(--red);
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-/* QUESTION */
-.question {
-  font-size: clamp(20px, 5vw, 28px);
-  margin-bottom: 16px;
-  word-wrap: break-word;
-}
-
-/* CHOICE */
-.choice {
-  border: 2px solid var(--red);
-  border-radius: 10px;
-  padding: 14px;
-  font-size: clamp(20px, 6vw, 26px);
-  cursor: pointer;
-  background: white;
-}
-
-.choice small {
-  display: block;
-  font-size: clamp(12px, 3vw, 14px);
-  margin-top: 4px;
-}
-
-.choice:hover {
-  background: #ffecec;
-}
-
-.result {
-  margin: 12px 0;
-  font-weight: bold;
-  font-size: clamp(14px, 3vw, 16px);
-}
-
-.hidden {
-  display: none;
-}
-
-/* MOBILE OPTIMIZATION */
-@media (max-width: 480px) {
-  .levels,
-  .choices {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
-</head>
-
-<body>
-<header>
-  <h1>Belajar Hiragana 🇯🇵</h1>
-  <p>Level & Quest Mode</p>
-</header>
-
-<main>
-
-<!-- MENU -->
-<div id="menu">
-  <h2>Pilih Mode</h2>
-  <div class="levels">
-    <button onclick="showHiragana()">📖 Lihat Hiragana</button>
-    <button onclick="startLevel(1)">Level 1<br><small>1 kata</small></button>
-    <button onclick="startLevel(2)">Level 2<br><small>2 kata</small></button>
-    <button onclick="startLevel(3)">Level 3<br><small>3 kata</small></button>
-    <button onclick="startQuest()">🧩 Quest<br><small>Klik teks</small></button>
-  </div>
-</div>
-
-<!-- HIRAGANA PAGE -->
-<div id="hiraganaPage" class="hidden">
-  <h2>Daftar Hiragana</h2>
-  <div class="choices" id="hiraganaList"></div>
-  <br>
-  <button onclick="backToMenu()">⬅ Menu</button>
-</div>
-
-<!-- LEVEL MODE -->
-<div id="quiz" class="hidden">
-  <div class="question" id="question"></div>
-  <div class="choices" id="choices"></div>
-  <div class="result" id="result"></div>
-  <button onclick="loadQuestion()">Soal Berikutnya</button>
-  <br><br>
-  <button onclick="backToMenu()">⬅ Menu</button>
-</div>
-
-<!-- QUEST MODE -->
-<div id="quest" class="hidden">
-  <h2>Quest Mode</h2>
-  <div class="question" id="questQuestion"></div>
-  <div class="choices" id="questChoices"></div>
-  <div class="result" id="questResult"></div>
-  <button onclick="newQuest()">Soal Baru</button>
-  <br><br>
-  <button onclick="backToMenu()">⬅ Menu</button>
-</div>
-
-</main>
-
-<script>
-const hiragana = [
-['a','あ'],['i','い'],['u','う'],['e','え'],['o','お'],
-['ka','か'],['ki','き'],['ku','く'],['ke','け'],['ko','こ'],
-['sa','さ'],['shi','し'],['su','す'],['se','せ'],['so','そ'],
-['ta','た'],['chi','ち'],['tsu','つ'],['te','て'],['to','と'],
-['na','な'],['ni','に'],['nu','ぬ'],['ne','ね'],['no','の'],
-['ha','は'],['hi','ひ'],['fu','ふ'],['he','へ'],['ho','ほ'],
-['ma','ま'],['mi','み'],['mu','む'],['me','め'],['mo','も'],
-['ya','や'],['yu','ゆ'],['yo','よ'],
-['ra','ら'],['ri','り'],['ru','る'],['re','れ'],['ro','ろ'],
-['wa','わ'],['wo','を'],['n','ん']
-];
-
-let wordLength = 1;
-let correctAnswer = '';
-
-function shuffle(a){ return a.sort(()=>Math.random()-0.5); }
-
-function hideAll(){
-  ['menu','quiz','hiraganaPage','quest']
-  .forEach(id=>document.getElementById(id).classList.add('hidden'));
-}
-
-function backToMenu(){
-  hideAll();
-  document.getElementById('menu').classList.remove('hidden');
-}
-
-function showHiragana(){
-  hideAll();
-  const list = document.getElementById('hiraganaList');
-  list.innerHTML = '';
-  hiragana.forEach(h=>{
-    const d = document.createElement('div');
-    d.className = 'choice';
-    d.innerHTML = `<b>${h[1]}</b><small>${h[0]}</small>`;
-    list.appendChild(d);
-  });
-  document.getElementById('hiraganaPage').classList.remove('hidden');
-}
-
-function startLevel(len){
-  wordLength = len;
-  hideAll();
-  document.getElementById('quiz').classList.remove('hidden');
-  loadQuestion();
-}
-
-function loadQuestion(){
-  document.getElementById('result').innerText = '';
-  const word = shuffle([...hiragana]).slice(0,wordLength);
-  correctAnswer = word.map(w=>w[1]).join('');
-  document.getElementById('question').innerHTML =
-    `Mana hiragana untuk: <b>${word.map(w=>w[0]).join(' ')}</b>?`;
-
-  const opts = new Set([correctAnswer]);
-  while(opts.size<4){
-    opts.add(shuffle([...hiragana]).slice(0,wordLength).map(w=>w[1]).join(''));
-  }
-
-  const box = document.getElementById('choices');
-  box.innerHTML = '';
-  shuffle([...opts]).forEach(o=>{
-    const d = document.createElement('div');
-    d.className = 'choice';
-    d.innerText = o;
-    d.onclick = ()=>checkAnswer(o);
-    box.appendChild(d);
-  });
-}
-
-function checkAnswer(sel){
-  const r = document.getElementById('result');
-  r.innerText = sel===correctAnswer ? '✅ Benar' : '❌ Salah';
-  r.style.color = sel===correctAnswer ? 'green' : 'red';
-}
-
-function startQuest(){
-  hideAll();
-  document.getElementById('quest').classList.remove('hidden');
-  newQuest();
-}
-
-function newQuest(){
-  const res = document.getElementById('questResult');
-  res.innerText = '';
-  const word = shuffle([...hiragana]).slice(0,3);
-  const correct = word.map(w=>w[1]).join('');
-  document.getElementById('questQuestion').innerHTML =
-    `Manakah huruf untuk: <b>${word.map(w=>w[0]).join(' ')}</b>?`;
-
-  const opts = new Set([correct]);
-  while(opts.size<3){
-    opts.add(shuffle([...hiragana]).slice(0,3).map(w=>w[1]).join(''));
-  }
-
-  const box = document.getElementById('questChoices');
-  box.innerHTML = '';
-  shuffle([...opts]).forEach(o=>{
-    const d = document.createElement('div');
-    d.className = 'choice';
-    d.innerText = o;
-    d.onclick = ()=>{
-      if(o===correct){
-        res.innerText='✅ Benar';
-        res.style.color='green';
-      }else{
-        res.innerText='❌ Salah, ganti soal';
-        res.style.color='red';
-        setTimeout(newQuest,700);
+    <style>
+      :root {
+        --red: #e53935;
+        --bg: #f4f6f8;
       }
-    };
-    box.appendChild(d);
-  });
-}
-</script>
 
-</body>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, Arial, sans-serif;
+        background: var(--bg);
+      }
+
+      header {
+        background: var(--red);
+        color: white;
+        padding: 16px;
+        text-align: center;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: clamp(22px, 5vw, 32px);
+      }
+
+      header p {
+        margin: 4px 0 0;
+        font-size: clamp(14px, 3vw, 16px);
+      }
+
+      main {
+        max-width: 900px;
+        margin: 12px auto;
+        background: white;
+        padding: clamp(12px, 4vw, 24px);
+        border-radius: 12px;
+      }
+
+      /* MENU & GRID */
+      .levels,
+      .choices {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+      }
+
+      /* BUTTON */
+      button {
+        width: 100%;
+        padding: 14px;
+        font-size: clamp(14px, 3vw, 16px);
+        border: none;
+        border-radius: 10px;
+        background: var(--red);
+        color: white;
+        cursor: pointer;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+
+      /* QUESTION */
+      .question {
+        font-size: clamp(20px, 5vw, 28px);
+        margin-bottom: 16px;
+        word-wrap: break-word;
+      }
+
+      /* CHOICE */
+      .choice {
+        border: 2px solid var(--red);
+        border-radius: 10px;
+        padding: 14px;
+        font-size: clamp(20px, 6vw, 26px);
+        cursor: pointer;
+        background: white;
+        text-align: center;
+      }
+
+      .choice small {
+        display: block;
+        font-size: clamp(12px, 3vw, 14px);
+        margin-top: 4px;
+      }
+
+      .choice:hover {
+        background: #ffecec;
+      }
+
+      .result {
+        margin: 12px 0;
+        font-weight: bold;
+        font-size: clamp(14px, 3vw, 16px);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      /* Drag & Drop Styling */
+      #dragTargets .choice {
+        border-bottom: 3px dashed var(--red);
+        min-height: 50px;
+      }
+
+      #dragLetters .choice:hover {
+        background: #ffebee;
+      }
+
+      /* MOBILE OPTIMIZATION */
+      @media (max-width: 480px) {
+        .levels,
+        .choices {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Belajar Hiragana 🇯🇵</h1>
+      <p>Level & Quest Mode & Drag & Drop</p>
+    </header>
+
+    <main>
+      <!-- MENU -->
+      <div id="menu">
+        <h2>Pilih Mode</h2>
+        <div class="levels">
+          <button onclick="showHiragana()">📖 Lihat Hiragana</button>
+          <button onclick="startLevel(1)">
+            Level 1<br /><small>1 kata</small>
+          </button>
+          <button onclick="startLevel(2)">
+            Level 2<br /><small>2 kata</small>
+          </button>
+          <button onclick="startLevel(3)">
+            Level 3<br /><small>3 kata</small>
+          </button>
+          <button onclick="startQuest()">
+            🧩 Quest<br /><small>Klik teks</small>
+          </button>
+          <button onclick="startDragDrop()">
+            🎯 Drag & Drop<br /><small>Uji Hiragana</small>
+          </button>
+        </div>
+      </div>
+
+      <!-- HIRAGANA PAGE -->
+      <div id="hiraganaPage" class="hidden">
+        <h2>Daftar Hiragana</h2>
+        <div class="choices" id="hiraganaList"></div>
+        <br />
+        <button onclick="backToMenu()">⬅ Menu</button>
+      </div>
+
+      <!-- LEVEL MODE -->
+      <div id="quiz" class="hidden">
+        <div class="question" id="question"></div>
+        <div class="choices" id="choices"></div>
+        <div class="result" id="result"></div>
+        <button onclick="loadQuestion()">Soal Berikutnya</button>
+        <br /><br />
+        <button onclick="backToMenu()">⬅ Menu</button>
+      </div>
+
+      <!-- QUEST MODE -->
+      <div id="quest" class="hidden">
+        <h2>Quest Mode</h2>
+        <div class="question" id="questQuestion"></div>
+        <div class="choices" id="questChoices"></div>
+        <div class="result" id="questResult"></div>
+        <button onclick="newQuest()">Soal Baru</button>
+        <br /><br />
+        <button onclick="backToMenu()">⬅ Menu</button>
+      </div>
+
+      <!-- DRAG & DROP MODE -->
+      <div id="dragDrop" class="hidden">
+        <h2>Drag & Drop Mode</h2>
+        <p>Tarik huruf ke tempat yang sesuai!</p>
+        <div id="dragQuestion" class="question"></div>
+        <div id="dragTargets" class="choices"></div>
+        <div id="dragLetters" class="choices" style="margin-top: 12px"></div>
+        <div class="result" id="dragResult"></div>
+        <button onclick="newDragDrop()">Soal Baru</button>
+        <br /><br />
+        <button onclick="backToMenu()">⬅ Menu</button>
+      </div>
+    </main>
+
+    <script>
+      const hiragana = [
+        ["a", "あ"],
+        ["i", "い"],
+        ["u", "う"],
+        ["e", "え"],
+        ["o", "お"],
+        ["ka", "か"],
+        ["ki", "き"],
+        ["ku", "く"],
+        ["ke", "け"],
+        ["ko", "こ"],
+        ["sa", "さ"],
+        ["shi", "し"],
+        ["su", "す"],
+        ["se", "せ"],
+        ["so", "そ"],
+        ["ta", "た"],
+        ["chi", "ち"],
+        ["tsu", "つ"],
+        ["te", "て"],
+        ["to", "と"],
+        ["na", "な"],
+        ["ni", "に"],
+        ["nu", "ぬ"],
+        ["ne", "ね"],
+        ["no", "の"],
+        ["ha", "は"],
+        ["hi", "ひ"],
+        ["fu", "ふ"],
+        ["he", "へ"],
+        ["ho", "ほ"],
+        ["ma", "ま"],
+        ["mi", "み"],
+        ["mu", "む"],
+        ["me", "め"],
+        ["mo", "も"],
+        ["ya", "や"],
+        ["yu", "ゆ"],
+        ["yo", "よ"],
+        ["ra", "ら"],
+        ["ri", "り"],
+        ["ru", "る"],
+        ["re", "れ"],
+        ["ro", "ろ"],
+        ["wa", "わ"],
+        ["wo", "を"],
+        ["n", "ん"],
+      ];
+
+      let wordLength = 1;
+      let correctAnswer = "";
+
+      function shuffle(a) {
+        return a.sort(() => Math.random() - 0.5);
+      }
+
+      function hideAll() {
+        ["menu", "quiz", "hiraganaPage", "quest", "dragDrop"].forEach((id) =>
+          document.getElementById(id).classList.add("hidden")
+        );
+      }
+
+      function backToMenu() {
+        hideAll();
+        document.getElementById("menu").classList.remove("hidden");
+      }
+
+      function showHiragana() {
+        hideAll();
+        const list = document.getElementById("hiraganaList");
+        list.innerHTML = "";
+        hiragana.forEach((h) => {
+          const d = document.createElement("div");
+          d.className = "choice";
+          d.innerHTML = `<b>${h[1]}</b><small>${h[0]}</small>`;
+          list.appendChild(d);
+        });
+        document.getElementById("hiraganaPage").classList.remove("hidden");
+      }
+
+      function startLevel(len) {
+        wordLength = len;
+        hideAll();
+        document.getElementById("quiz").classList.remove("hidden");
+        loadQuestion();
+      }
+
+      function loadQuestion() {
+        document.getElementById("result").innerText = "";
+        const word = shuffle([...hiragana]).slice(0, wordLength);
+        correctAnswer = word.map((w) => w[1]).join("");
+        document.getElementById(
+          "question"
+        ).innerHTML = `Mana hiragana untuk: <b>${word
+          .map((w) => w[0])
+          .join(" ")}</b>?`;
+
+        const opts = new Set([correctAnswer]);
+        while (opts.size < 4) {
+          opts.add(
+            shuffle([...hiragana])
+              .slice(0, wordLength)
+              .map((w) => w[1])
+              .join("")
+          );
+        }
+
+        const box = document.getElementById("choices");
+        box.innerHTML = "";
+        shuffle([...opts]).forEach((o) => {
+          const d = document.createElement("div");
+          d.className = "choice";
+          d.innerText = o;
+          d.onclick = () => checkAnswer(o);
+          box.appendChild(d);
+        });
+      }
+
+      function checkAnswer(sel) {
+        const r = document.getElementById("result");
+        r.innerText = sel === correctAnswer ? "✅ Benar" : "❌ Salah";
+        r.style.color = sel === correctAnswer ? "green" : "red";
+      }
+
+      function startQuest() {
+        hideAll();
+        document.getElementById("quest").classList.remove("hidden");
+        newQuest();
+      }
+
+      function newQuest() {
+        const res = document.getElementById("questResult");
+        res.innerText = "";
+        const word = shuffle([...hiragana]).slice(0, 3);
+        const correct = word.map((w) => w[1]).join("");
+        document.getElementById(
+          "questQuestion"
+        ).innerHTML = `Manakah huruf untuk: <b>${word
+          .map((w) => w[0])
+          .join(" ")}</b>?`;
+
+        const opts = new Set([correct]);
+        while (opts.size < 3) {
+          opts.add(
+            shuffle([...hiragana])
+              .slice(0, 3)
+              .map((w) => w[1])
+              .join("")
+          );
+        }
+
+        const box = document.getElementById("questChoices");
+        box.innerHTML = "";
+        shuffle([...opts]).forEach((o) => {
+          const d = document.createElement("div");
+          d.className = "choice";
+          d.innerText = o;
+          d.onclick = () => {
+            if (o === correct) {
+              res.innerText = "✅ Benar";
+              res.style.color = "green";
+            } else {
+              res.innerText = "❌ Salah, ganti soal";
+              res.style.color = "red";
+              setTimeout(newQuest, 700);
+            }
+          };
+          box.appendChild(d);
+        });
+      }
+
+      // ================================
+      // DRAG & DROP MODE
+      // ================================
+      function startDragDrop() {
+        hideAll();
+        document.getElementById("dragDrop").classList.remove("hidden");
+        newDragDrop();
+      }
+
+      function newDragDrop() {
+        const result = document.getElementById("dragResult");
+        result.innerText = "";
+
+        const words = shuffle([...hiragana]).slice(0, 3);
+        const correct = words.map((w) => w[1]);
+
+        const questionDiv = document.getElementById("dragQuestion");
+        questionDiv.innerHTML = `Susun huruf untuk: <b>${words
+          .map((w) => w[0])
+          .join(" ")}</b>`;
+
+        const targetsDiv = document.getElementById("dragTargets");
+        targetsDiv.innerHTML = "";
+        correct.forEach((letter) => {
+          const target = document.createElement("div");
+          target.className = "choice";
+          target.style.flex = "1";
+          target.dataset.answer = letter;
+          target.ondragover = (e) => e.preventDefault();
+          target.ondrop = (e) => handleDrop(e, target);
+          targetsDiv.appendChild(target);
+        });
+
+        const lettersDiv = document.getElementById("dragLetters");
+        lettersDiv.innerHTML = "";
+        shuffle([...correct]).forEach((letter) => {
+          const l = document.createElement("div");
+          l.className = "choice";
+          l.innerText = letter;
+          l.draggable = true;
+          l.ondragstart = (e) => e.dataTransfer.setData("text", letter);
+          lettersDiv.appendChild(l);
+        });
+      }
+
+      function handleDrop(e, target) {
+        e.preventDefault();
+        const letter = e.dataTransfer.getData("text");
+        target.innerText = letter;
+
+        const targets = [...document.getElementById("dragTargets").children];
+        if (targets.every((t) => t.innerText !== "")) {
+          const correct = targets.every(
+            (t) => t.innerText === t.dataset.answer
+          );
+          const res = document.getElementById("dragResult");
+          if (correct) {
+            res.innerText = "✅ Benar";
+            res.style.color = "green";
+          } else {
+            res.innerText = "❌ Salah, coba soal baru";
+            res.style.color = "red";
+            setTimeout(newDragDrop, 1000);
+          }
+        }
+      }
+    </script>
+  </body>
 </html>
