@@ -1,552 +1,207 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Belajar Hiragana Jepang</title>
-    <style>
-      :root {
-        --red: #e53935;
-        --bg: #f4f6f8;
-      }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        font-family: system-ui, Arial, sans-serif;
-        background: var(--bg);
-      }
-      header {
-        background: var(--red);
-        color: white;
-        padding: 16px;
-        text-align: center;
-      }
-      header h1 {
-        margin: 0;
-        font-size: clamp(22px, 5vw, 32px);
-      }
-      header p {
-        margin: 4px 0 0;
-        font-size: clamp(14px, 3vw, 16px);
-      }
-
-      main {
-        max-width: 900px;
-        margin: 12px auto;
-        background: white;
-        padding: clamp(12px, 4vw, 24px);
-        border-radius: 12px;
-      }
-      .levels,
-      .choices {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 12px;
-      }
-      button {
-        width: 100%;
-        padding: 14px;
-        font-size: clamp(14px, 3vw, 16px);
-        border: none;
-        border-radius: 10px;
-        background: var(--red);
-        color: white;
-        cursor: pointer;
-      }
-      button:hover {
-        opacity: 0.9;
-      }
-
-      .question {
-        font-size: clamp(20px, 5vw, 28px);
-        margin-bottom: 16px;
-        word-wrap: break-word;
-      }
-      .choice {
-        border: 2px solid var(--red);
-        border-radius: 10px;
-        padding: 14px;
-        font-size: clamp(20px, 6vw, 26px);
-        cursor: pointer;
-        background: white;
-        text-align: center;
-      }
-      .choice:hover {
-        background: #ffecec;
-      }
-      .choice small {
-        display: block;
-        font-size: clamp(12px, 3vw, 14px);
-        margin-top: 4px;
-      }
-      .result {
-        margin: 12px 0;
-        font-weight: bold;
-        font-size: clamp(14px, 3vw, 16px);
-      }
-      .hidden {
-        display: none;
-      }
-
-      canvas {
-        border: 1px solid #000;
-        display: block;
-        margin: auto;
-        touch-action: none;
-        background: white;
-      }
-
-      @media (max-width: 480px) {
-        .levels,
-        .choices {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>Belajar Hiragana 🇯🇵</h1>
-      <p>Level, Quest, Drag & Drop & Writing Mode</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belajar Kana Jepang 🇯🇵</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1 id="mainTitle">Belajar Hiragana Dasar</h1>
+      <p>Tingkatkan kemampuan bahasa Jepangmu dengan menyenangkan 🌸</p>
+      
+      <div class="toggle-group">
+        <div class="alphabet-toggle">
+          <button id="btnHiragana" class="toggle-btn active" onclick="setAlphabet('hiragana')">Hiragana</button>
+          <button id="btnKatakana" class="toggle-btn" onclick="setAlphabet('katakana')">Katakana</button>
+        </div>
+        <div class="alphabet-toggle type-toggle">
+          <button id="btnBasic" class="toggle-btn active" onclick="setCharType('basic')">Huruf Dasar</button>
+          <button id="btnDakuten" class="toggle-btn" onclick="setCharType('dakuten')">Imbuhan (Dakuten)</button>
+        </div>
+      </div>
     </header>
 
-    <main>
+    <main class="main-panel">
       <!-- MENU -->
-      <div id="menu">
-        <h2>Pilih Mode</h2>
-        <div class="levels">
-          <button onclick="showHiragana()">📖 Lihat Hiragana</button>
-          <button onclick="startLevel(1)">
-            Level 1<br /><small>1 kata</small>
+      <div id="menu" class="view-section">
+        <h2 class="section-title">Pilih Mode Belajar</h2>
+        <div class="grid-menu">
+          <button class="menu-btn btn-matcha" onclick="showKanaList()">
+            <div class="icon-wrapper">📖</div>
+            <div class="btn-text">
+              <span class="title">Lihat Huruf</span>
+              <span class="subtitle">Daftar lengkap Kana</span>
+            </div>
           </button>
-          <button onclick="startLevel(2)">
-            Level 2<br /><small>2 kata</small>
+          <button class="menu-btn btn-sakura" onclick="startLevel(1)">
+            <div class="icon-wrapper">1️⃣</div>
+            <div class="btn-text">
+              <span class="title">Tebak 1 Huruf</span>
+              <span class="subtitle">Level Pemula</span>
+            </div>
           </button>
-          <button onclick="startLevel(3)">
-            Level 3<br /><small>3 kata</small>
+          <button class="menu-btn btn-fuji" onclick="startLevel(2)">
+            <div class="icon-wrapper">2️⃣</div>
+            <div class="btn-text">
+              <span class="title">Tebak 2 Huruf</span>
+              <span class="subtitle">Level Menengah</span>
+            </div>
           </button>
-          <button onclick="startQuest()">
-            🧩 Quest<br /><small>Klik teks</small>
+          <button class="menu-btn btn-sora" onclick="startLevel(3)">
+            <div class="icon-wrapper">3️⃣</div>
+            <div class="btn-text">
+              <span class="title">Tebak 3 Huruf</span>
+              <span class="subtitle">Level Lanjut</span>
+            </div>
           </button>
-          <button onclick="startDragDrop()">
-            🎯 Drag & Drop<br /><small>Uji Hiragana</small>
+          
+          <button class="menu-btn btn-mikan" onclick="startVocab()">
+            <div class="icon-wrapper">🍣</div>
+            <div class="btn-text">
+              <span class="title">Kosakata Dasar</span>
+              <span class="subtitle">Belajar arti kata</span>
+            </div>
           </button>
-          <button onclick="startWriting()">
-            ✍️ Tulis Hiragana<br /><small>Manual</small>
+
+          <button class="menu-btn btn-yuzu" onclick="startQuest()">
+            <div class="icon-wrapper">🧩</div>
+            <div class="btn-text">
+              <span class="title">Quest Mode</span>
+              <span class="subtitle">Pilih susunan huruf</span>
+            </div>
+          </button>
+          <button class="menu-btn btn-murasaki" onclick="startDragDrop()">
+            <div class="icon-wrapper">🎯</div>
+            <div class="btn-text">
+              <span class="title">Drag & Drop</span>
+              <span class="subtitle">Rangkai huruf</span>
+            </div>
+          </button>
+          <button class="menu-btn btn-text-main" onclick="startWriting()">
+            <div class="icon-wrapper">✍️</div>
+            <div class="btn-text">
+              <span class="title">Menulis Manual</span>
+              <span class="subtitle">Latih goresan kanvas</span>
+            </div>
           </button>
         </div>
       </div>
 
-      <!-- HIRAGANA LIST -->
-      <div id="hiraganaPage" class="hidden">
-        <h2>Daftar Hiragana</h2>
-        <div class="choices" id="hiraganaList"></div>
-        <br />
-        <button onclick="backToMenu()">⬅ Menu</button>
+      <!-- KANA LIST -->
+      <div id="kanaPage" class="view-section hidden">
+        <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2 id="kanaListTitle">Daftar Huruf</h2>
+        </div>
+        <div class="kana-grid" id="kanaList"></div>
       </div>
 
       <!-- LEVEL MODE -->
-      <div id="quiz" class="hidden">
-        <div class="question" id="question"></div>
-        <div class="choices" id="choices"></div>
-        <div class="result" id="result"></div>
-        <button onclick="loadQuestion()">Soal Berikutnya</button>
-        <br /><br />
-        <button onclick="backToMenu()">⬅ Menu</button>
+      <div id="quiz" class="view-section hidden">
+        <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2 id="quizTitle">Tebak Huruf</h2>
+        </div>
+        <div class="question-card">
+          <div class="question" id="question"></div>
+          <div class="choices-grid" id="choices"></div>
+          <div class="result-badge" id="result"></div>
+          <br>
+          <button class="action-btn next-btn" onclick="loadQuestion()">Soal Berikutnya &rarr;</button>
+        </div>
+      </div>
+
+      <!-- VOCAB MODE -->
+      <div id="vocabMode" class="view-section hidden">
+         <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2>Tebak Arti Kata</h2>
+        </div>
+        <div class="question-card">
+          <div class="question" id="vocabQuestion"></div>
+          <div class="choices-grid" id="vocabChoices"></div>
+          <div class="result-badge" id="vocabResult"></div>
+          <br>
+          <button class="action-btn next-btn" onclick="newVocab()">Soal Baru &rarr;</button>
+        </div>
       </div>
 
       <!-- QUEST MODE -->
-      <div id="quest" class="hidden">
-        <h2>Quest Mode</h2>
-        <div class="question" id="questQuestion"></div>
-        <div class="choices" id="questChoices"></div>
-        <div class="result" id="questResult"></div>
-        <button onclick="newQuest()">Soal Baru</button>
-        <br /><br />
-        <button onclick="backToMenu()">⬅ Menu</button>
+      <div id="quest" class="view-section hidden">
+         <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2>Quest Mode</h2>
+        </div>
+        <div class="question-card">
+          <div class="question" id="questQuestion"></div>
+          <div class="choices-grid" id="questChoices"></div>
+          <div class="result-badge" id="questResult"></div>
+          <br>
+          <button class="action-btn next-btn" onclick="newQuest()">Soal Baru &rarr;</button>
+        </div>
       </div>
 
       <!-- DRAG & DROP -->
-      <div id="dragDrop" class="hidden">
-        <h2>Drag & Drop Mode</h2>
-        <p>Tarik huruf ke tempat yang sesuai!</p>
-        <div id="dragQuestion" class="question"></div>
-        <div id="dragTargets" class="choices"></div>
-        <div id="dragLetters" class="choices" style="margin-top: 12px"></div>
-        <div class="result" id="dragResult"></div>
-        <button onclick="newDragDrop()">Soal Baru</button>
-        <br /><br />
-        <button onclick="backToMenu()">⬅ Menu</button>
+      <div id="dragDrop" class="view-section hidden">
+         <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2>Drag & Drop Mode</h2>
+        </div>
+        <div class="question-card">
+          <div id="dragQuestion" class="question"></div>
+          
+          <div class="drop-zone-container">
+            <div id="dragTargets" class="drag-targets"></div>
+          </div>
+          
+          <div id="dragLetters" class="drag-letters"></div>
+          
+          <div class="result-badge" id="dragResult"></div>
+          <br>
+          <button class="action-btn next-btn" onclick="newDragDrop()">Soal Baru &rarr;</button>
+        </div>
       </div>
 
       <!-- WRITING MODE -->
-      <div id="writing" class="hidden">
-        <h2>Menulis Hiragana Manual</h2>
-        <div class="question" id="writingQuestion"></div>
-        <canvas id="writingCanvas" width="300" height="300"></canvas>
-        <div class="result" id="writingResult"></div>
-        <br />
-        <button onclick="clearCanvas()">Clear</button>
-        <button onclick="checkWriting()">Cek Jawaban</button>
-        <button onclick="newWriting()">Soal Baru</button>
-        <br /><br />
-        <button onclick="backToMenu()">⬅ Menu</button>
+      <div id="writing" class="view-section hidden">
+        <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2>Menulis Huruf</h2>
+        </div>
+        <div class="question-card">
+          <div class="question" id="writingQuestion"></div>
+          <div class="canvas-container">
+            <canvas id="writingCanvas" width="300" height="300"></canvas>
+            <div class="canvas-actions">
+              <button class="action-btn secondary" onclick="clearCanvas()">Hapus</button>
+              <button class="action-btn" onclick="checkWriting()">Cek Jawaban</button>
+            </div>
+          </div>
+          <div class="result-badge" id="writingResult"></div>
+          <br>
+          <button class="action-btn next-btn" onclick="newWriting()">Soal Baru &rarr;</button>
+        </div>
       </div>
     </main>
-
-    <script>
-      const hiragana = [
-        ["a", "あ"],
-        ["i", "い"],
-        ["u", "う"],
-        ["e", "え"],
-        ["o", "お"],
-        ["ka", "か"],
-        ["ki", "き"],
-        ["ku", "く"],
-        ["ke", "け"],
-        ["ko", "こ"],
-        ["sa", "さ"],
-        ["shi", "し"],
-        ["su", "す"],
-        ["se", "せ"],
-        ["so", "そ"],
-        ["ta", "た"],
-        ["chi", "ち"],
-        ["tsu", "つ"],
-        ["te", "て"],
-        ["to", "と"],
-        ["na", "な"],
-        ["ni", "に"],
-        ["nu", "ぬ"],
-        ["ne", "ね"],
-        ["no", "の"],
-        ["ha", "は"],
-        ["hi", "ひ"],
-        ["fu", "ふ"],
-        ["he", "へ"],
-        ["ho", "ほ"],
-        ["ma", "ま"],
-        ["mi", "み"],
-        ["mu", "む"],
-        ["me", "め"],
-        ["mo", "も"],
-        ["ya", "や"],
-        ["yu", "ゆ"],
-        ["yo", "よ"],
-        ["ra", "ら"],
-        ["ri", "り"],
-        ["ru", "る"],
-        ["re", "れ"],
-        ["ro", "ろ"],
-        ["wa", "わ"],
-        ["wo", "を"],
-        ["n", "ん"],
-      ];
-
-      // Template sederhana untuk cek Writing Mode
-      const templates = {
-        あ: [
-          [0, 0, 1, 1, 1, 0, 0],
-          [0, 1, 0, 0, 0, 1, 0],
-          [0, 0, 0, 0, 1, 0, 0],
-          [0, 0, 0, 1, 0, 0, 0],
-          [0, 0, 1, 0, 0, 0, 0],
-          [0, 1, 1, 1, 1, 1, 0],
-          [0, 0, 0, 0, 0, 0, 0],
-        ],
-        い: [
-          [0, 0, 1, 1, 0, 0, 0],
-          [0, 1, 0, 1, 0, 0, 0],
-          [0, 0, 0, 1, 0, 0, 0],
-          [0, 0, 0, 1, 0, 0, 0],
-          [0, 0, 0, 1, 0, 0, 0],
-          [0, 1, 1, 1, 1, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0],
-        ],
-        う: [
-          [0, 0, 1, 1, 0, 0, 0],
-          [0, 1, 0, 0, 1, 0, 0],
-          [0, 0, 0, 0, 1, 0, 0],
-          [0, 0, 0, 0, 1, 0, 0],
-          [0, 0, 0, 1, 0, 0, 0],
-          [0, 1, 1, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0],
-        ],
-      };
-
-      let wordLength = 1;
-      let correctAnswer = "";
-
-      // ================= Utility =================
-      function shuffle(a) {
-        return a.sort(() => Math.random() - 0.5);
-      }
-      function hideAll() {
-        [
-          "menu",
-          "quiz",
-          "hiraganaPage",
-          "quest",
-          "dragDrop",
-          "writing",
-        ].forEach((id) => document.getElementById(id).classList.add("hidden"));
-      }
-      function backToMenu() {
-        hideAll();
-        document.getElementById("menu").classList.remove("hidden");
-      }
-
-      // ================= LEVEL MODE =================
-      function startLevel(len) {
-        wordLength = len;
-        hideAll();
-        document.getElementById("quiz").classList.remove("hidden");
-        loadQuestion();
-      }
-      function loadQuestion() {
-        document.getElementById("result").innerText = "";
-        const word = shuffle([...hiragana]).slice(0, wordLength);
-        correctAnswer = word.map((w) => w[1]).join("");
-        document.getElementById(
-          "question"
-        ).innerHTML = `Mana hiragana untuk: <b>${word
-          .map((w) => w[0])
-          .join(" ")}</b>?`;
-        const opts = new Set([correctAnswer]);
-        while (opts.size < 4)
-          opts.add(
-            shuffle([...hiragana])
-              .slice(0, wordLength)
-              .map((w) => w[1])
-              .join("")
-          );
-        const box = document.getElementById("choices");
-        box.innerHTML = "";
-        shuffle([...opts]).forEach((o) => {
-          const d = document.createElement("div");
-          d.className = "choice";
-          d.innerText = o;
-          d.onclick = () => checkAnswer(o);
-          box.appendChild(d);
-        });
-      }
-      function checkAnswer(sel) {
-        const r = document.getElementById("result");
-        r.innerText = sel === correctAnswer ? "✅ Benar" : "❌ Salah";
-        r.style.color = sel === correctAnswer ? "green" : "red";
-      }
-
-      // ================= QUEST MODE =================
-      function startQuest() {
-        hideAll();
-        document.getElementById("quest").classList.remove("hidden");
-        newQuest();
-      }
-      function newQuest() {
-        const res = document.getElementById("questResult");
-        res.innerText = "";
-        const word = shuffle([...hiragana]).slice(0, 3);
-        const correct = word.map((w) => w[1]).join("");
-        document.getElementById(
-          "questQuestion"
-        ).innerHTML = `Manakah huruf untuk: <b>${word
-          .map((w) => w[0])
-          .join(" ")}</b>?`;
-        const opts = new Set([correct]);
-        while (opts.size < 3)
-          opts.add(
-            shuffle([...hiragana])
-              .slice(0, 3)
-              .map((w) => w[1])
-              .join("")
-          );
-        const box = document.getElementById("questChoices");
-        box.innerHTML = "";
-        shuffle([...opts]).forEach((o) => {
-          const d = document.createElement("div");
-          d.className = "choice";
-          d.innerText = o;
-          d.onclick = () => {
-            if (o === correct) {
-              res.innerText = "✅ Benar";
-              res.style.color = "green";
-            } else {
-              res.innerText = "❌ Salah, ganti soal";
-              res.style.color = "red";
-              setTimeout(newQuest, 700);
-            }
-          };
-          box.appendChild(d);
-        });
-      }
-
-      // ================= DRAG & DROP =================
-      function startDragDrop() {
-        hideAll();
-        document.getElementById("dragDrop").classList.remove("hidden");
-        newDragDrop();
-      }
-      function newDragDrop() {
-        const result = document.getElementById("dragResult");
-        result.innerText = "";
-        const words = shuffle([...hiragana]).slice(0, 3);
-        const correct = words.map((w) => w[1]);
-        document.getElementById(
-          "dragQuestion"
-        ).innerHTML = `Susun huruf untuk: <b>${words
-          .map((w) => w[0])
-          .join(" ")}</b>`;
-        const targetsDiv = document.getElementById("dragTargets");
-        targetsDiv.innerHTML = "";
-        correct.forEach((letter) => {
-          const target = document.createElement("div");
-          target.className = "choice";
-          target.dataset.answer = letter;
-          target.ondragover = (e) => e.preventDefault();
-          target.ondrop = (e) => {
-            e.preventDefault();
-            const l = e.dataTransfer.getData("text");
-            target.innerText = l;
-            const t = [...targetsDiv.children];
-            if (t.every((t) => t.innerText !== "")) {
-              const ok = t.every((t) => t.innerText === t.dataset.answer);
-              result.innerText = ok ? "✅ Benar" : "❌ Salah, coba soal baru";
-              result.style.color = ok ? "green" : "red";
-              if (!ok) setTimeout(newDragDrop, 1000);
-            }
-          };
-          targetsDiv.appendChild(target);
-        });
-        const lettersDiv = document.getElementById("dragLetters");
-        lettersDiv.innerHTML = "";
-        shuffle([...correct]).forEach((letter) => {
-          const l = document.createElement("div");
-          l.className = "choice";
-          l.innerText = letter;
-          l.draggable = true;
-          l.ondragstart = (e) => e.dataTransfer.setData("text", letter);
-          lettersDiv.appendChild(l);
-        });
-      }
-
-      // ================= WRITING MODE =================
-      let currentWritingAnswer = "";
-      const canvas = document.getElementById("writingCanvas");
-      const ctx = canvas.getContext("2d");
-      let drawing = false;
-
-      canvas.addEventListener("mousedown", (e) => {
-        drawing = true;
-        ctx.beginPath();
-        ctx.moveTo(e.offsetX, e.offsetY);
-      });
-      canvas.addEventListener("mousemove", (e) => {
-        if (drawing) {
-          ctx.lineTo(e.offsetX, e.offsetY);
-          ctx.stroke();
-        }
-      });
-      canvas.addEventListener("mouseup", (e) => (drawing = false));
-      canvas.addEventListener("mouseout", (e) => (drawing = false));
-      canvas.addEventListener("touchstart", (e) => {
-        e.preventDefault();
-        drawing = true;
-        const rect = canvas.getBoundingClientRect();
-        const t = e.touches[0];
-        ctx.beginPath();
-        ctx.moveTo(t.clientX - rect.left, t.clientY - rect.top);
-      });
-      canvas.addEventListener("touchmove", (e) => {
-        e.preventDefault();
-        if (!drawing) return;
-        const rect = canvas.getBoundingClientRect();
-        const t = e.touches[0];
-        ctx.lineTo(t.clientX - rect.left, t.clientY - rect.top);
-        ctx.stroke();
-      });
-      canvas.addEventListener("touchend", (e) => (drawing = false));
-
-      function clearCanvas() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-      function startWriting() {
-        hideAll();
-        document.getElementById("writing").classList.remove("hidden");
-        newWriting();
-      }
-      function newWriting() {
-        clearCanvas();
-        const word = shuffle([...hiragana]).slice(0, 1);
-        currentWritingAnswer = word.map((w) => w[1]).join("");
-        document.getElementById(
-          "writingQuestion"
-        ).innerHTML = `Tulis huruf untuk: <b>${word
-          .map((w) => w[0])
-          .join(" ")}</b>`;
-        document.getElementById("writingResult").innerText = "";
-      }
-
-      function checkWriting() {
-        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imgData.data;
-        const size = 7;
-        const sample = new Array(size)
-          .fill(0)
-          .map(() => new Array(size).fill(0));
-        for (let y = 0; y < size; y++) {
-          for (let x = 0; x < size; x++) {
-            let sum = 0,
-              count = 0;
-            const startX = Math.floor((x * canvas.width) / size);
-            const startY = Math.floor((y * canvas.height) / size);
-            const endX = Math.floor(((x + 1) * canvas.width) / size);
-            const endY = Math.floor(((y + 1) * canvas.height) / size);
-            for (let i = startY; i < endY; i++) {
-              for (let j = startX; j < endX; j++) {
-                const idx = (i * canvas.width + j) * 4;
-                const r = data[idx],
-                  g = data[idx + 1],
-                  b = data[idx + 2];
-                const brightness = (r + g + b) / 3;
-                if (brightness < 200) sum++;
-                count++;
-              }
-            }
-            sample[y][x] = sum / count > 0.2 ? 1 : 0;
-          }
-        }
-        const template = templates[currentWritingAnswer];
-        if (!template) {
-          document.getElementById("writingResult").innerText =
-            "Template belum tersedia untuk huruf ini";
-          return;
-        }
-        let match = 0;
-        for (let y = 0; y < size; y++)
-          for (let x = 0; x < size; x++)
-            if (sample[y][x] === template[y][x]) match++;
-        const percent = Math.floor((match / (size * size)) * 100);
-        const res = document.getElementById("writingResult");
-        res.innerText =
-          percent >= 60 ? `✅ Benar (${percent}%)` : `❌ Salah (${percent}%)`;
-      }
-
-      // ================= HIRAGANA LIST =================
-      function showHiragana() {
-        hideAll();
-        document.getElementById("hiraganaPage").classList.remove("hidden");
-        const list = document.getElementById("hiraganaList");
-        list.innerHTML = "";
-        hiragana.forEach((h) => {
-          const d = document.createElement("div");
-          d.className = "choice";
-          d.innerHTML = `<b>${h[1]}</b><small>${h[0]}</small>`;
-          list.appendChild(d);
-        });
-      }
-    </script>
-  </body>
+  </div>
+  <script src="script.js"></script>
+</body>
 </html>
