@@ -6,9 +6,10 @@ const hiraganaBasic = [
   ["na", "な"], ["ni", "に"], ["nu", "ぬ"], ["ne", "ね"], ["no", "の"],
   ["ha", "は"], ["hi", "ひ"], ["fu", "ふ"], ["he", "へ"], ["ho", "ほ"],
   ["ma", "ま"], ["mi", "み"], ["mu", "む"], ["me", "め"], ["mo", "も"],
-  ["ya", "や"], ["yu", "ゆ"], ["yo", "よ"],
+  ["ya", "や"], ["", ""], ["yu", "ゆ"], ["", ""], ["yo", "よ"],
   ["ra", "ら"], ["ri", "り"], ["ru", "る"], ["re", "れ"], ["ro", "ろ"],
-  ["wa", "わ"], ["wo", "を"], ["n", "ん"]
+  ["wa", "わ"], ["", ""], ["", ""], ["", ""], ["wo", "を"],
+  ["n", "ん"], ["", ""], ["", ""], ["", ""], ["", ""]
 ];
 
 const hiraganaDakuten = [
@@ -27,9 +28,10 @@ const katakanaBasic = [
   ["na", "ナ"], ["ni", "ニ"], ["nu", "ヌ"], ["ne", "ネ"], ["no", "ノ"],
   ["ha", "ハ"], ["hi", "ヒ"], ["fu", "フ"], ["he", "ヘ"], ["ho", "ホ"],
   ["ma", "マ"], ["mi", "ミ"], ["mu", "ム"], ["me", "メ"], ["mo", "モ"],
-  ["ya", "ヤ"], ["yu", "ユ"], ["yo", "ヨ"],
+  ["ya", "ヤ"], ["", ""], ["yu", "ユ"], ["", ""], ["yo", "ヨ"],
   ["ra", "ラ"], ["ri", "リ"], ["ru", "ル"], ["re", "レ"], ["ro", "ロ"],
-  ["wa", "ワ"], ["wo", "ヲ"], ["n", "ン"]
+  ["wa", "ワ"], ["", ""], ["", ""], ["", ""], ["wo", "ヲ"],
+  ["n", "ン"], ["", ""], ["", ""], ["", ""], ["", ""]
 ];
 
 const katakanaDakuten = [
@@ -170,8 +172,12 @@ function showKanaList() {
   list.innerHTML = "";
   activeData.forEach((h) => {
     const card = document.createElement("div");
-    card.className = "kana-card";
-    card.innerHTML = `<span class="char">${h[1]}</span><span class="romaji">${h[0]}</span>`;
+    if(h[0] === "") {
+       card.className = "kana-card empty";
+    } else {
+       card.className = "kana-card";
+       card.innerHTML = `<span class="char">${h[1]}</span><span class="romaji">${h[0]}</span>`;
+    }
     list.appendChild(card);
   });
 }
@@ -187,7 +193,8 @@ function startLevel(len) {
 
 function loadQuestion() {
   clearResult("result");
-  const word = shuffle([...activeData]).slice(0, wordLength);
+  const validData = activeData.filter(h => h[0] !== "");
+  const word = shuffle([...validData]).slice(0, wordLength);
   correctAnswer = word.map((w) => w[1]).join("");
   
   const shortName = activeName.split(" ")[0]; // "Hiragana" or "Katakana"
@@ -195,7 +202,7 @@ function loadQuestion() {
   
   const opts = new Set([correctAnswer]);
   while (opts.size < 4) {
-    opts.add(shuffle([...activeData]).slice(0, wordLength).map((w) => w[1]).join(""));
+    opts.add(shuffle([...validData]).slice(0, wordLength).map((w) => w[1]).join(""));
   }
   
   const box = document.getElementById("choices");
@@ -280,13 +287,14 @@ function startQuest() {
 
 function newQuest() {
   clearResult("questResult");
-  const word = shuffle([...activeData]).slice(0, 3);
+  const validData = activeData.filter(h => h[0] !== "");
+  const word = shuffle([...validData]).slice(0, 3);
   const correct = word.map((w) => w[1]).join("");
   document.getElementById("questQuestion").innerHTML = `Manakah susunan huruf untuk: <br><b>${word.map((w) => w[0]).join(" ")}</b>`;
   
   const opts = new Set([correct]);
   while (opts.size < 3) {
-    opts.add(shuffle([...activeData]).slice(0, 3).map((w) => w[1]).join(""));
+    opts.add(shuffle([...validData]).slice(0, 3).map((w) => w[1]).join(""));
   }
   
   const box = document.getElementById("questChoices");
@@ -325,7 +333,8 @@ function startDragDrop() {
 
 function newDragDrop() {
   clearResult("dragResult");
-  const words = shuffle([...activeData]).slice(0, 3);
+  const validData = activeData.filter(h => h[0] !== "");
+  const words = shuffle([...validData]).slice(0, 3);
   const correct = words.map((w) => w[1]);
   
   document.getElementById("dragQuestion").innerHTML = `Susun huruf untuk: <br><b>${words.map((w) => w[0]).join(" ")}</b>`;
@@ -474,8 +483,9 @@ function startWriting() {
 
 function newWriting() {
   clearCanvas();
+  const validData = activeData.filter(h => h[0] !== "");
   const availableTemplates = Object.keys(templates);
-  const word = shuffle(activeData.filter(h => availableTemplates.includes(h[1]))).slice(0, 1);
+  const word = shuffle(validData.filter(h => availableTemplates.includes(h[1]))).slice(0, 1);
   
   if(word.length === 0) {
       document.getElementById("writingQuestion").innerHTML = `Belum ada template untuk mode ini.`;

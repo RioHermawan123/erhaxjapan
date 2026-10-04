@@ -271,18 +271,31 @@ body {
 /* Kana Grid */
 .kana-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px; /* Tighter gap for mobile fitting */
 }
 .kana-card {
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 16px 8px;
+  padding: 12px 4px; /* Less horizontal padding */
   text-align: center;
   transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.kana-card:hover {
+.kana-card.empty {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.kana-card.empty:hover {
+  transform: none;
+  background: transparent;
+  border-color: transparent;
+}
+.kana-card:not(.empty):hover {
   border-color: var(--fuji);
   background: var(--fuji-bg);
   transform: translateY(-4px);
@@ -290,13 +303,14 @@ body {
 }
 .kana-card .char {
   font-family: 'M PLUS Rounded 1c', sans-serif;
-  font-size: 32px;
+  font-size: clamp(20px, 5vw, 32px);
   font-weight: 700;
   color: var(--text-main);
   display: block;
+  line-height: 1.2;
 }
 .kana-card .romaji {
-  font-size: 14px;
+  font-size: clamp(10px, 3vw, 14px);
   font-weight: 600;
   color: var(--text-muted);
   margin-top: 4px;
