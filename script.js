@@ -43,13 +43,29 @@ const katakanaDakuten = [
 ];
 
 const vocabularyHiragana = [
+  // Hewan
   { h: "ねこ", r: "neko", m: "Kucing" },
   { h: "いぬ", r: "inu", m: "Anjing" },
   { h: "とり", r: "tori", m: "Burung" },
   { h: "さかな", r: "sakana", m: "Ikan" },
+  { h: "うさぎ", r: "usagi", m: "Kelinci" },
+  { h: "くま", r: "kuma", m: "Beruang" },
+  { h: "うし", r: "ushi", m: "Sapi" },
+  { h: "うま", r: "uma", m: "Kuda" },
+  { h: "さる", r: "saru", m: "Monyet" },
+  { h: "へび", r: "hebi", m: "Ular" },
+  { h: "かめ", r: "kame", m: "Kura-kura" },
+  // Alam
   { h: "さくら", r: "sakura", m: "Bunga Sakura" },
   { h: "やま", r: "yama", m: "Gunung" },
   { h: "かわ", r: "kawa", m: "Sungai" },
+  { h: "うみ", r: "umi", m: "Laut" },
+  { h: "そら", r: "sora", m: "Langit" },
+  { h: "はな", r: "hana", m: "Bunga" },
+  { h: "き", r: "ki", m: "Pohon" },
+  { h: "もり", r: "mori", m: "Hutan" },
+  { h: "しま", r: "shima", m: "Pulau" },
+  // Benda sehari-hari
   { h: "みず", r: "mizu", m: "Air" },
   { h: "ひ", r: "hi", m: "Api" },
   { h: "つき", r: "tsuki", m: "Bulan" },
@@ -61,25 +77,109 @@ const vocabularyHiragana = [
   { h: "みせ", r: "mise", m: "Toko" },
   { h: "くつ", r: "kutsu", m: "Sepatu" },
   { h: "かさ", r: "kasa", m: "Payung" },
-  { h: "あめ", r: "ame", m: "Hujan" }
+  { h: "あめ", r: "ame", m: "Hujan" },
+  { h: "かぜ", r: "kaze", m: "Angin" },
+  { h: "ゆき", r: "yuki", m: "Salju" },
+  { h: "かみ", r: "kami", m: "Kertas" },
+  { h: "はし", r: "hashi", m: "Sumpit" },
+  { h: "まど", r: "mado", m: "Jendela" },
+  { h: "ドア", r: "doa", m: "Pintu" },
+  // Makanan & Minuman
+  { h: "ごはん", r: "gohan", m: "Nasi" },
+  { h: "みそしる", r: "misoshiru", m: "Sup Miso" },
+  { h: "たまご", r: "tamago", m: "Telur" },
+  { h: "にく", r: "niku", m: "Daging" },
+  { h: "やさい", r: "yasai", m: "Sayuran" },
+  { h: "くだもの", r: "kudamono", m: "Buah-buahan" },
+  { h: "おちゃ", r: "ocha", m: "Teh" },
+  { h: "さとう", r: "satou", m: "Gula" },
+  { h: "しお", r: "shio", m: "Garam" },
+  // Kata sifat/kondisi
+  { h: "あたらしい", r: "atarashii", m: "Baru" },
+  { h: "ふるい", r: "furui", m: "Lama / Tua" },
+  { h: "おおきい", r: "ookii", m: "Besar" },
+  { h: "ちいさい", r: "chiisai", m: "Kecil" },
+  { h: "はやい", r: "hayai", m: "Cepat" },
+  { h: "おそい", r: "osoi", m: "Lambat" },
+  { h: "あつい", r: "atsui", m: "Panas" },
+  { h: "さむい", r: "samui", m: "Dingin" },
+  // Kata kerja dasar
+  { h: "たべる", r: "taberu", m: "Makan" },
+  { h: "のむ", r: "nomu", m: "Minum" },
+  { h: "みる", r: "miru", m: "Melihat" },
+  { h: "きく", r: "kiku", m: "Mendengar" },
+  { h: "はなす", r: "hanasu", m: "Berbicara" },
+  { h: "いく", r: "iku", m: "Pergi" },
+  { h: "くる", r: "kuru", m: "Datang" },
+  { h: "かく", r: "kaku", m: "Menulis" },
+  { h: "よむ", r: "yomu", m: "Membaca" },
+  { h: "ねる", r: "neru", m: "Tidur" },
+  { h: "おきる", r: "okiru", m: "Bangun" },
+  { h: "かう", r: "kau", m: "Membeli" },
+  { h: "うる", r: "uru", m: "Menjual" },
+  { h: "あそぶ", r: "asobu", m: "Bermain" },
+  { h: "はたらく", r: "hataraku", m: "Bekerja" }
 ];
 
 const vocabularyKatakana = [
+  // Teknologi & Elektronik
   { h: "テレビ", r: "terebi", m: "Televisi" },
   { h: "カメラ", r: "kamera", m: "Kamera" },
   { h: "スマホ", r: "sumaho", m: "Ponsel Pintar" },
   { h: "パソコン", r: "pasokon", m: "Komputer PC" },
+  { h: "ラジオ", r: "rajio", m: "Radio" },
+  { h: "エアコン", r: "eakon", m: "AC / Penyejuk Udara" },
+  { h: "ロボット", r: "robotto", m: "Robot" },
+  { h: "インターネット", r: "intaanetto", m: "Internet" },
+  { h: "ゲーム", r: "geemu", m: "Permainan / Game" },
+  // Transportasi
   { h: "タクシー", r: "takushii", m: "Taksi" },
   { h: "バス", r: "basu", m: "Bus" },
+  { h: "トラック", r: "torakku", m: "Truk" },
+  { h: "バイク", r: "baiku", m: "Motor" },
+  { h: "ヘリコプター", r: "herikoputaa", m: "Helikopter" },
+  // Tempat
   { h: "ホテル", r: "hoteru", m: "Hotel" },
   { h: "レストラン", r: "resutoran", m: "Restoran" },
+  { h: "スーパー", r: "suupaa", m: "Supermarket" },
+  { h: "デパート", r: "depaato", m: "Department Store" },
+  { h: "アパート", r: "apaato", m: "Apartemen" },
+  { h: "マンション", r: "manshon", m: "Gedung Apartemen" },
+  // Makanan & Minuman
   { h: "コーヒー", r: "koohii", m: "Kopi" },
   { h: "パン", r: "pan", m: "Roti" },
   { h: "ケーキ", r: "keeki", m: "Kue" },
-  { h: "トイレ", r: "toire", m: "Toilet" },
+  { h: "アイスクリーム", r: "aisukuriimu", m: "Es Krim" },
+  { h: "ジュース", r: "juusu", m: "Jus" },
+  { h: "ビール", r: "biiru", m: "Bir" },
+  { h: "チョコレート", r: "chokoreeto", m: "Cokelat" },
+  { h: "ピザ", r: "piza", m: "Pizza" },
+  { h: "ハンバーガー", r: "hanbaagaa", m: "Hamburger" },
+  { h: "カレー", r: "karee", m: "Kari" },
+  // Pakaian & Aksesoris
   { h: "シャツ", r: "shatsu", m: "Kemeja" },
+  { h: "ジャケット", r: "jaketto", m: "Jaket" },
+  { h: "コート", r: "kooto", m: "Mantel" },
+  { h: "ズボン", r: "zubon", m: "Celana" },
+  { h: "ネクタイ", r: "nekutai", m: "Dasi" },
+  // Olahraga & Hiburan
+  { h: "サッカー", r: "sakkaa", m: "Sepak Bola" },
+  { h: "テニス", r: "tenisu", m: "Tenis" },
+  { h: "バスケット", r: "basuketto", m: "Basket" },
+  { h: "スポーツ", r: "supootsu", m: "Olahraga" },
+  { h: "コンサート", r: "konsaato", m: "Konser" },
+  { h: "ミュージック", r: "myuujikku", m: "Musik" },
+  // Lain-lain
+  { h: "トイレ", r: "toire", m: "Toilet" },
   { h: "ノート", r: "nooto", m: "Buku Catatan" },
-  { h: "ペン", r: "pen", m: "Pena" }
+  { h: "ペン", r: "pen", m: "Pena" },
+  { h: "ナイフ", r: "naifu", m: "Pisau" },
+  { h: "フォーク", r: "fooku", m: "Garpu" },
+  { h: "スプーン", r: "supuun", m: "Sendok" },
+  { h: "テーブル", r: "teeburu", m: "Meja" },
+  { h: "チケット", r: "chiketto", m: "Tiket" },
+  { h: "ポケット", r: "poketto", m: "Saku" },
+  { h: "ボタン", r: "botan", m: "Tombol / Kancing" }
 ];
 
 const templates = {
@@ -100,7 +200,27 @@ let wordLength = 1;
 let correctAnswer = "";
 let currentVocabCorrect = "";
 
+// ===== Anti-Repeat Tracking =====
+const HISTORY_LIMIT = 8; // how many recent answers to remember
+let quizHistory = [];   // tracks recent correctAnswers for quiz
+let vocabHistory = [];  // tracks recent vocab words shown
+
+function addToHistory(historyArr, key) {
+  historyArr.push(key);
+  if (historyArr.length > HISTORY_LIMIT) historyArr.shift();
+}
+
+function getUnseenItem(pool, historyArr, keyFn) {
+  // Try to find an item not in history
+  const unseen = pool.filter(item => !historyArr.includes(keyFn(item)));
+  const source = unseen.length > 0 ? unseen : pool; // fallback to full pool if all seen
+  return shuffle([...source])[0];
+}
+
 function updateActiveData() {
+  // Reset histories when mode changes
+  quizHistory = [];
+  vocabHistory = [];
   if (currentAlphabet === 'hiragana') {
     activeData = (currentCharType === 'basic') ? hiraganaBasic : hiraganaDakuten;
     activeName = (currentCharType === 'basic') ? "Hiragana Dasar" : "Hiragana Imbuhan";
@@ -194,15 +314,30 @@ function startLevel(len) {
 function loadQuestion() {
   clearResult("result");
   const validData = activeData.filter(h => h[0] !== "");
-  const word = shuffle([...validData]).slice(0, wordLength);
+
+  // Pick an unseen combination of characters
+  const word = [];
+  const usedRomaji = new Set();
+  for (let i = 0; i < wordLength; i++) {
+    const available = validData.filter(h => !usedRomaji.has(h[0]));
+    const pick = getUnseenItem(available.length > 0 ? available : validData, i === 0 ? quizHistory : [], item => item[1]);
+    word.push(pick);
+    usedRomaji.add(pick[0]);
+  }
+
   correctAnswer = word.map((w) => w[1]).join("");
+  addToHistory(quizHistory, correctAnswer);
   
   const shortName = activeName.split(" ")[0]; // "Hiragana" or "Katakana"
   document.getElementById("question").innerHTML = `Mana ${shortName.toLowerCase()} untuk: <br><b>${word.map((w) => w[0]).join(" ")}</b>`;
   
+  // Generate unique wrong options, also avoiding repetition
   const opts = new Set([correctAnswer]);
-  while (opts.size < 4) {
-    opts.add(shuffle([...validData]).slice(0, wordLength).map((w) => w[1]).join(""));
+  let attempt = 0;
+  while (opts.size < 4 && attempt < 50) {
+    attempt++;
+    const candidate = shuffle([...validData]).slice(0, wordLength).map((w) => w[1]).join("");
+    if (candidate !== correctAnswer) opts.add(candidate);
   }
   
   const box = document.getElementById("choices");
@@ -241,15 +376,19 @@ function startVocab() {
 
 function newVocab() {
   clearResult("vocabResult");
-  const selectedVocab = shuffle([...activeVocab])[0];
+  // Anti-repeat: pick a vocab not recently shown
+  const selectedVocab = getUnseenItem(activeVocab, vocabHistory, item => item.h);
   currentVocabCorrect = selectedVocab.m;
+  addToHistory(vocabHistory, selectedVocab.h);
   
   document.getElementById("vocabQuestion").innerHTML = `Apa arti dari kata ini? <br><b>${selectedVocab.h}</b><span class="romaji-hint">(${selectedVocab.r})</span>`;
   
+  // Generate 3 unique wrong answers (distractors)
   const opts = new Set([currentVocabCorrect]);
-  while (opts.size < 4) {
-    const randomVocab = activeVocab[Math.floor(Math.random() * activeVocab.length)].m;
-    opts.add(randomVocab);
+  let attempt = 0;
+  while (opts.size < 4 && attempt < 50) {
+    attempt++;
+    opts.add(activeVocab[Math.floor(Math.random() * activeVocab.length)].m);
   }
   
   const box = document.getElementById("vocabChoices");
@@ -427,7 +566,7 @@ let drawing = false;
 ctx.lineWidth = 14;
 ctx.lineCap = "round";
 ctx.lineJoin = "round";
-ctx.strokeStyle = "#2C3E50";
+ctx.strokeStyle = "#F8FAFC";
 
 function getPointerPos(e) {
   const rect = canvas.getBoundingClientRect();
