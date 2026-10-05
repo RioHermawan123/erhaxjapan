@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belajar Kana Jepang 🇯🇵</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1 id="mainTitle">Belajar Hiragana Dasar</h1>
+      <p>Tingkatkan kemampuan bahasa Jepangmu dengan menyenangkan ⛩️</p>
+      
+      <div class="toggle-group">
+        <div class="alphabet-toggle">
+          <button id="btnHiragana" class="toggle-btn active" onclick="setAlphabet('hiragana')">Hiragana</button>
+          <button id="btnKatakana" class="toggle-btn" onclick="setAlphabet('katakana')">Katakana</button>
+        </div>
+        <div class="alphabet-toggle type-toggle">
+          <button id="btnBasic" class="toggle-btn active" onclick="setCharType('basic')">Huruf Dasar</button>
+          <button id="btnDakuten" class="toggle-btn" onclick="setCharType('dakuten')">Imbuhan (Dakuten)</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-panel">
+      <!-- MENU -->
+      <div id="menu" class="view-section">
+        <h2 class="section-title">Pilih Mode Belajar</h2>
+        <div class="grid-menu">
+          <button class="menu-btn btn-matcha" onclick="showKanaList()">
+            <div class="icon-wrapper">📖</div>
+            <div class="btn-text">
+              <span class="title">Lihat Huruf</span>
+              <span class="subtitle">Daftar lengkap Kana</span>
+            </div>
+          </button>
+          <button class="menu-btn btn-sakura" onclick="startLevel(1)">
+            <div class="icon-wrapper">1️⃣</div>
+            <div class="btn-text">
+              <span class="title">Tebak 1 Huruf</span>
+              <span class="subtitle">Level Pemula</span>
+            </div>
+          </button>
+          <button class="menu-btn btn-fuji" onclick="startLevel(2)">
+            <div class="icon-wrapper">2️⃣</div>
+            <div class="btn-text">
+              <span class="title">Tebak 2 Huruf</span>
+              <span class="subtitle">Level Menengah</span>
+            </div>
+          </button>
+          <button class="menu-btn btn-sora" onclick="startLevel(3)">
+            <div class="icon-wrapper">3️⃣</div>
+            <div class="btn-text">
+              <span class="title">Tebak 3 Huruf</span>
+              <span class="subtitle">Level Lanjut</span>
+            </div>
+          </button>
+          
+          <button class="menu-btn btn-mikan" onclick="startVocab()">
+            <div class="icon-wrapper">🍣</div>
+            <div class="btn-text">
+              <span class="title">Kosakata Dasar</span>
+              <span class="subtitle">Belajar arti kata</span>
+            </div>
+          </button>
+
+          <button class="menu-btn btn-yuzu" onclick="startQuest()">
+            <div class="icon-wrapper">🧩</div>
+            <div class="btn-text">
+              <span class="title">Quest Mode</span>
+              <span class="subtitle">Pilih susunan huruf</span>
+            </div>
+          </button>
+          <button class="menu-btn btn-murasaki" onclick="startDragDrop()">
+            <div class="icon-wrapper">🎯</div>
+            <div class="btn-text">
+              <span class="title">Drag & Drop</span>
+              <span class="subtitle">Rangkai huruf</span>
+            </div>
+          </button>
+          <button class="menu-btn btn-text-main" onclick="startWriting()">
+            <div class="icon-wrapper">✍️</div>
+            <div class="btn-text">
+              <span class="title">Menulis Manual</span>
+              <span class="subtitle">Latih goresan kanvas</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- KANA LIST -->
+      <div id="kanaPage" class="view-section hidden">
+        <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2 id="kanaListTitle">Daftar Huruf</h2>
+        </div>
+        <div class="kana-grid" id="kanaList"></div>
+      </div>
+
+      <!-- LEVEL MODE -->
+      <div id="quiz" class="view-section hidden">
+        <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2 id="quizTitle">Tebak Huruf</h2>
+        </div>
+        <div class="question-card">
+          <div class="question" id="question"></div>
+          <div class="choices-grid" id="choices"></div>
+          <div class="result-badge" id="result"></div>
+          <br>
+          <button class="action-btn next-btn" onclick="loadQuestion()">Soal Berikutnya &rarr;</button>
+        </div>
+      </div>
+
+      <!-- VOCAB MODE -->
+      <div id="vocabMode" class="view-section hidden">
+         <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2>Tebak Arti Kata</h2>
+        </div>
+        <div class="question-card">
+          <div class="question" id="vocabQuestion"></div>
+          <div class="choices-grid" id="vocabChoices"></div>
+          <div class="result-badge" id="vocabResult"></div>
+          <br>
+          <button class="action-btn next-btn" onclick="newVocab()">Soal Baru &rarr;</button>
+        </div>
+      </div>
+
+      <!-- QUEST MODE -->
+      <div id="quest" class="view-section hidden">
+         <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2>Quest Mode</h2>
+        </div>
+        <div class="question-card">
+          <div class="question" id="questQuestion"></div>
+          <div class="choices-grid" id="questChoices"></div>
+          <div class="result-badge" id="questResult"></div>
+          <br>
+          <button class="action-btn next-btn" onclick="newQuest()">Soal Baru &rarr;</button>
+        </div>
+      </div>
+
+      <!-- DRAG & DROP -->
+      <div id="dragDrop" class="view-section hidden">
+         <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2>Drag & Drop Mode</h2>
+        </div>
+        <div class="question-card">
+          <div id="dragQuestion" class="question"></div>
+          
+          <div class="drop-zone-container">
+            <div id="dragTargets" class="drag-targets"></div>
+          </div>
+          
+          <div id="dragLetters" class="drag-letters"></div>
+          
+          <div class="result-badge" id="dragResult"></div>
+          <br>
+          <button class="action-btn next-btn" onclick="newDragDrop()">Soal Baru &rarr;</button>
+        </div>
+      </div>
+
+      <!-- WRITING MODE -->
+      <div id="writing" class="view-section hidden">
+        <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali
+          </button>
+          <h2>Menulis Huruf</h2>
+        </div>
+        <div class="question-card">
+          <div class="question" id="writingQuestion"></div>
+          <div class="canvas-container">
+            <canvas id="writingCanvas" width="300" height="300"></canvas>
+            <div class="canvas-actions">
+              <button class="action-btn secondary" onclick="clearCanvas()">Hapus</button>
+              <button class="action-btn" onclick="checkWriting()">Cek Jawaban</button>
+            </div>
+          </div>
+          <div class="result-badge" id="writingResult"></div>
+          <br>
+          <button class="action-btn next-btn" onclick="newWriting()">Soal Baru &rarr;</button>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
