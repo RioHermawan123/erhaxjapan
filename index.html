@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Belajar Kana Jepang 🇯🇵</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=M+PLUS+Rounded+1c:wght@400;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="app-container">
-    <header class="app-header">
+    <header class="app-header" id="appHeader">
       <h1 id="mainTitle">Belajar Hiragana Dasar</h1>
       <p>Tingkatkan kemampuan bahasa Jepangmu dengan menyenangkan ⛩️</p>
-      
-      <div class="toggle-group">
-        <div class="alphabet-toggle">
-          <button id="btnHiragana" class="toggle-btn active" onclick="setAlphabet('hiragana')">Hiragana</button>
-          <button id="btnKatakana" class="toggle-btn" onclick="setAlphabet('katakana')">Katakana</button>
+
+      <!-- Compact Pill Switcher (Takes up minimal space, clean on mobile) -->
+      <div class="toggle-group-compact">
+        <div class="pill-segmented">
+          <button id="btnHiragana" class="pill-btn active" onclick="setAlphabet('hiragana')">Hiragana</button>
+          <button id="btnKatakana" class="pill-btn" onclick="setAlphabet('katakana')">Katakana</button>
         </div>
-        <div class="alphabet-toggle type-toggle">
-          <button id="btnBasic" class="toggle-btn active" onclick="setCharType('basic')">Huruf Dasar</button>
-          <button id="btnDakuten" class="toggle-btn" onclick="setCharType('dakuten')">Imbuhan (Dakuten)</button>
+        <div class="pill-segmented type-toggle">
+          <button id="btnBasic" class="pill-btn active" onclick="setCharType('basic')">Dasar</button>
+          <button id="btnDakuten" class="pill-btn" onclick="setCharType('dakuten')">+ Dakuten</button>
         </div>
       </div>
     </header>
@@ -30,8 +35,54 @@
     <main class="main-panel">
       <!-- MENU -->
       <div id="menu" class="view-section">
-        <h2 class="section-title">Pilih Mode Belajar</h2>
+        <!-- FEATURED HERO BANNER: TOFUGU STYLE QUIZ -->
+        <div class="tofugu-hero-card">
+          <div class="tofugu-hero-glow"></div>
+          <div class="tofugu-hero-badge">
+            <span class="pulse-dot"></span> REKOMENDASI TERBARU (TOFUGU STYLE)
+          </div>
+          <div class="tofugu-hero-body">
+            <div class="tofugu-hero-info">
+              <h3 class="tofugu-hero-heading">Kuis Ketik Romaji Kana</h3>
+              <p class="tofugu-hero-desc">
+                Lihat kartu huruf Jepang acak, lalu ketik huruf latin (romaji) di kolom jawaban bawahnya. Persis seperti
+                Kana Quiz Tofugu! Dilengkapi audio suara asli Jepang.
+              </p>
+            </div>
+            <div class="tofugu-hero-actions">
+              <button class="action-btn tofugu-hero-play-btn" onclick="startQuickTofuguQuiz()">
+                ⚡ Main Cepat (20 Soal)
+              </button>
+              <button class="action-btn secondary tofugu-hero-setup-btn" onclick="openFormQuizSetup()">
+                📝 Mode Form (10/20 Soal)
+              </button>
+              <button class="action-btn secondary tofugu-hero-setup-btn" onclick="openTofuguSetup()">
+                ⚙️ Atur Kuis & Baris
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section-title">Pilih Mode Belajar Lainnya</h2>
         <div class="grid-menu">
+          <!-- TOFUGU STYLE MENU ITEM -->
+          <button class="menu-btn btn-tofugu" onclick="openTofuguSetup()">
+            <div class="icon-wrapper">⌨️</div>
+            <div class="btn-text">
+              <span class="title">Ketik Romaji (Tofugu)</span>
+              <span class="subtitle">Tebak & ketik bacaan huruf</span>
+            </div>
+          </button>
+
+          <!-- FORM QUIZ MENU ITEM -->
+          <button class="menu-btn btn-formquiz" onclick="openFormQuizSetup()">
+            <div class="icon-wrapper">📝</div>
+            <div class="btn-text">
+              <span class="title">Kuis Form</span>
+              <span class="subtitle">Isi semua soal, submit sekaligus</span>
+            </div>
+          </button>
+
           <button class="menu-btn btn-matcha" onclick="showKanaList()">
             <div class="icon-wrapper">📖</div>
             <div class="btn-text">
@@ -60,7 +111,7 @@
               <span class="subtitle">Level Lanjut</span>
             </div>
           </button>
-          
+
           <button class="menu-btn btn-mikan" onclick="startVocab()">
             <div class="icon-wrapper">🍣</div>
             <div class="btn-text">
@@ -90,6 +141,302 @@
               <span class="subtitle">Latih goresan kanvas</span>
             </div>
           </button>
+        </div>
+      </div>
+
+      <!-- ================= TOFUGU SETUP VIEW ================= -->
+      <div id="tofuguSetup" class="view-section hidden">
+        <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">
+            &larr; Kembali ke Menu
+          </button>
+          <h2>Pengaturan Kuis Ketik Romaji</h2>
+        </div>
+
+        <div class="tofugu-setup-container">
+          <!-- Preset Buttons -->
+          <div class="setup-card">
+            <h4 class="setup-card-title">⚡ Mode & Pilihan Cepat</h4>
+            <div class="preset-chips-grid">
+              <button type="button" class="preset-btn active" id="presetHiraAll" onclick="selectPreset('hiragana-all')">
+                <span class="preset-icon">🇯🇵</span>
+                <span class="preset-name">Hiragana Lengkap</span>
+                <span class="preset-sub">104 huruf (Dasar + Dakuten + Yoon)</span>
+              </button>
+              <button type="button" class="preset-btn" id="presetHiraBasic" onclick="selectPreset('hiragana-basic')">
+                <span class="preset-icon">🌱</span>
+                <span class="preset-name">Hiragana Dasar</span>
+                <span class="preset-sub">46 huruf utama (A-N)</span>
+              </button>
+              <button type="button" class="preset-btn" id="presetKataAll" onclick="selectPreset('katakana-all')">
+                <span class="preset-icon">🗾</span>
+                <span class="preset-name">Katakana Lengkap</span>
+                <span class="preset-sub">104 huruf (Dasar + Dakuten + Yoon)</span>
+              </button>
+              <button type="button" class="preset-btn" id="presetKataBasic" onclick="selectPreset('katakana-basic')">
+                <span class="preset-icon">🎋</span>
+                <span class="preset-name">Katakana Dasar</span>
+                <span class="preset-sub">46 huruf utama (A-N)</span>
+              </button>
+              <button type="button" class="preset-btn" id="presetMixedAll" onclick="selectPreset('mixed-all')">
+                <span class="preset-icon">🔥</span>
+                <span class="preset-name">Campuran Keduanya</span>
+                <span class="preset-sub">Hiragana & Katakana Acak</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Alphabet & Category Settings -->
+          <div class="setup-card">
+            <h4 class="setup-card-title">🎛️ Kustomisasi Huruf</h4>
+
+            <div class="setup-row">
+              <label class="setup-label">Jenis Huruf:</label>
+              <div class="custom-segmented-control" id="alphabetSelector">
+                <button type="button" class="seg-btn active" data-type="hiragana"
+                  onclick="setSetupAlphabet('hiragana')">Hiragana</button>
+                <button type="button" class="seg-btn" data-type="katakana"
+                  onclick="setSetupAlphabet('katakana')">Katakana</button>
+                <button type="button" class="seg-btn" data-type="both" onclick="setSetupAlphabet('both')">Keduanya
+                  (Campuran)</button>
+              </div>
+            </div>
+
+            <div class="setup-row">
+              <label class="setup-label">Kategori Huruf:</label>
+              <div class="checkbox-pills-row">
+                <label class="checkbox-pill">
+                  <input type="checkbox" id="catBasic" checked onchange="toggleCategoryFilter()">
+                  <span class="pill-badge">Huruf Dasar (46)</span>
+                </label>
+                <label class="checkbox-pill">
+                  <input type="checkbox" id="catDakuten" checked onchange="toggleCategoryFilter()">
+                  <span class="pill-badge">Dakuten (Ga, Za, Ba, Pa) (25)</span>
+                </label>
+                <label class="checkbox-pill">
+                  <input type="checkbox" id="catYoon" checked onchange="toggleCategoryFilter()">
+                  <span class="pill-badge">Kombinasi Yoon (Kya, Sha...) (33)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Specific Row Chips (like Tofugu row selection) -->
+            <div class="setup-row">
+              <div class="row-filter-top">
+                <label class="setup-label">Pilih Baris Spesifik:</label>
+                <div class="row-filter-actions">
+                  <button type="button" class="link-btn" onclick="toggleAllRows(true)">Pilih Semua</button>
+                  <span class="sep">•</span>
+                  <button type="button" class="link-btn" onclick="toggleAllRows(false)">Hapus Semua</button>
+                </div>
+              </div>
+              <div class="row-chips-container" id="rowChipsContainer">
+                <!-- Dynamically populated chips in JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Question Count & Audio Settings -->
+          <div class="setup-card">
+            <h4 class="setup-card-title">⚙️ Opsi Kuis</h4>
+
+            <div class="setup-row">
+              <label class="setup-label">Jumlah Soal:</label>
+              <div class="custom-segmented-control" id="countSelector">
+                <button type="button" class="seg-btn" data-count="10" onclick="setSetupQuestionCount(10)">10
+                  Soal</button>
+                <button type="button" class="seg-btn active" data-count="20" onclick="setSetupQuestionCount(20)">20
+                  Soal</button>
+                <button type="button" class="seg-btn" data-count="50" onclick="setSetupQuestionCount(50)">50
+                  Soal</button>
+                <button type="button" class="seg-btn" data-count="0" onclick="setSetupQuestionCount(0)">Semua Huruf
+                  Terpilih</button>
+              </div>
+            </div>
+
+            <div class="setup-row audio-row">
+              <label class="switch-control">
+                <input type="checkbox" id="toggleSoundSfx" checked onchange="saveAudioPrefs()">
+                <span class="slider"></span>
+                <span class="switch-title">🔔 Efek Suara (Benar / Salah)</span>
+              </label>
+
+              <label class="switch-control">
+                <input type="checkbox" id="toggleSoundVoice" checked onchange="saveAudioPrefs()">
+                <span class="slider"></span>
+                <span class="switch-title">🗣️ Suara Pelafalan Jepang Asli</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Bottom CTA -->
+          <div class="setup-bottom-bar">
+            <div class="setup-pool-badge" id="setupPoolBadge">
+              📦 <b>104</b> huruf terpilih dalam bank soal
+            </div>
+            <button class="action-btn start-tofugu-btn" id="startTofuguBtn" onclick="startTofuguQuiz()">
+              🚀 Mulai Kuis Sekarang
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TOFUGU QUIZ VIEW (FLASHCARD & INPUT) ================= -->
+      <div id="tofuguQuiz" class="view-section hidden">
+        <!-- Top Navigation & Stats Bar -->
+        <div class="tofugu-top-bar">
+          <div class="top-bar-left">
+            <button class="icon-nav-btn" onclick="confirmExitTofugu()" title="Kembali ke Menu">
+              &larr; Menu
+            </button>
+            <button class="icon-nav-btn secondary-nav-btn" onclick="openTofuguSetup()" title="Ganti Pengaturan">
+              ⚙️ Atur
+            </button>
+          </div>
+
+          <div class="tofugu-progress-container">
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="tofuguProgressBar" style="width: 0%;"></div>
+            </div>
+            <div class="progress-text-label" id="tofuguProgressLabel">Soal 1 / 20</div>
+          </div>
+
+          <div class="tofugu-stat-badges">
+            <div class="stat-pill streak-pill" id="tofuguStreakPill" title="Streak Jawaban Benar Berturut-turut">
+              <span class="streak-icon">🔥</span>
+              <span id="tofuguStreakNum">0</span>
+            </div>
+            <div class="stat-pill score-pill" title="Total Skor Anda">
+              <span class="score-icon">⭐</span>
+              <span id="tofuguScoreNum">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Central Quiz Card Area -->
+        <div class="tofugu-card-arena">
+          <!-- Flashcard -->
+          <div class="tofugu-card" id="tofuguCard">
+            <div class="card-top-row">
+              <span class="card-script-tag" id="cardScriptTag">HIRAGANA</span>
+              <button type="button" class="card-speaker-btn" id="cardSpeakerBtn" onclick="speakCurrentTofuguKana()"
+                title="Dengarkan pengucapan (shortcut: Space)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Kana Character Display -->
+            <div class="card-kana-glyph japanese-font" id="cardKanaGlyph">あ</div>
+
+            <div class="card-bottom-row">
+              <span class="card-category-label" id="cardCategoryLabel">Huruf Dasar</span>
+            </div>
+          </div>
+
+          <!-- Answer Input Field & Form -->
+          <div class="tofugu-answer-container">
+            <form id="tofuguAnswerForm" class="tofugu-input-box"
+              onsubmit="event.preventDefault(); handleTofuguSubmit();">
+              <input type="text" id="tofuguInput" class="tofugu-text-input" placeholder="Ketik romaji..."
+                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <button type="submit" id="tofuguSubmitBtn" class="tofugu-submit-btn">
+                Jawab ↵
+              </button>
+            </form>
+            <div class="tofugu-input-hint" id="tofuguInputHint">
+              Ketik huruf biasa (misal: <code>a</code>, <code>ka</code>, <code>shi</code>) lalu tekan <kbd>Enter ↵</kbd>
+            </div>
+          </div>
+
+          <!-- SUCCESS Feedback Card (Displayed clearly when correct) -->
+          <div class="tofugu-feedback-card success hidden" id="tofuguFeedbackSuccess">
+            <div class="feedback-icon">✨</div>
+            <div class="feedback-text-wrap">
+              <div class="feedback-headline text-success">Hebat, Jawaban Benar!</div>
+              <div class="feedback-detail">
+                Huruf <b id="feedbackSuccessKana" class="japanese-font">あ</b> dibaca <b id="feedbackSuccessRomaji"
+                  class="correct-highlight">a</b> <span class="points-badge">+10 Poin</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- WRONG Feedback Card (Displayed clearly when wrong) -->
+          <div class="tofugu-feedback-card error hidden" id="tofuguFeedbackCard">
+            <div class="feedback-icon" id="feedbackIcon">❌</div>
+            <div class="feedback-text-wrap">
+              <div class="feedback-headline" id="feedbackHeadline">Jawaban Kurang Tepat!</div>
+              <div class="feedback-detail" id="feedbackDetail">
+                Kamu ketik: <span class="user-typed" id="feedbackUserTyped">-</span> &bull; Yang benar: <b
+                  id="feedbackCorrectRomaji" class="correct-highlight">ka</b>
+              </div>
+            </div>
+            <button type="button" class="action-btn next-question-btn" id="feedbackNextBtn"
+              onclick="advanceTofuguQuestion()">
+              Lanjut &rarr; <span class="shortcut-tip">[Enter]</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TOFUGU RESULT VIEW ================= -->
+      <div id="tofuguResult" class="view-section hidden">
+        <div class="tofugu-result-container">
+          <div class="result-celebration-hero">
+            <div class="result-trophy-badge" id="resTrophyBadge">🏆</div>
+            <h2 class="result-main-title" id="resMainTitle">Luar Biasa! Kuis Selesai!</h2>
+            <p class="result-subtitle" id="resSubtitle">Berikut adalah ringkasan hasil latihan Kanamu:</p>
+          </div>
+
+          <!-- Stat Cards -->
+          <div class="result-metrics-grid">
+            <div class="metric-card">
+              <div class="metric-val text-accuracy" id="resMetricAccuracy">100%</div>
+              <div class="metric-lbl">Akurasi</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val text-score" id="resMetricScore">200</div>
+              <div class="metric-lbl">Total Skor</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val text-correct" id="resMetricCorrect">20 / 20</div>
+              <div class="metric-lbl">Jawaban Benar</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val text-streak" id="resMetricStreak">🔥 20</div>
+              <div class="metric-lbl">Streak Tertinggi</div>
+            </div>
+          </div>
+
+          <!-- Missed Kana Section -->
+          <div class="missed-kana-section hidden" id="resMissedSection">
+            <div class="missed-section-head">
+              <h3>Huruf yang Perlu Diingat (<span id="resMissedCount">0</span>):</h3>
+              <p>Klik kartu untuk mendengarkan pengucapan aslinya</p>
+            </div>
+            <div class="missed-cards-grid" id="resMissedGrid">
+              <!-- Rendered dynamically -->
+            </div>
+            <button type="button" class="action-btn retry-missed-btn" onclick="retryTofuguMissedOnly()">
+              🔁 Latih Huruf yang Salah Saja
+            </button>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div class="result-action-buttons">
+            <button type="button" class="action-btn" onclick="repeatCurrentTofuguQuiz()">
+              🔁 Ulangi Kuis Ini
+            </button>
+            <button type="button" class="action-btn secondary" onclick="openTofuguSetup()">
+              ⚙️ Atur Kuis Baru
+            </button>
+            <button type="button" class="action-btn secondary" onclick="backToMenu()">
+              🏠 Menu Utama
+            </button>
+          </div>
         </div>
       </div>
 
@@ -123,7 +470,7 @@
 
       <!-- VOCAB MODE -->
       <div id="vocabMode" class="view-section hidden">
-         <div class="section-header">
+        <div class="section-header">
           <button class="back-btn" onclick="backToMenu()">
             &larr; Kembali
           </button>
@@ -140,7 +487,7 @@
 
       <!-- QUEST MODE -->
       <div id="quest" class="view-section hidden">
-         <div class="section-header">
+        <div class="section-header">
           <button class="back-btn" onclick="backToMenu()">
             &larr; Kembali
           </button>
@@ -157,7 +504,7 @@
 
       <!-- DRAG & DROP -->
       <div id="dragDrop" class="view-section hidden">
-         <div class="section-header">
+        <div class="section-header">
           <button class="back-btn" onclick="backToMenu()">
             &larr; Kembali
           </button>
@@ -165,13 +512,13 @@
         </div>
         <div class="question-card">
           <div id="dragQuestion" class="question"></div>
-          
+
           <div class="drop-zone-container">
             <div id="dragTargets" class="drag-targets"></div>
           </div>
-          
+
           <div id="dragLetters" class="drag-letters"></div>
-          
+
           <div class="result-badge" id="dragResult"></div>
           <br>
           <button class="action-btn next-btn" onclick="newDragDrop()">Soal Baru &rarr;</button>
@@ -200,8 +547,164 @@
           <button class="action-btn next-btn" onclick="newWriting()">Soal Baru &rarr;</button>
         </div>
       </div>
+
+      <!-- ================= FORM QUIZ SETUP VIEW ================= -->
+      <div id="formQuizSetup" class="view-section hidden">
+        <div class="section-header">
+          <button class="back-btn" onclick="backToMenu()">&larr; Kembali ke Menu</button>
+          <h2>Pengaturan Kuis Form</h2>
+        </div>
+
+        <div class="tofugu-setup-container">
+          <!-- Preset Buttons -->
+          <div class="setup-card">
+            <h4 class="setup-card-title">⚡ Pilihan Cepat</h4>
+            <div class="preset-chips-grid">
+              <button type="button" class="preset-btn active" id="fqPresetHiraBasic"
+                onclick="fqSelectPreset('hiragana-basic')">
+                <span class="preset-icon">🌱</span>
+                <span class="preset-name">Hiragana Dasar</span>
+                <span class="preset-sub">46 huruf utama (A-N)</span>
+              </button>
+              <button type="button" class="preset-btn" id="fqPresetHiraAll" onclick="fqSelectPreset('hiragana-all')">
+                <span class="preset-icon">🇯🇵</span>
+                <span class="preset-name">Hiragana Lengkap</span>
+                <span class="preset-sub">Dasar + Dakuten + Yoon</span>
+              </button>
+              <button type="button" class="preset-btn" id="fqPresetKataBasic"
+                onclick="fqSelectPreset('katakana-basic')">
+                <span class="preset-icon">🎋</span>
+                <span class="preset-name">Katakana Dasar</span>
+                <span class="preset-sub">46 huruf utama (A-N)</span>
+              </button>
+              <button type="button" class="preset-btn" id="fqPresetKataAll" onclick="fqSelectPreset('katakana-all')">
+                <span class="preset-icon">🗾</span>
+                <span class="preset-name">Katakana Lengkap</span>
+                <span class="preset-sub">Dasar + Dakuten + Yoon</span>
+              </button>
+              <button type="button" class="preset-btn" id="fqPresetMixed" onclick="fqSelectPreset('mixed-all')">
+                <span class="preset-icon">🔥</span>
+                <span class="preset-name">Campuran Keduanya</span>
+                <span class="preset-sub">Hiragana &amp; Katakana Acak</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Question Count -->
+          <div class="setup-card">
+            <h4 class="setup-card-title">⚙️ Jumlah Soal</h4>
+            <div class="setup-row">
+              <div class="custom-segmented-control" id="fqCountSelector">
+                <button type="button" class="seg-btn" data-count="10" onclick="fqSetCount(10)">10 Soal</button>
+                <button type="button" class="seg-btn active" data-count="20" onclick="fqSetCount(20)">20 Soal</button>
+                <button type="button" class="seg-btn" data-count="30" onclick="fqSetCount(30)">30 Soal</button>
+                <button type="button" class="seg-btn" data-count="0" onclick="fqSetCount(0)">Semua</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Start Button -->
+          <div class="setup-bottom-bar">
+            <div class="setup-pool-badge" id="fqPoolBadge">📦 <b>46</b> huruf tersedia</div>
+            <button class="action-btn start-tofugu-btn" id="fqStartBtn" onclick="startFormQuiz()">
+              📝 Mulai Kuis Form
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= FORM QUIZ VIEW ================= -->
+      <div id="formQuiz" class="view-section hidden">
+        <!-- Top bar -->
+        <div class="tofugu-top-bar">
+          <div class="top-bar-left">
+            <button class="icon-nav-btn" onclick="confirmExitFormQuiz()">&larr; Menu</button>
+          </div>
+          <div class="tofugu-progress-container">
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="fqProgressBar" style="width: 100%;"></div>
+            </div>
+            <div class="progress-text-label" id="fqProgressLabel">20 Soal</div>
+          </div>
+          <div style="width:80px;"></div>
+        </div>
+
+        <!-- Description -->
+        <div class="fq-info-banner">
+          <span class="fq-info-icon">📝</span>
+          <span>Isi <b>semua kolom</b> romaji di bawah, lalu klik <b>Submit Jawaban</b></span>
+        </div>
+
+        <!-- All cards in scrollable container -->
+        <div class="fq-cards-scroll" id="fqCardsContainer">
+          <!-- Dynamically rendered -->
+        </div>
+
+        <!-- Submit button (sticky bottom) -->
+        <div class="fq-submit-bar">
+          <div class="fq-completion-counter" id="fqCompletionCounter">0 / 20 terisi</div>
+          <button type="button" class="action-btn fq-submit-btn" id="fqSubmitBtn" onclick="submitFormQuiz()">
+            ✅ Submit Semua Jawaban
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= FORM QUIZ RESULT VIEW ================= -->
+      <div id="formQuizResult" class="view-section hidden">
+        <!-- Header -->
+        <div class="fq-result-header">
+          <div class="result-trophy-badge" id="fqResTrophy">🏆</div>
+          <h2 class="result-main-title" id="fqResTitle">Kuis Selesai!</h2>
+          <p class="result-subtitle" id="fqResSubtitle">Berikut rekap jawabanmu:</p>
+
+          <div class="result-metrics-grid fq-metrics" style="margin-top: 18px;">
+            <div class="metric-card">
+              <div class="metric-val text-accuracy" id="fqResAccuracy">100%</div>
+              <div class="metric-lbl">Akurasi</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val text-correct" id="fqResCorrect">20 / 20</div>
+              <div class="metric-lbl">Benar / Total</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val text-score" id="fqResScore">200</div>
+              <div class="metric-lbl">Total Poin</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val" style="color:#f97316;" id="fqResWrong">0</div>
+              <div class="metric-lbl">Jawaban Salah</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Answer Review -->
+        <div class="fq-review-section">
+          <h3 class="fq-review-title">📋 Rekap Jawaban</h3>
+          <div class="fq-review-grid" id="fqReviewGrid">
+            <!-- Dynamically rendered -->
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="result-action-buttons" style="margin-top: 24px;">
+          <button type="button" class="action-btn" onclick="retryFormQuizWrongOnly()">
+            🔁 Latih yang Salah Saja
+          </button>
+          <button type="button" class="action-btn secondary" onclick="startFormQuiz()">
+            🔄 Ulangi Kuis Ini
+          </button>
+          <button type="button" class="action-btn secondary" onclick="openFormQuizSetup()">
+            ⚙️ Atur Ulang
+          </button>
+          <button type="button" class="action-btn secondary" onclick="backToMenu()">
+            🏠 Menu Utama
+          </button>
+        </div>
+      </div>
+
     </main>
   </div>
   <script src="script.js"></script>
 </body>
+
 </html>
