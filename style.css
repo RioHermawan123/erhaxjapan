@@ -1,9 +1,9 @@
 :root {
-  --bg-color: #0F172A; /* Slate 900 */
-  --surface: #1E293B;  /* Slate 800 */
+  --bg-color: #0F172A; /* Slate 900, latar utama nyaman */
+  --surface: #2D3748;  /* Slate 800, kartu lebih terang agar font tidak menyatu */
   --text-main: #F8FAFC; /* Slate 50 */
-  --text-muted: #94A3B8; /* Slate 400 */
-  --border: #334155; /* Slate 700 */
+  --text-muted: #CBD5E1; /* Slate 300, kontras lebih baik */
+  --border: #475569; /* Slate 600, tepi elemen terlihat jelas */
   
   --success: #10B981;
   --success-bg: rgba(16, 185, 129, 0.15);
@@ -105,7 +105,7 @@ body {
 
 .pill-segmented {
   display: inline-flex;
-  background: rgba(30, 41, 59, 0.7);
+  background: rgba(30, 41, 59, 0.5);
   padding: 4px;
   border-radius: var(--radius-full);
   border: 1px solid var(--border);
@@ -192,7 +192,7 @@ body {
   font-size: 26px;
   flex-shrink: 0;
   transition: transform 0.3s ease;
-  background: var(--bg-color); /* fallback */
+  background: var(--surface); /* fallback */
 }
 .menu-btn:hover .icon-wrapper {
   transform: scale(1.1) rotate(5deg);
@@ -289,17 +289,6 @@ body {
   grid-template-columns: repeat(5, 1fr);
   gap: 8px; /* Tighter gap for mobile fitting */
 }
-.kana-card {
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 12px 4px; /* Less horizontal padding */
-  text-align: center;
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
 .kana-card.empty {
   background: transparent;
   border-color: transparent;
@@ -310,11 +299,39 @@ body {
   background: transparent;
   border-color: transparent;
 }
+
+.kana-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 4px;
+  text-align: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.kana-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--fuji), var(--sora), var(--matcha));
+  opacity: 0;
+  transition: opacity 0.25s;
+}
 .kana-card:not(.empty):hover {
   border-color: var(--fuji);
-  background: var(--fuji-bg);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-sm);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(30, 41, 59, 0.9));
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
+}
+.kana-card:not(.empty):hover::before {
+  opacity: 1;
 }
 .kana-card .char {
   font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -323,6 +340,12 @@ body {
   color: var(--text-main);
   display: block;
   line-height: 1.2;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.55);
+  transition: transform 0.25s;
+}
+.kana-card:not(.empty):hover .char {
+  transform: scale(1.1);
+  color: #93c5fd;
 }
 .kana-card .romaji {
   font-size: clamp(10px, 3vw, 14px);
@@ -330,6 +353,10 @@ body {
   color: var(--text-muted);
   margin-top: 4px;
   display: block;
+  transition: color 0.25s;
+}
+.kana-card:not(.empty):hover .romaji {
+  color: var(--text-main);
 }
 
 /* Question Area */
@@ -349,6 +376,7 @@ body {
   font-size: 42px;
   display: block;
   margin-top: 12px;
+  text-shadow: 0 0 14px rgba(0, 0, 0, 0.6);
 }
 
 .question .romaji-hint {
@@ -386,6 +414,7 @@ body {
   min-width: 0;
   box-sizing: border-box;
   word-break: break-word;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 .choice-btn.text-sm {
   font-size: clamp(14px, 3.8vw, 18px);
@@ -479,7 +508,7 @@ body {
   justify-content: center;
   font-family: 'M PLUS Rounded 1c', sans-serif;
   font-size: 32px;
-  background: var(--bg-color);
+  background: var(--surface);
   transition: all 0.2s;
 }
 .drag-target.filled {
@@ -517,6 +546,7 @@ body {
   cursor: grab;
   transition: all 0.2s;
   box-shadow: var(--shadow-sm);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 .drag-letter:hover {
   border-color: var(--fuji);
@@ -535,35 +565,490 @@ body {
   margin-bottom: 24px;
 }
 canvas {
-  background: var(--bg-color); /* Dark canvas */
+  background: var(--surface); /* Lighter canvas bg */
   border-radius: var(--radius-md);
   border: 2px solid var(--border);
   touch-action: none;
   cursor: crosshair;
-  box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.4);
 }
 .canvas-actions {
   display: flex;
   gap: 12px;
 }
 
-@media (max-width: 600px) {
-  body { padding: 16px; }
-  .main-panel { padding: 24px 16px; }
-  .grid-menu { grid-template-columns: 1fr; }
-  .choice-btn { padding: 16px; font-size: 28px; }
-  .choice-btn.text-sm { font-size: 18px; }
-  .drag-target, .drag-letter { width: 60px; height: 60px; font-size: 24px; }
+@media (max-width: 1024px) {
+  .grid-menu {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .menu-btn {
+    padding: 16px;
+  }
+  .kana-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .choices-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
 }
 
-/* ========================================================
-   TOFUGU-STYLE KANA TYPING QUIZ STYLES
-   ======================================================== */
+@media (max-width: 600px) {
+  body {
+    padding: 10px 8px;
+    align-items: flex-start;
+  }
+  .app-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Header Compact on Mobile */
+  .app-header {
+    margin-bottom: 14px;
+  }
+  .app-header h1 {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+  .app-header p {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .toggle-group-compact {
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .pill-btn {
+    padding: 4px 12px;
+    font-size: 12px;
+  }
+
+  /* Main Container Panel */
+  .main-panel {
+    padding: 14px 10px;
+    border-radius: var(--radius-md);
+    min-height: auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Section Header & Back Button */
+  .section-header {
+    margin-bottom: 14px;
+    gap: 8px;
+  }
+  .section-header h2 {
+    font-size: 17px;
+  }
+  .back-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+
+  /* Hero Card on Menu */
+  .tofugu-hero-card {
+    padding: 16px 14px;
+    margin-bottom: 18px;
+    border-radius: var(--radius-md);
+  }
+  .tofugu-hero-heading {
+    font-size: 18px;
+  }
+  .tofugu-hero-desc {
+    font-size: 13px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .tofugu-hero-actions {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  .tofugu-hero-actions .action-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 11px 14px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  /* Tofugu Quiz Top Navigation (2-row grid to avoid horizontal spill) */
+  .tofugu-top-bar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 
+      "nav badges"
+      "progress progress";
+    gap: 8px;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .top-bar-left {
+    grid-area: nav;
+    display: flex;
+    gap: 6px;
+  }
+  .tofugu-stat-badges {
+    grid-area: badges;
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+  .tofugu-progress-container {
+    grid-area: progress;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .stat-pill {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  .icon-nav-btn {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  /* Flashcard Compact Sizing on Mobile */
+  .tofugu-card-arena {
+    width: 100%;
+    max-width: 100%;
+  }
+  .tofugu-card {
+    padding: 14px 12px 10px 12px;
+    border-radius: var(--radius-md);
+  }
+  .card-top-row {
+    margin-bottom: 2px;
+  }
+  .card-speaker-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .card-speaker-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  .card-kana-glyph {
+    font-size: clamp(52px, 15vw, 76px);
+    margin: 6px 0 4px 0;
+  }
+  .card-category-label {
+    font-size: 12px;
+  }
+
+  /* Answer Input Area on Mobile - 100% Contained */
+  .tofugu-answer-container {
+    margin-top: 12px;
+    width: 100%;
+    max-width: 100%;
+  }
+  .tofugu-input-box {
+    padding: 3px 4px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .tofugu-text-input {
+    font-size: 19px;
+    padding: 6px 4px;
+    width: 0;
+    flex: 1 1 0%;
+    min-width: 0;
+  }
+  .tofugu-text-input::placeholder {
+    font-size: 14px;
+  }
+  .tofugu-submit-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .tofugu-input-hint {
+    font-size: 11px;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* Feedback Box on Mobile */
+  .tofugu-feedback-card {
+    flex-direction: column;
+    padding: 10px 12px;
+    gap: 8px;
+    text-align: center;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .feedback-text-wrap {
+    text-align: center;
+  }
+  .next-question-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 9px 12px;
+    font-size: 13px;
+    box-sizing: border-box;
+  }
+
+  /* Multiple Choice Grid on Mobile */
+  .choices-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .choice-btn {
+    padding: 12px 6px;
+    font-size: 22px;
+    width: 100%;
+    min-width: 0;
+  }
+  .choice-btn.text-sm {
+    font-size: 14px;
+    padding: 10px 4px;
+  }
+  .question {
+    font-size: 15px;
+    margin-bottom: 14px;
+  }
+  .question b {
+    font-size: 32px;
+    margin-top: 6px;
+  }
+
+  /* Kana Grid on Mobile */
+  .kana-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .kana-card {
+    padding: 10px 3px;
+  }
+  .kana-card .char {
+    font-size: clamp(18px, 8vw, 28px);
+  }
+  .kana-card .romaji {
+    font-size: clamp(9px, 2.5vw, 12px);
+  }
+
+  /* Tofugu Setup on Mobile */
+  .preset-chips-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .setup-card {
+    padding: 14px 12px;
+  }
+  .setup-bottom-bar {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+  .setup-pool-badge {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 8px;
+    font-size: 13px;
+  }
+  .start-tofugu-btn {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  /* Results on Mobile */
+  .result-trophy-badge {
+    font-size: 44px;
+    margin-bottom: 6px;
+  }
+  .result-main-title {
+    font-size: 20px;
+  }
+  .result-subtitle {
+    font-size: 13px;
+  }
+  .result-metrics-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .metric-card {
+    padding: 12px 8px;
+  }
+  .metric-val {
+    font-size: 22px;
+  }
+  .result-action-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+  .result-action-buttons .action-btn {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}
+
+/* Alphabet Cards with Dakuten Toggle */
+.alphabet-cards {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.alphabet-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 130px;
+  position: relative;
+  overflow: hidden;
+}
+.alphabet-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--fuji), var(--sora));
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.alphabet-card:hover {
+  border-color: var(--fuji);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
+}
+.alphabet-card:hover::before {
+  opacity: 1;
+}
+.alphabet-card.active {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(30, 41, 59, 0.9));
+  border-color: var(--fuji);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+.alphabet-card.active::before {
+  opacity: 1;
+}
+.alphabet-card-label {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 0.02em;
+}
+.alphabet-card-toggle {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--border);
+  background: rgba(15, 23, 42, 0.6);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.25s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.alphabet-card-toggle:hover {
+  border-color: var(--success);
+  color: var(--success);
+}
+.alphabet-card-toggle.on {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: var(--success);
+  color: var(--success);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+}
+
+@media (max-width: 600px) {
+  .alphabet-cards {
+    gap: 8px;
+  }
+  .alphabet-card {
+    padding: 10px 16px;
+    min-width: 100px;
+  }
+  .alphabet-card-label {
+    font-size: 13px;
+  }
+}
+.tab-bar {
+  display: flex;
+  gap: 8px;
+  background: rgba(30, 41, 59, 0.6);
+  padding: 6px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tab-bar::-webkit-scrollbar {
+  display: none;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.25s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.tab-btn:hover {
+  color: var(--text-main);
+}
+.tab-btn.active {
+  background: var(--fuji);
+  color: white;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .tab-bar {
+    gap: 4px;
+    padding: 4px;
+  }
+  .tab-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
 
 /* Hero Banner on Menu */
 .tofugu-hero-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.88));
   border: 2px solid rgba(99, 102, 241, 0.5);
   border-radius: var(--radius-lg);
   padding: 24px 28px;
@@ -589,14 +1074,14 @@ canvas {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(99, 102, 241, 0.2);
-  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.25);
+  color: #c7d2fe;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.06em;
   padding: 4px 12px;
   border-radius: var(--radius-full);
-  border: 1px solid rgba(99, 102, 241, 0.4);
+  border: 1px solid rgba(99, 102, 241, 0.5);
   margin-bottom: 12px;
 }
 .pulse-dot {
@@ -665,7 +1150,7 @@ canvas {
   gap: 20px;
 }
 .setup-card {
-  background: var(--bg-color);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 20px;
@@ -737,7 +1222,7 @@ canvas {
 .custom-segmented-control {
   display: flex;
   gap: 6px;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(15, 23, 42, 0.4);
   padding: 4px;
   border-radius: var(--radius-full);
   border: 1px solid var(--border);
@@ -982,7 +1467,7 @@ canvas {
 .progress-bar-track {
   width: 100%;
   height: 8px;
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(15, 23, 42, 0.5);
   border-radius: var(--radius-full);
   overflow: hidden;
   border: 1px solid var(--border);
@@ -1051,7 +1536,7 @@ canvas {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  background: linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.85));
   border: 2px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 22px 24px 18px 24px;
@@ -1059,7 +1544,7 @@ canvas {
   flex-direction: column;
   align-items: center;
   position: relative;
-  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .card-top-row {
@@ -1110,7 +1595,7 @@ canvas {
   line-height: 1.1;
   margin: 14px 0 10px 0;
   user-select: none;
-  text-shadow: 0 0 30px rgba(248, 250, 252, 0.12);
+  text-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .card-bottom-row {
@@ -1157,7 +1642,7 @@ canvas {
 .tofugu-input-box {
   display: flex;
   align-items: center;
-  background: var(--bg-color);
+  background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius-md);
   padding: 4px 6px;
@@ -1377,7 +1862,7 @@ canvas {
   margin-bottom: 28px;
 }
 .metric-card {
-  background: var(--bg-color);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 18px;
@@ -1400,7 +1885,7 @@ canvas {
 
 /* Missed Kana Section */
 .missed-kana-section {
-  background: var(--bg-color);
+  background: var(--surface);
   border: 1.5px solid rgba(239, 68, 68, 0.35);
   border-radius: var(--radius-md);
   padding: 20px;
@@ -1448,6 +1933,7 @@ canvas {
   font-weight: 700;
   color: var(--text-main);
   line-height: 1.1;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 .missed-romaji {
   font-size: 13px;
@@ -1478,290 +1964,6 @@ canvas {
   flex-wrap: wrap;
 }
 
-/* ========================================================
-   COMPREHENSIVE MOBILE RESPONSIVENESS (< 600px)
-   ======================================================== */
-@media (max-width: 600px) {
-  body {
-    padding: 10px 8px;
-    align-items: flex-start;
-  }
-  .app-container {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-  
-  /* Header Compact on Mobile */
-  .app-header {
-    margin-bottom: 14px;
-  }
-  .app-header h1 {
-    font-size: 20px;
-    margin-bottom: 2px;
-  }
-  .app-header p {
-    font-size: 12px;
-    line-height: 1.4;
-  }
-  .toggle-group-compact {
-    gap: 6px;
-    margin-top: 8px;
-  }
-  .pill-btn {
-    padding: 4px 12px;
-    font-size: 12px;
-  }
-
-  /* Main Container Panel */
-  .main-panel {
-    padding: 14px 10px;
-    border-radius: var(--radius-md);
-    min-height: auto;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* Section Header & Back Button */
-  .section-header {
-    margin-bottom: 14px;
-    gap: 8px;
-  }
-  .section-header h2 {
-    font-size: 17px;
-  }
-  .back-btn {
-    padding: 5px 12px;
-    font-size: 12px;
-  }
-
-  /* Hero Card on Menu */
-  .tofugu-hero-card {
-    padding: 16px 14px;
-    margin-bottom: 18px;
-    border-radius: var(--radius-md);
-  }
-  .tofugu-hero-heading {
-    font-size: 18px;
-  }
-  .tofugu-hero-desc {
-    font-size: 13px;
-    margin-bottom: 12px;
-    line-height: 1.5;
-  }
-  .tofugu-hero-actions {
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-  }
-  .tofugu-hero-actions .action-btn {
-    width: 100%;
-    justify-content: center;
-    padding: 11px 14px;
-    font-size: 14px;
-    box-sizing: border-box;
-  }
-
-  /* Tofugu Quiz Top Navigation (2-row grid to avoid horizontal spill) */
-  .tofugu-top-bar {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-areas: 
-      "nav badges"
-      "progress progress";
-    gap: 8px;
-    margin-bottom: 12px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .top-bar-left {
-    grid-area: nav;
-    display: flex;
-    gap: 6px;
-  }
-  .tofugu-stat-badges {
-    grid-area: badges;
-    display: flex;
-    gap: 6px;
-    justify-content: flex-end;
-  }
-  .tofugu-progress-container {
-    grid-area: progress;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-  }
-  .stat-pill {
-    padding: 4px 10px;
-    font-size: 12px;
-  }
-  .icon-nav-btn {
-    padding: 4px 10px;
-    font-size: 12px;
-  }
-
-  /* Flashcard Compact Sizing on Mobile */
-  .tofugu-card-arena {
-    width: 100%;
-    max-width: 100%;
-  }
-  .tofugu-card {
-    padding: 14px 12px 10px 12px;
-    border-radius: var(--radius-md);
-  }
-  .card-top-row {
-    margin-bottom: 2px;
-  }
-  .card-speaker-btn {
-    width: 32px;
-    height: 32px;
-  }
-  .card-speaker-btn svg {
-    width: 18px;
-    height: 18px;
-  }
-  .card-kana-glyph {
-    font-size: clamp(52px, 15vw, 76px);
-    margin: 6px 0 4px 0;
-  }
-  .card-category-label {
-    font-size: 12px;
-  }
-
-  /* Answer Input Area on Mobile - 100% Contained */
-  .tofugu-answer-container {
-    margin-top: 12px;
-    width: 100%;
-    max-width: 100%;
-  }
-  .tofugu-input-box {
-    padding: 3px 4px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .tofugu-text-input {
-    font-size: 19px;
-    padding: 6px 4px;
-    width: 0;
-    flex: 1 1 0%;
-    min-width: 0;
-  }
-  .tofugu-text-input::placeholder {
-    font-size: 14px;
-  }
-  .tofugu-submit-btn {
-    padding: 8px 12px;
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-  .tofugu-input-hint {
-    font-size: 11px;
-    margin-top: 6px;
-    line-height: 1.4;
-  }
-
-  /* Feedback Box on Mobile */
-  .tofugu-feedback-card {
-    flex-direction: column;
-    padding: 10px 12px;
-    gap: 8px;
-    text-align: center;
-    margin-top: 10px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .feedback-text-wrap {
-    text-align: center;
-  }
-  .next-question-btn {
-    width: 100%;
-    justify-content: center;
-    padding: 9px 12px;
-    font-size: 13px;
-    box-sizing: border-box;
-  }
-
-  /* Multiple Choice Grid on Mobile */
-  .choices-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 14px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .choice-btn {
-    padding: 12px 6px;
-    font-size: 22px;
-    width: 100%;
-    min-width: 0;
-  }
-  .choice-btn.text-sm {
-    font-size: 14px;
-    padding: 10px 4px;
-  }
-  .question {
-    font-size: 15px;
-    margin-bottom: 14px;
-  }
-  .question b {
-    font-size: 32px;
-    margin-top: 6px;
-  }
-
-  /* Tofugu Setup on Mobile */
-  .preset-chips-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  .setup-card {
-    padding: 14px 12px;
-  }
-  .setup-bottom-bar {
-    flex-direction: column;
-    width: 100%;
-    gap: 8px;
-  }
-  .setup-pool-badge {
-    width: 100%;
-    text-align: center;
-    box-sizing: border-box;
-    padding: 8px;
-    font-size: 13px;
-  }
-  .start-tofugu-btn {
-    width: 100%;
-    justify-content: center;
-    box-sizing: border-box;
-    padding: 12px;
-    font-size: 15px;
-  }
-
-  /* Results on Mobile */
-  .result-trophy-badge {
-    font-size: 44px;
-    margin-bottom: 6px;
-  }
-  .result-main-title {
-    font-size: 20px;
-  }
-  .result-subtitle {
-    font-size: 13px;
-  }
-  .result-metrics-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  .metric-card {
-    padding: 12px 8px;
-  }
-  .metric-val {
-    font-size: 22px;
-  }
-  .result-action-buttons {
-    flex-direction: column;
-    width: 100%;
-    gap: 8px;
   }
   .result-action-buttons .action-btn {
     width: 100%;
@@ -1781,12 +1983,12 @@ canvas {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(167, 139, 250, 0.1);
-  border: 1.5px solid rgba(167, 139, 250, 0.3);
+  background: rgba(167, 139, 250, 0.15);
+  border: 1.5px solid rgba(167, 139, 250, 0.4);
   border-radius: var(--radius-md);
   padding: 12px 16px;
   font-size: 14px;
-  color: var(--text-muted);
+  color: var(--text-main);
   margin-bottom: 20px;
 }
 .fq-info-icon { font-size: 20px; flex-shrink: 0; }
@@ -1802,7 +2004,7 @@ canvas {
 
 /* Individual quiz card */
 .fq-item-card {
-  background: linear-gradient(160deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  background: linear-gradient(160deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.85));
   border: 2px solid var(--border);
   border-radius: var(--radius-md);
   padding: 14px 12px;
@@ -1834,7 +2036,7 @@ canvas {
   font-weight: 700;
   color: var(--text-main);
   line-height: 1.1;
-  text-shadow: 0 0 20px rgba(248, 250, 252, 0.1);
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
   user-select: none;
   margin: 4px 0;
 }
@@ -1842,7 +2044,7 @@ canvas {
 .fq-input-row { width: 100%; }
 .fq-text-input {
   width: 100%;
-  background: rgba(15, 23, 42, 0.8);
+  background: var(--surface);
   border: 2px solid var(--border);
   border-radius: 8px;
   padding: 8px 10px;
@@ -1870,7 +2072,7 @@ canvas {
 .fq-submit-bar {
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  background: linear-gradient(to top, var(--bg-color) 70%, transparent);
+  background: linear-gradient(to top, var(--bg-color) 60%, transparent);
   padding: 16px 20px 20px 20px;
   display: flex;
   align-items: center;
@@ -1942,7 +2144,7 @@ canvas {
 .fq-review-correct-ans b { color: #4ade80; font-size: 15px; }
 .fq-review-user-ans { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 .fq-review-speak-btn {
-  background: var(--bg-color);
+  background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: 8px;
   padding: 6px 10px;

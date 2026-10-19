@@ -190,8 +190,9 @@ const templates = {
   イ: [[0, 0, 0, 1, 0, 0, 0],[0, 0, 1, 0, 0, 0, 0],[0, 1, 0, 0, 0, 0, 0],[0, 0, 1, 0, 0, 0, 0],[0, 0, 1, 0, 0, 0, 0],[0, 0, 1, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0]]
 };
 
-let currentAlphabet = 'hiragana';
-let currentCharType = 'basic';
+let currentAlphabet = sessionStorage.getItem('kanaAlphabet') || 'hiragana';
+let dakutenHiragana = sessionStorage.getItem('dakutenHiragana') === 'true';
+let dakutenKatakana = sessionStorage.getItem('dakutenKatakana') === 'true';
 let activeData = hiraganaBasic;
 let activeVocab = vocabularyHiragana;
 let activeName = "Hiragana Dasar";
@@ -218,37 +219,64 @@ function getUnseenItem(pool, historyArr, keyFn) {
 }
 
 function updateActiveData() {
-  // Reset histories when mode changes
-  quizHistory = [];
-  vocabHistory = [];
+  const isDakuten = currentAlphabet === 'hiragana' ? dakutenHiragana : dakutenKatakana;
   if (currentAlphabet === 'hiragana') {
-    activeData = (currentCharType === 'basic') ? hiraganaBasic : hiraganaDakuten;
-    activeName = (currentCharType === 'basic') ? "Hiragana Dasar" : "Hiragana Imbuhan";
+    activeData = isDakuten ? hiraganaDakuten : hiraganaBasic;
+    activeName = isDakuten ? "Hiragana Imbuhan" : "Hiragana Dasar";
     activeVocab = vocabularyHiragana;
   } else {
-    activeData = (currentCharType === 'basic') ? katakanaBasic : katakanaDakuten;
-    activeName = (currentCharType === 'basic') ? "Katakana Dasar" : "Katakana Imbuhan";
+    activeData = isDakuten ? katakanaDakuten : katakanaBasic;
+    activeName = isDakuten ? "Katakana Imbuhan" : "Katakana Dasar";
     activeVocab = vocabularyKatakana;
   }
-  document.getElementById('mainTitle').innerText = `Belajar ${activeName}`;
-  
-  if (!document.getElementById('kanaPage').classList.contains('hidden')) {
-    showKanaList(); 
-  }
+  const titleEl = document.getElementById('mainTitle');
+  if (titleEl) titleEl.innerText = `Belajar ${activeName}`;
 }
 
 function setAlphabet(type) {
   currentAlphabet = type;
-  document.getElementById('btnHiragana').classList.toggle('active', type === 'hiragana');
-  document.getElementById('btnKatakana').classList.toggle('active', type === 'katakana');
+  sessionStorage.setItem('kanaAlphabet', type);
+  document.getElementById('cardHiragana')?.classList.toggle('active', type === 'hiragana');
+  document.getElementById('cardKatakana')?.classList.toggle('active', type === 'katakana');
+  syncDakutenToggles();
   updateActiveData();
+  openTabView('huruf', 'kanaList');
+  showKanaList();
 }
 
-function setCharType(type) {
-  currentCharType = type;
-  document.getElementById('btnBasic').classList.toggle('active', type === 'basic');
-  document.getElementById('btnDakuten').classList.toggle('active', type === 'dakuten');
-  updateActiveData();
+function toggleDakuten(alphabet) {
+  if (alphabet === 'hiragana') {
+    dakutenHiragana = !dakutenHiragana;
+    sessionStorage.setItem('dakutenHiragana', dakutenHiragana);
+  } else {
+    dakutenKatakana = !dakutenKatakana;
+    sessionStorage.setItem('dakutenKatakana', dakutenKatakana);
+  }
+  syncDakutenToggles();
+  const list = document.getElementById("kanaList");
+  if (currentAlphabet === alphabet && list && !list.classList.contains("hidden")) {
+    updateActiveData();
+    showKanaList();
+  }
+}
+
+function syncDakutenToggles() {
+  const hToggle = document.getElementById('dakutenToggleHiragana');
+  if (hToggle) {
+    hToggle.innerText = dakutenHiragana ? 'Dakuten' : 'Dasar';
+    hToggle.classList.toggle('on', dakutenHiragana);
+  }
+  const kToggle = document.getElementById('dakutenToggleKatakana');
+  if (kToggle) {
+    kToggle.innerText = dakutenKatakana ? 'Dakuten' : 'Dasar';
+    kToggle.classList.toggle('on', dakutenKatakana);
+  }
+}
+
+function syncToggleButtons() {
+  document.getElementById('cardHiragana')?.classList.toggle('active', currentAlphabet === 'hiragana');
+  document.getElementById('cardKatakana')?.classList.toggle('active', currentAlphabet === 'katakana');
+  syncDakutenToggles();
 }
 
 // ================= Utility =================
@@ -258,7 +286,7 @@ function shuffle(a) {
 
 function hideAll() {
   const views = [
-    "menu", "quiz", "kanaPage", "quest", "dragDrop",
+    "menu", "quiz", "kanaPage", "kanaList", "quest", "dragDrop",
     "writing", "vocabMode", "tofuguSetup", "tofuguQuiz", "tofuguResult",
     "formQuizSetup", "formQuiz", "formQuizResult"
   ];
@@ -266,20 +294,51 @@ function hideAll() {
     const el = document.getElementById(id);
     if (el) el.classList.add("hidden");
   });
-  // Hide top header during quizzes/views to keep screen clean and prevent scroll issues on mobile
-  const header = document.getElementById("appHeader");
-  if (header) header.classList.add("hidden");
+  const closeBtn = document.getElementById("closeKanaBtn");
+  if (closeBtn) closeBtn.style.display = "none";
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function showTabMenu(tabName) {
+  const content = document.getElementById(`tab-${tabName}`);
+  if (!content) return;
+  content.querySelectorAll('.tab-menu').forEach(el => el.classList.remove('hidden'));
+}
+
+function hideTabMenu(tabName) {
+  const content = document.getElementById(`tab-${tabName}`);
+  if (!content) return;
+  content.querySelectorAll('.tab-menu').forEach(el => el.classList.add('hidden'));
+}
+
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+  const btn = document.querySelector(`.tab-btn[onclick*="switchTab('${tabName}')"]`);
+  if (btn) btn.classList.add('active');
+  const content = document.getElementById(`tab-${tabName}`);
+  if (content) content.classList.add('active');
+  hideAll();
+  showTabMenu(tabName);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function backToTabMenu(tabName) {
+  hideAll();
+  showTabMenu(tabName);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function openTabView(tabName, viewId) {
+  switchTab(tabName);
+  hideTabMenu(tabName);
+  const view = document.getElementById(viewId);
+  if (view) view.classList.remove('hidden');
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 function backToMenu() {
-  hideAll();
-  const menu = document.getElementById("menu");
-  if (menu) menu.classList.remove("hidden");
-  // Show header again when returning to main menu
-  const header = document.getElementById("appHeader");
-  if (header) header.classList.remove("hidden");
-  window.scrollTo({ top: 0, behavior: 'instant' });
+  switchTab('huruf');
 }
 
 function clearResult(id) {
@@ -301,10 +360,8 @@ function showResult(id, isCorrect, msg) {
 
 // ================= KANA LIST =================
 function showKanaList() {
-  hideAll();
-  document.getElementById("kanaPage").classList.remove("hidden");
-  document.getElementById("kanaListTitle").innerText = `Daftar Huruf ${activeName}`;
   const list = document.getElementById("kanaList");
+  if (!list) return;
   list.innerHTML = "";
   activeData.forEach((h) => {
     const card = document.createElement("div");
@@ -316,14 +373,39 @@ function showKanaList() {
     }
     list.appendChild(card);
   });
+  const titleEl = document.getElementById("kanaListTitle");
+  if (titleEl) titleEl.innerText = `Daftar Huruf ${activeName}`;
+  const closeBtn = document.getElementById("closeKanaBtn");
+  if (closeBtn) closeBtn.style.display = "inline-flex";
+}
+
+function closeKanaList() {
+  const list = document.getElementById("kanaList");
+  if (list) {
+    list.innerHTML = "";
+    list.classList.add("hidden");
+  }
+  const titleEl = document.getElementById("kanaListTitle");
+  if (titleEl) titleEl.innerText = "Daftar Huruf";
+  const closeBtn = document.getElementById("closeKanaBtn");
+  if (closeBtn) closeBtn.style.display = "none";
+  showTabMenu('huruf');
 }
 
 // ================= LEVEL MODE =================
 function startLevel(len) {
   wordLength = len;
+  openTabView('latihan', 'quiz');
+  _initLevel(len);
+}
+
+function _initLevel(len) {
+  wordLength = len;
   hideAll();
-  document.getElementById("quiz").classList.remove("hidden");
-  document.getElementById("quizTitle").innerText = `Tebak ${activeName}`;
+  const quizEl = document.getElementById("quiz");
+  if (quizEl) quizEl.classList.remove("hidden");
+  const titleEl = document.getElementById("quizTitle");
+  if (titleEl) titleEl.innerText = `Tebak ${activeName}`;
   loadQuestion();
 }
 
@@ -385,8 +467,14 @@ function loadQuestion() {
 
 // ================= KOSAKATA (VOCAB) MODE =================
 function startVocab() {
+  openTabView('latihan', 'vocabMode');
+  _initVocab();
+}
+
+function _initVocab() {
   hideAll();
-  document.getElementById("vocabMode").classList.remove("hidden");
+  const vocabEl = document.getElementById("vocabMode");
+  if (vocabEl) vocabEl.classList.remove("hidden");
   newVocab();
 }
 
@@ -435,8 +523,14 @@ function newVocab() {
 
 // ================= QUEST MODE =================
 function startQuest() {
+  openTabView('latihan', 'quest');
+  _initQuest();
+}
+
+function _initQuest() {
   hideAll();
-  document.getElementById("quest").classList.remove("hidden");
+  const quizEl = document.getElementById("quest");
+  if (quizEl) quizEl.classList.remove("hidden");
   newQuest();
 }
 
@@ -481,8 +575,14 @@ function newQuest() {
 
 // ================= DRAG & DROP =================
 function startDragDrop() {
+  openTabView('santai', 'dragDrop');
+  _initDragDrop();
+}
+
+function _initDragDrop() {
   hideAll();
-  document.getElementById("dragDrop").classList.remove("hidden");
+  const quizEl = document.getElementById("dragDrop");
+  if (quizEl) quizEl.classList.remove("hidden");
   newDragDrop();
 }
 
@@ -574,18 +674,18 @@ function checkDragDropComplete() {
 
 // ================= WRITING MODE =================
 let currentWritingAnswer = "";
-const canvas = document.getElementById("writingCanvas");
-const ctx = canvas.getContext("2d");
-let drawing = false;
-
-// Setup canvas drawing context
-ctx.lineWidth = 14;
-ctx.lineCap = "round";
-ctx.lineJoin = "round";
-ctx.strokeStyle = "#F8FAFC";
+const canvasEl = document.getElementById("writingCanvas");
+let ctx = null;
+if (canvasEl) {
+  ctx = canvasEl.getContext("2d");
+  ctx.lineWidth = 14;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = "#F8FAFC";
+}
 
 function getPointerPos(e) {
-  const rect = canvas.getBoundingClientRect();
+  const rect = canvasEl.getBoundingClientRect();
   const clientX = e.touches ? e.touches[0].clientX : e.clientX;
   const clientY = e.touches ? e.touches[0].clientY : e.clientY;
   return {
@@ -616,23 +716,32 @@ function stopDrawing(e) {
   ctx.closePath();
 }
 
-canvas.addEventListener("mousedown", startDrawing);
-canvas.addEventListener("mousemove", draw);
-canvas.addEventListener("mouseup", stopDrawing);
-canvas.addEventListener("mouseout", stopDrawing);
+if (canvasEl) {
+  canvasEl.addEventListener("mousedown", startDrawing);
+  canvasEl.addEventListener("mousemove", draw);
+  canvasEl.addEventListener("mouseup", stopDrawing);
+  canvasEl.addEventListener("mouseout", stopDrawing);
 
-canvas.addEventListener("touchstart", startDrawing, {passive: false});
-canvas.addEventListener("touchmove", draw, {passive: false});
-canvas.addEventListener("touchend", stopDrawing);
+  canvasEl.addEventListener("touchstart", startDrawing, {passive: false});
+  canvasEl.addEventListener("touchmove", draw, {passive: false});
+  canvasEl.addEventListener("touchend", stopDrawing);
+}
 
 function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (!ctx) return;
+  ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
   clearResult("writingResult");
 }
 
 function startWriting() {
+  openTabView('santai', 'writing');
+  _initWriting();
+}
+
+function _initWriting() {
   hideAll();
-  document.getElementById("writing").classList.remove("hidden");
+  const quizEl = document.getElementById("writing");
+  if (quizEl) quizEl.classList.remove("hidden");
   newWriting();
 }
 
@@ -653,7 +762,7 @@ function newWriting() {
 
 function checkWriting() {
   if (!currentWritingAnswer) return;
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const imgData = ctx.getImageData(0, 0, canvasEl.width, canvasEl.height);
   const data = imgData.data;
   const size = 7;
   const sample = new Array(size).fill(0).map(() => new Array(size).fill(0));
@@ -661,14 +770,14 @@ function checkWriting() {
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       let sum = 0, count = 0;
-      const startX = Math.floor((x * canvas.width) / size);
-      const startY = Math.floor((y * canvas.height) / size);
-      const endX = Math.floor(((x + 1) * canvas.width) / size);
-      const endY = Math.floor(((y + 1) * canvas.height) / size);
+      const startX = Math.floor((x * canvasEl.width) / size);
+      const startY = Math.floor((y * canvasEl.height) / size);
+      const endX = Math.floor(((x + 1) * canvasEl.width) / size);
+      const endY = Math.floor(((y + 1) * canvasEl.height) / size);
       
       for (let i = startY; i < endY; i++) {
         for (let j = startX; j < endX; j++) {
-          const idx = (i * canvas.width + j) * 4;
+          const idx = (i * canvasEl.width + j) * 4;
           const alpha = data[idx + 3];
           if (alpha > 50) sum++;
           count++;
@@ -1058,14 +1167,14 @@ let tofuguQuizSession = {
   awaitingNextSince: 0
 };
 let isTofuguSubmitting = false;
+let lastTofuguSubmitAt = 0;
 
 // ================= Navigation & Setup Helpers =================
 
 function openTofuguSetup() {
-  hideAll();
+  openTabView('quiz', 'tofuguSetup');
   const setupEl = document.getElementById("tofuguSetup");
   if (setupEl) {
-    setupEl.classList.remove("hidden");
     populateRowChips();
     updateSetupPoolCount();
   }
@@ -1293,9 +1402,7 @@ function startTofuguQuiz() {
     awaitingNextSince: 0
   };
 
-  hideAll();
-  const quizEl = document.getElementById("tofuguQuiz");
-  if (quizEl) quizEl.classList.remove("hidden");
+  openTabView('quiz', 'tofuguQuiz');
 
   renderTofuguCard();
 }
@@ -1377,6 +1484,7 @@ function renderTofuguCard() {
   if (submitBtn) {
     submitBtn.innerText = "Jawab ↵";
     submitBtn.disabled = false;
+    submitBtn.setAttribute('onclick', 'handleTofuguSubmit()');
   }
 
   // Hide Both Feedback Cards
@@ -1439,15 +1547,11 @@ function isTofuguAnswerCorrect(userInput, questionItem) {
 function handleTofuguSubmit() {
   if (isTofuguSubmitting) return;
 
-  // If we are currently awaiting the user to advance after seeing wrong answer feedback:
-  if (tofuguQuizSession.isAwaitingNext) {
-    // Cooldown check: prevent immediate accidental skip (350ms)
-    if (Date.now() - tofuguQuizSession.awaitingNextSince < 350) {
-      return;
-    }
-    advanceTofuguQuestion();
-    return;
-  }
+  const now = Date.now();
+
+  // Dedupe duplicate triggers (e.g. keydown + implicit form submit) in the same interaction
+  if (now - lastTofuguSubmitAt < 250) return;
+  lastTofuguSubmitAt = now;
 
   const input = document.getElementById("tofuguInput");
   if (!input) return;
@@ -1466,9 +1570,6 @@ function handleTofuguSubmit() {
   const submitBtn = document.getElementById("tofuguSubmitBtn");
 
   if (isCorrect) {
-    // Lock submission so no double triggers happen
-    isTofuguSubmitting = true;
-
     playTofuguSfx('correct');
     tofuguQuizSession.streak++;
     if (tofuguQuizSession.streak > tofuguQuizSession.maxStreak) {
@@ -1504,15 +1605,19 @@ function handleTofuguSubmit() {
     // Set input read-only (so keyboard doesn't bounce and typed answer stays visible)
     input.readOnly = true;
     if (submitBtn) {
-      submitBtn.innerText = "✓ Benar!";
-      submitBtn.disabled = true;
+      submitBtn.innerText = "Lanjut ↵";
+      submitBtn.disabled = false;
+      submitBtn.setAttribute('onclick', 'advanceTofuguQuestion()');
     }
 
-    // 800ms clear view so user clearly reads the confirmation before advancing
-    setTimeout(() => {
-      tofuguQuizSession.currentIndex++;
-      renderTofuguCard();
-    }, 800);
+    // Wait for explicit user action (click "Lanjut" or press Enter) before advancing
+    tofuguQuizSession.isAwaitingNext = true;
+    tofuguQuizSession.awaitingNextSince = now;
+
+    const successNextBtn = document.getElementById("feedbackSuccessNextBtn");
+    if (successNextBtn) {
+      successNextBtn.focus();
+    }
 
   } else {
     // Wrong Answer Flow
@@ -1554,6 +1659,7 @@ function handleTofuguSubmit() {
     // Change submit button text to "Lanjut ↵" so user can tap it or the next button
     if (submitBtn) {
       submitBtn.innerText = "Lanjut ↵";
+      submitBtn.setAttribute('onclick', 'advanceTofuguQuestion()');
     }
 
     const nextBtn = document.getElementById("feedbackNextBtn");
@@ -1564,26 +1670,20 @@ function handleTofuguSubmit() {
 }
 
 function advanceTofuguQuestion() {
-  if (isTofuguSubmitting) return;
-  if (tofuguQuizSession.isAwaitingNext && (Date.now() - tofuguQuizSession.awaitingNextSince < 350)) {
-    return;
-  }
   tofuguQuizSession.currentIndex++;
   renderTofuguCard();
 }
 
 function confirmExitTofugu() {
   if (confirm("Yakin ingin keluar dari kuis? Kemajuan saat ini tidak akan tersimpan.")) {
-    backToMenu();
+    backToTabMenu('quiz');
   }
 }
 
 // ================= Results & Review =================
 
 function showTofuguResult() {
-  hideAll();
-  const resEl = document.getElementById("tofuguResult");
-  if (resEl) resEl.classList.remove("hidden");
+  openTabView('quiz', 'tofuguResult');
 
   playTofuguSfx('fanfare');
 
@@ -1698,9 +1798,7 @@ function retryTofuguMissedOnly() {
   };
   isTofuguSubmitting = false;
 
-  hideAll();
-  const quizEl = document.getElementById("tofuguQuiz");
-  if (quizEl) quizEl.classList.remove("hidden");
+  openTabView('quiz', 'tofuguQuiz');
 
   renderTofuguCard();
 }
@@ -1713,21 +1811,18 @@ document.addEventListener("keydown", (e) => {
 
   // Enter Key
   if (e.key === "Enter") {
+    // Always take over Enter so a single press can never submit AND advance at once
+    e.preventDefault();
+    if (e.repeat) return; // ignore auto-repeat from holding the key
+
     if (tofuguQuizSession.isAwaitingNext) {
-      e.preventDefault();
-      if (Date.now() - tofuguQuizSession.awaitingNextSince >= 350) {
+      if (Date.now() - tofuguQuizSession.awaitingNextSince >= 200) {
         advanceTofuguQuestion();
       }
       return;
     }
 
-    // If input is currently focused, the form's native onsubmit handles it cleanly.
-    // If user pressed Enter when input is not active, trigger handleTofuguSubmit():
-    const input = document.getElementById("tofuguInput");
-    if (document.activeElement !== input) {
-      e.preventDefault();
-      handleTofuguSubmit();
-    }
+    handleTofuguSubmit();
     return;
   }
 
@@ -1759,9 +1854,7 @@ let fqSession = {
 
 // --- Setup helpers ---
 function openFormQuizSetup() {
-  hideAll();
-  const el = document.getElementById('formQuizSetup');
-  if (el) el.classList.remove('hidden');
+  openTabView('quiz', 'formQuizSetup');
   fqUpdatePoolBadge();
 }
 
@@ -1852,9 +1945,7 @@ function startFormQuiz() {
 }
 
 function renderFormQuiz() {
-  hideAll();
-  const el = document.getElementById('formQuiz');
-  if (el) el.classList.remove('hidden');
+  openTabView('quiz', 'formQuiz');
 
   const total = fqSession.questions.length;
   const label = document.getElementById('fqProgressLabel');
@@ -1949,7 +2040,7 @@ function fqUpdateCounter() {
 
 function confirmExitFormQuiz() {
   if (confirm('Yakin ingin keluar? Jawaban yang sudah diisi akan hilang.')) {
-    backToMenu();
+    backToTabMenu('quiz');
   }
 }
 
@@ -1996,10 +2087,7 @@ function showFormQuizResult() {
   const accuracy = total > 0 ? Math.round((correctCount / total) * 100) : 0;
   const score = correctCount * 10;
 
-  hideAll();
-  const resEl = document.getElementById('formQuizResult');
-  if (resEl) resEl.classList.remove('hidden');
-  window.scrollTo({ top: 0, behavior: 'instant' });
+  openTabView('quiz', 'formQuizResult');
 
   // Trophy & title
   const trophy = document.getElementById('fqResTrophy');
@@ -2083,9 +2171,13 @@ function retryFormQuizWrongOnly() {
 
 // Initialize on DOM load
 window.addEventListener('DOMContentLoaded', () => {
-  // Tofugu quiz setup
-  populateRowChips();
-  updateSetupPoolCount();
-  // Form quiz setup
-  fqUpdatePoolBadge();
+  syncToggleButtons();
+  updateActiveData();
+  if (document.getElementById("rowChipsContainer")) {
+    populateRowChips();
+    updateSetupPoolCount();
+  }
+  if (document.getElementById('fqPoolBadge')) {
+    fqUpdatePoolBadge();
+  }
 });
