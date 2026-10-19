@@ -1,0 +1,38 @@
+// Tema: Tubuh & Kesehatan (Hiragana)
+window.VocabRegistry.add({
+  id: "tubuh",
+  label: "Tubuh & Kesehatan",
+  icon: "🫀",
+  script: "hira",
+  items: [
+    { h: "頭", r: "atama", m: "Kepala" },
+    { h: "顔", r: "kao", m: "Wajah" },
+    { h: "目", r: "me", m: "Mata" },
+    { h: "耳", r: "mimi", m: "Telinga" },
+    { h: "鼻", r: "hana", m: "Hidung" },
+    { h: "口", r: "kuchi", m: "Mulut" },
+    { h: "歯", r: "ha", m: "Gigi" },
+    { h: "舌", r: "shita", m: "Lidah" },
+    { h: "首", r: "kubi", m: "Leher" },
+    { h: "肩", r: "kata", m: "Bahu" },
+    { h: "腕", r: "ude", m: "Lengan" },
+    { h: "手", r: "te", m: "Tangan" },
+    { h: "指", r: "yubi", m: "Jari" },
+    { h: "胸", r: "mune", m: "Dada" },
+    { h: "腹", r: "hara", m: "Perut" },
+    { h: "腰", r: "koshi", m: "Pinggang" },
+    { h: "足", r: "ashi", m: "Kaki" },
+    { h: "背", r: "se", m: "Punggung" },
+    { h: "髪", r: "kami", m: "Rambut" },
+    { h: "肌", r: "hada", m: "Kulit" },
+    { h: "骨", r: "hone", m: "Tulang" },
+    { h: "血", r: "chi", m: "Darah" },
+    { h: "心", r: "kokoro", m: "Hati / Pikiran" },
+    { h: "体", r: "karada", m: "Tubuh" },
+    { h: "元気", r: "genki", m: "Sehat / Ceria" },
+    { h: "病気", r: "byouki", m: "Sakit" },
+    { h: "薬", r: "kusuri", m: "Obat" },
+    { h: "病院", r: "byouin", m: "Rumah sakit" },
+    { h: "医者", r: "isha", m: "Dokter" }
+  ]
+});

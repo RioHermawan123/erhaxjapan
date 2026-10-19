@@ -1,0 +1,36 @@
+// Tema: Sifat & Kondisi (Hiragana)
+window.VocabRegistry.add({
+  id: "sifat",
+  label: "Sifat & Kondisi",
+  icon: "🎨",
+  script: "hira",
+  items: [
+    { h: "あたらしい", r: "atarashii", m: "Baru" },
+    { h: "ふるい", r: "furui", m: "Lama / Tua" },
+    { h: "おおきい", r: "ookii", m: "Besar" },
+    { h: "ちいさい", r: "chiisai", m: "Kecil" },
+    { h: "はやい", r: "hayai", m: "Cepat" },
+    { h: "おそい", r: "osoi", m: "Lambat" },
+    { h: "あつい", r: "atsui", m: "Panas" },
+    { h: "さむい", r: "samui", m: "Dingin" },
+    { h: "たかい", r: "takai", m: "Tinggi / Mahal" },
+    { h: "ひくい", r: "hikui", m: "Rendah / Murah" },
+    { h: "ながい", r: "nagai", m: "Panjang" },
+    { h: "みじかい", r: "mijikai", m: "Pendek" },
+    { h: "おもい", r: "omoi", m: "Berat" },
+    { h: "かるい", r: "karui", m: "Ringan" },
+    { h: "すくない", r: "sukunai", m: "Sedikit" },
+    { h: "おおい", r: "ooi", m: "Jumlah besar" },
+    { h: "たのしい", r: "tanoshii", m: "Seru / Menyenangkan" },
+    { h: "おもしろい", r: "omoshiroi", m: "Menarik" },
+    { h: "むずかしい", r: "muzukashii", m: "Sulit" },
+    { h: "やさしい", r: "yasashii", m: "Mudah / Baik hati" },
+    { h: "きたない", r: "kitanai", m: "Kotor" },
+    { h: "きれい", r: "kirei", m: "Bersih / Indah" },
+    { h: "すてき", r: "suteki", m: "Cantik / Megah" },
+    { h: "しずか", r: "shizuka", m: "Sepi / Tenang" },
+    { h: "うるさい", r: "urusai", m: "Berisik" },
+    { h: "あかるい", r: "akarui", m: "Terang" },
+    { h: "くらい", r: "kurai", m: "Gelap" }
+  ]
+});

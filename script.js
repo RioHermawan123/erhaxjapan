@@ -42,145 +42,13 @@ const katakanaDakuten = [
   ["pa", "パ"], ["pi", "ピ"], ["pu", "プ"], ["pe", "ペ"], ["po", "ポ"]
 ];
 
-const vocabularyHiragana = [
-  // Hewan
-  { h: "ねこ", r: "neko", m: "Kucing" },
-  { h: "いぬ", r: "inu", m: "Anjing" },
-  { h: "とり", r: "tori", m: "Burung" },
-  { h: "さかな", r: "sakana", m: "Ikan" },
-  { h: "うさぎ", r: "usagi", m: "Kelinci" },
-  { h: "くま", r: "kuma", m: "Beruang" },
-  { h: "うし", r: "ushi", m: "Sapi" },
-  { h: "うま", r: "uma", m: "Kuda" },
-  { h: "さる", r: "saru", m: "Monyet" },
-  { h: "へび", r: "hebi", m: "Ular" },
-  { h: "かめ", r: "kame", m: "Kura-kura" },
-  // Alam
-  { h: "さくら", r: "sakura", m: "Bunga Sakura" },
-  { h: "やま", r: "yama", m: "Gunung" },
-  { h: "かわ", r: "kawa", m: "Sungai" },
-  { h: "うみ", r: "umi", m: "Laut" },
-  { h: "そら", r: "sora", m: "Langit" },
-  { h: "はな", r: "hana", m: "Bunga" },
-  { h: "き", r: "ki", m: "Pohon" },
-  { h: "もり", r: "mori", m: "Hutan" },
-  { h: "しま", r: "shima", m: "Pulau" },
-  // Benda sehari-hari
-  { h: "みず", r: "mizu", m: "Air" },
-  { h: "ひ", r: "hi", m: "Api" },
-  { h: "つき", r: "tsuki", m: "Bulan" },
-  { h: "たいよう", r: "taiyou", m: "Matahari" },
-  { h: "ほし", r: "hoshi", m: "Bintang" },
-  { h: "くるま", r: "kuruma", m: "Mobil" },
-  { h: "ほん", r: "hon", m: "Buku" },
-  { h: "いえ", r: "ie", m: "Rumah" },
-  { h: "みせ", r: "mise", m: "Toko" },
-  { h: "くつ", r: "kutsu", m: "Sepatu" },
-  { h: "かさ", r: "kasa", m: "Payung" },
-  { h: "あめ", r: "ame", m: "Hujan" },
-  { h: "かぜ", r: "kaze", m: "Angin" },
-  { h: "ゆき", r: "yuki", m: "Salju" },
-  { h: "かみ", r: "kami", m: "Kertas" },
-  { h: "はし", r: "hashi", m: "Sumpit" },
-  { h: "まど", r: "mado", m: "Jendela" },
-  { h: "ドア", r: "doa", m: "Pintu" },
-  // Makanan & Minuman
-  { h: "ごはん", r: "gohan", m: "Nasi" },
-  { h: "みそしる", r: "misoshiru", m: "Sup Miso" },
-  { h: "たまご", r: "tamago", m: "Telur" },
-  { h: "にく", r: "niku", m: "Daging" },
-  { h: "やさい", r: "yasai", m: "Sayuran" },
-  { h: "くだもの", r: "kudamono", m: "Buah-buahan" },
-  { h: "おちゃ", r: "ocha", m: "Teh" },
-  { h: "さとう", r: "satou", m: "Gula" },
-  { h: "しお", r: "shio", m: "Garam" },
-  // Kata sifat/kondisi
-  { h: "あたらしい", r: "atarashii", m: "Baru" },
-  { h: "ふるい", r: "furui", m: "Lama / Tua" },
-  { h: "おおきい", r: "ookii", m: "Besar" },
-  { h: "ちいさい", r: "chiisai", m: "Kecil" },
-  { h: "はやい", r: "hayai", m: "Cepat" },
-  { h: "おそい", r: "osoi", m: "Lambat" },
-  { h: "あつい", r: "atsui", m: "Panas" },
-  { h: "さむい", r: "samui", m: "Dingin" },
-  // Kata kerja dasar
-  { h: "たべる", r: "taberu", m: "Makan" },
-  { h: "のむ", r: "nomu", m: "Minum" },
-  { h: "みる", r: "miru", m: "Melihat" },
-  { h: "きく", r: "kiku", m: "Mendengar" },
-  { h: "はなす", r: "hanasu", m: "Berbicara" },
-  { h: "いく", r: "iku", m: "Pergi" },
-  { h: "くる", r: "kuru", m: "Datang" },
-  { h: "かく", r: "kaku", m: "Menulis" },
-  { h: "よむ", r: "yomu", m: "Membaca" },
-  { h: "ねる", r: "neru", m: "Tidur" },
-  { h: "おきる", r: "okiru", m: "Bangun" },
-  { h: "かう", r: "kau", m: "Membeli" },
-  { h: "うる", r: "uru", m: "Menjual" },
-  { h: "あそぶ", r: "asobu", m: "Bermain" },
-  { h: "はたらく", r: "hataraku", m: "Bekerja" }
-];
+// ================= KOSAKATA (VOCAB) =================
+// Data kosakata dipisah per tema di folder "vocab/".
+// Sumber data tunggal: window.VocabRegistry (lihat vocab/registry.js).
+const vocabRegistry = window.VocabRegistry;
+let activeVocab = [];
+let activeVocabTheme = "all"; // id tema aktif, "all" = semua tema pada script aktif
 
-const vocabularyKatakana = [
-  // Teknologi & Elektronik
-  { h: "テレビ", r: "terebi", m: "Televisi" },
-  { h: "カメラ", r: "kamera", m: "Kamera" },
-  { h: "スマホ", r: "sumaho", m: "Ponsel Pintar" },
-  { h: "パソコン", r: "pasokon", m: "Komputer PC" },
-  { h: "ラジオ", r: "rajio", m: "Radio" },
-  { h: "エアコン", r: "eakon", m: "AC / Penyejuk Udara" },
-  { h: "ロボット", r: "robotto", m: "Robot" },
-  { h: "インターネット", r: "intaanetto", m: "Internet" },
-  { h: "ゲーム", r: "geemu", m: "Permainan / Game" },
-  // Transportasi
-  { h: "タクシー", r: "takushii", m: "Taksi" },
-  { h: "バス", r: "basu", m: "Bus" },
-  { h: "トラック", r: "torakku", m: "Truk" },
-  { h: "バイク", r: "baiku", m: "Motor" },
-  { h: "ヘリコプター", r: "herikoputaa", m: "Helikopter" },
-  // Tempat
-  { h: "ホテル", r: "hoteru", m: "Hotel" },
-  { h: "レストラン", r: "resutoran", m: "Restoran" },
-  { h: "スーパー", r: "suupaa", m: "Supermarket" },
-  { h: "デパート", r: "depaato", m: "Department Store" },
-  { h: "アパート", r: "apaato", m: "Apartemen" },
-  { h: "マンション", r: "manshon", m: "Gedung Apartemen" },
-  // Makanan & Minuman
-  { h: "コーヒー", r: "koohii", m: "Kopi" },
-  { h: "パン", r: "pan", m: "Roti" },
-  { h: "ケーキ", r: "keeki", m: "Kue" },
-  { h: "アイスクリーム", r: "aisukuriimu", m: "Es Krim" },
-  { h: "ジュース", r: "juusu", m: "Jus" },
-  { h: "ビール", r: "biiru", m: "Bir" },
-  { h: "チョコレート", r: "chokoreeto", m: "Cokelat" },
-  { h: "ピザ", r: "piza", m: "Pizza" },
-  { h: "ハンバーガー", r: "hanbaagaa", m: "Hamburger" },
-  { h: "カレー", r: "karee", m: "Kari" },
-  // Pakaian & Aksesoris
-  { h: "シャツ", r: "shatsu", m: "Kemeja" },
-  { h: "ジャケット", r: "jaketto", m: "Jaket" },
-  { h: "コート", r: "kooto", m: "Mantel" },
-  { h: "ズボン", r: "zubon", m: "Celana" },
-  { h: "ネクタイ", r: "nekutai", m: "Dasi" },
-  // Olahraga & Hiburan
-  { h: "サッカー", r: "sakkaa", m: "Sepak Bola" },
-  { h: "テニス", r: "tenisu", m: "Tenis" },
-  { h: "バスケット", r: "basuketto", m: "Basket" },
-  { h: "スポーツ", r: "supootsu", m: "Olahraga" },
-  { h: "コンサート", r: "konsaato", m: "Konser" },
-  { h: "ミュージック", r: "myuujikku", m: "Musik" },
-  // Lain-lain
-  { h: "トイレ", r: "toire", m: "Toilet" },
-  { h: "ノート", r: "nooto", m: "Buku Catatan" },
-  { h: "ペン", r: "pen", m: "Pena" },
-  { h: "ナイフ", r: "naifu", m: "Pisau" },
-  { h: "フォーク", r: "fooku", m: "Garpu" },
-  { h: "スプーン", r: "supuun", m: "Sendok" },
-  { h: "テーブル", r: "teeburu", m: "Meja" },
-  { h: "チケット", r: "chiketto", m: "Tiket" },
-  { h: "ポケット", r: "poketto", m: "Saku" },
-  { h: "ボタン", r: "botan", m: "Tombol / Kancing" }
-];
 
 const templates = {
   あ: [[0, 0, 1, 1, 1, 0, 0],[0, 1, 0, 0, 0, 1, 0],[0, 0, 0, 0, 1, 0, 0],[0, 0, 0, 1, 0, 0, 0],[0, 0, 1, 0, 0, 0, 0],[0, 1, 1, 1, 1, 1, 0],[0, 0, 0, 0, 0, 0, 0]],
@@ -194,7 +62,6 @@ let currentAlphabet = sessionStorage.getItem('kanaAlphabet') || 'hiragana';
 let dakutenHiragana = sessionStorage.getItem('dakutenHiragana') === 'true';
 let dakutenKatakana = sessionStorage.getItem('dakutenKatakana') === 'true';
 let activeData = hiraganaBasic;
-let activeVocab = vocabularyHiragana;
 let activeName = "Hiragana Dasar";
 
 let wordLength = 1;
@@ -223,11 +90,11 @@ function updateActiveData() {
   if (currentAlphabet === 'hiragana') {
     activeData = isDakuten ? hiraganaDakuten : hiraganaBasic;
     activeName = isDakuten ? "Hiragana Imbuhan" : "Hiragana Dasar";
-    activeVocab = vocabularyHiragana;
+    updateActiveVocab();
   } else {
     activeData = isDakuten ? katakanaDakuten : katakanaBasic;
     activeName = isDakuten ? "Katakana Imbuhan" : "Katakana Dasar";
-    activeVocab = vocabularyKatakana;
+    updateActiveVocab();
   }
   const titleEl = document.getElementById('mainTitle');
   if (titleEl) titleEl.innerText = `Belajar ${activeName}`;
@@ -466,6 +333,66 @@ function loadQuestion() {
 }
 
 // ================= KOSAKATA (VOCAB) MODE =================
+function vocabScript() {
+  return currentAlphabet === 'hiragana' ? 'hira' : 'kata';
+}
+
+function vocabThemes() {
+  return vocabRegistry ? vocabRegistry.byScript(vocabScript()) : [];
+}
+
+function updateActiveVocab() {
+  if (!vocabRegistry) return;
+  const themes = vocabThemes();
+  const themeIds = themes.map((t) => t.id);
+  // Tema aktif tidak berlaku untuk script sekarang -> kembali ke "semua"
+  if (activeVocabTheme !== "all" && !themeIds.includes(activeVocabTheme)) {
+    activeVocabTheme = "all";
+  }
+  activeVocab = activeVocabTheme === "all"
+    ? vocabRegistry.itemsByScript(vocabScript())
+    : vocabRegistry.itemsByTheme(activeVocabTheme);
+  if (!activeVocab || activeVocab.length === 0) {
+    activeVocab = vocabRegistry.itemsByScript(vocabScript());
+  }
+}
+
+function renderVocabThemeBar() {
+  const bar = document.getElementById("vocabThemeBar");
+  if (!bar) return;
+  const themes = vocabThemes();
+
+  bar.innerHTML = "";
+  const makeBtn = (id, icon, label, count) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "vocab-theme-btn" + (activeVocabTheme === id ? " active" : "");
+    btn.innerHTML = `<span class="vt-icon">${icon}</span><span class="vt-label">${label}</span><span class="vt-count">${count}</span>`;
+    btn.onclick = () => setVocabTheme(id);
+    return btn;
+  };
+
+  const allCount = themes.reduce((sum, t) => sum + t.items.length, 0);
+  bar.appendChild(makeBtn("all", "🎲", "Semua", allCount));
+  themes.forEach((t) => bar.appendChild(makeBtn(t.id, t.icon, t.label, t.items.length)));
+
+  const info = document.getElementById("vocabThemeInfo");
+  if (info) {
+    const active = themes.find((t) => t.id === activeVocabTheme);
+    const label = active ? active.label : "Semua kategori";
+    const scriptLabel = vocabScript() === "hira" ? "Hiragana" : "Katakana";
+    info.textContent = `${label} · ${scriptLabel} · ${activeVocab.length} kata`;
+  }
+}
+
+function setVocabTheme(themeId) {
+  activeVocabTheme = themeId;
+  vocabHistory = [];
+  updateActiveVocab();
+  renderVocabThemeBar();
+  newVocab();
+}
+
 function startVocab() {
   openTabView('latihan', 'vocabMode');
   _initVocab();
@@ -475,11 +402,19 @@ function _initVocab() {
   hideAll();
   const vocabEl = document.getElementById("vocabMode");
   if (vocabEl) vocabEl.classList.remove("hidden");
+  updateActiveVocab();
+  renderVocabThemeBar();
   newVocab();
 }
 
 function newVocab() {
   clearResult("vocabResult");
+  if (!activeVocab || activeVocab.length === 0) updateActiveVocab();
+  if (!activeVocab || activeVocab.length === 0) {
+    document.getElementById("vocabQuestion").innerHTML = "Belum ada data kosakata untuk kategori ini.";
+    document.getElementById("vocabChoices").innerHTML = "";
+    return;
+  }
   // Anti-repeat: pick a vocab not recently shown
   const selectedVocab = getUnseenItem(activeVocab, vocabHistory, item => item.h);
   currentVocabCorrect = selectedVocab.m;

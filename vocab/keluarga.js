@@ -1,0 +1,38 @@
+// Tema: Keluarga & Orang (Hiragana)
+window.VocabRegistry.add({
+  id: "keluarga",
+  label: "Keluarga & Orang",
+  icon: "👨‍👩‍👧",
+  script: "hira",
+  items: [
+    { h: "お父さん", r: "otousan", m: "Ayah" },
+    { h: "お母さん", r: "okaasan", m: "Ibu" },
+    { h: "お兄ちゃん", r: "oniichan", m: "Kakak laki-laki" },
+    { h: "お姉ちゃん", r: "oneechan", m: "Kakak perempuan" },
+    { h: "弟", r: "otouto", m: "Adik laki-laki" },
+    { h: "妹", r: "imouto", m: "Adik perempuan" },
+    { h: "おじいさん", r: "ojiisan", m: "Kakek" },
+    { h: "おばあさん", r: "obaasan", m: "Nenek" },
+    { h: "祖父母", r: "sofubo", m: "Kakek & Nenek" },
+    { h: "おじ", r: "oji", m: "Paman" },
+    { h: "おば", r: "oba", m: "Tante" },
+    { h: "いとこ", r: "itoko", m: "Sepupu" },
+    { h: "家族", r: "kazoku", m: "Keluarga" },
+    { h: "大家族", r: "daikazoku", m: "Keluarga besar" },
+    { h: "兄弟", r: "kyoudai", m: "Brothers" },
+    { h: "姉妹", r: "shimai", m: "Sisters" },
+    { h: "妻", r: "tsuma", m: "Istri" },
+    { h: "夫", r: "otto", m: "Suami" },
+    { h: "友", r: "tomodachi", m: "Teman" },
+    { h: "人", r: "hito", m: "Orang" },
+    { h: "子供", r: "kodomo", m: "Anak" },
+    { h: "大人", r: "otona", m: "Orang dewasa" },
+    { h: "男", r: "otoko", m: "Pria" },
+    { h: "女", r: "onna", m: "Perempuan" },
+    { h: "息子", r: "musuko", m: "Putra" },
+    { h: "娘", r: "musume", m: "Putri" },
+    { h: "先生", r: "sensei", m: "Guru" },
+    { h: "生徒", r: "seito", m: "Siswa" },
+    { h: "客人", r: "kyakuin", m: "Tamu" }
+  ]
+});

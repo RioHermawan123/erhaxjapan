@@ -1,0 +1,35 @@
+// Tema: Angka & Bilangan (Hiragana)
+window.VocabRegistry.add({
+  id: "angka",
+  label: "Angka & Bilangan",
+  icon: "🔢",
+  script: "hira",
+  items: [
+    { h: "いち", r: "ichi", m: "Satu" },
+    { h: "に", r: "ni", m: "Dua" },
+    { h: "さん", r: "san", m: "Tiga" },
+    { h: "よん", r: "yon", m: "Empat" },
+    { h: "ご", r: "go", m: "Lima" },
+    { h: "ろく", r: "roku", m: "Enam" },
+    { h: "なな", r: "nana", m: "Tujuh" },
+    { h: "はち", r: "hachi", m: "Delapan" },
+    { h: "きゅう", r: "kyuu", m: "Sembilan" },
+    { h: "じゅう", r: "juu", m: "Sepuluh" },
+    { h: "ひゃく", r: "hyaku", m: "Seratus" },
+    { h: "せん", r: "sen", m: "Seribu" },
+    { h: "まん", r: "man", m: "Sepuluh ribu" },
+    { h: "いちばん", r: "ichiban", m: "Nomor satu / Paling" },
+    { h: "ふたつ", r: "futatsu", m: "Dua buah" },
+    { h: "みっつ", r: "mittsu", m: "Tiga buah" },
+    { h: "よっつ", r: "yottsu", m: "Empat buah" },
+    { h: "いつつ", r: "itsutsu", m: "Lima buah" },
+    { h: "むっつ", r: "muttsu", m: "Enam buah" },
+    { h: "ななつ", r: "nanatsu", m: "Tujuh buah" },
+    { h: "やっつ", r: "yattsu", m: "Delapan buah" },
+    { h: "ここのつ", r: "kokonotsu", m: "Sembilan buah" },
+    { h: "とお", r: "too", m: "Sepuluh buah" },
+    { h: "なんばん", r: "nanban", m: "Nomor berapa" },
+    { h: "いくつか", r: "ikura ka", m: "Berapa banyak" },
+    { h: "たくさん", r: "takusan", m: "Banyak" }
+  ]
+});

@@ -1,0 +1,38 @@
+// Tema: Hewan (Hiragana)
+window.VocabRegistry.add({
+  id: "hewan",
+  label: "Hewan",
+  icon: "🐾",
+  script: "hira",
+  items: [
+    { h: "ねこ", r: "neko", m: "Kucing" },
+    { h: "いぬ", r: "inu", m: "Anjing" },
+    { h: "とり", r: "tori", m: "Burung" },
+    { h: "うさぎ", r: "usagi", m: "Kelinci" },
+    { h: "くま", r: "kuma", m: "Beruang" },
+    { h: "うし", r: "ushi", m: "Sapi" },
+    { h: "うま", r: "uma", m: "Kuda" },
+    { h: "さる", r: "saru", m: "Monyet" },
+    { h: "へび", r: "hebi", m: "Ular" },
+    { h: "かめ", r: "kame", m: "Kura-kura" },
+    { h: "とら", r: "tora", m: "Harimau" },
+    { h: "ひつじ", r: "hitsuji", m: "Domba" },
+    { h: "いのしし", r: "inoshishi", m: "Babi hutan" },
+    { h: "リス", r: "risu", m: "Tupai" },
+    { h: "ねずみ", r: "nezumi", m: "Tikus" },
+    { h: "はと", r: "hato", m: "Merpati" },
+    { h: "すずめ", r: "suzume", m: "Burung pipit" },
+    { h: "かも", r: "kamo", m: "Bebek" },
+    { h: "ぶた", r: "buta", m: "Babi" },
+    { h: "やまなし", r: "yamanashi", m: "Landak" },
+    { h: "しし", r: "shishi", m: "Singa" },
+    { h: "きりん", r: "kirin", m: "Jerapah" },
+    { h: "ぞう", r: "zou", m: "Gajah" },
+    { h: "ぱんだ", r: "panda", m: "Panda" },
+    { h: "おおかみ", r: "ookami", m: "Serigala" },
+    { h: "たこ", r: "tako", m: "Gurita" },
+    { h: "いるか", r: "iruka", m: "Lumba-lumba" },
+    { h: "くじら", r: "kujira", m: "Paus" },
+    { h: "やぎ", r: "yagi", m: "Kambing" }
+  ]
+});

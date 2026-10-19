@@ -387,6 +387,65 @@ body {
   margin-top: 4px;
 }
 
+/* Vocab Theme Bar */
+.vocab-theme-wrap {
+  margin-bottom: 22px;
+}
+.vocab-theme-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.vocab-theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 7px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.vocab-theme-btn:hover {
+  color: var(--text-main);
+  border-color: var(--fuji);
+  transform: translateY(-1px);
+}
+.vocab-theme-btn.active {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: var(--fuji);
+  color: var(--fuji);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
+}
+.vocab-theme-btn .vt-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+.vocab-theme-btn .vt-label {
+  line-height: 1;
+}
+.vocab-theme-btn .vt-count {
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.7;
+  line-height: 1;
+}
+.vocab-theme-info {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
 .choices-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
