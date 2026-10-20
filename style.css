@@ -2034,6 +2034,381 @@ canvas {
 
 
 /* ================================================================
+   JLPT TEST STYLES
+   ================================================================ */
+
+/* --- Setup: kartu bagian ujian --- */
+.setup-card-note {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: none;
+  letter-spacing: normal;
+}
+.setup-hint {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+.setup-hint b {
+  color: var(--text-main);
+}
+.checkbox-pills-row.jlpt-pills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 10px;
+}
+.checkbox-pill.jlpt-pill {
+  display: block;
+}
+.checkbox-pill.jlpt-pill .pill-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  text-align: left;
+}
+.jlpt-pill .jp-pill-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.3;
+}
+.jlpt-pill .jp-pill-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--success);
+}
+.jlpt-pill .jp-pill-desc {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.jlpt-pill .jp-pill-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  opacity: 0.85;
+  margin-top: 3px;
+}
+.checkbox-pill.jlpt-pill input:checked ~ .pill-badge .jp-pill-title {
+  color: var(--success);
+}
+
+.jlpt-level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+.jlpt-level-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--text-main);
+}
+.jlpt-level-btn:hover:not(:disabled) {
+  border-color: var(--fuji);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(59, 130, 246, 0.25);
+}
+.jlpt-level-btn .jll-icon {
+  font-size: 30px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.jlpt-level-btn .jll-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+.jlpt-level-btn .jll-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+.jlpt-level-btn .jll-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.jlpt-level-btn .jll-badge {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: var(--fuji);
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
+  flex-shrink: 0;
+}
+.jlpt-level-btn.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+.jlpt-level-btn.locked .jll-badge {
+  background: var(--border);
+  color: var(--text-muted);
+}
+
+/* Kuis JLPT */
+.jlpt-quiz-card {
+  margin-top: 18px;
+}
+.jlpt-quiz-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 auto 14px;
+  max-width: 640px;
+}
+.jlpt-quiz-head .jlpt-section-tag {
+  margin-bottom: 0;
+}
+.jlpt-speak-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.jlpt-speak-btn:hover {
+  border-color: var(--sora);
+  color: var(--sora);
+  background: var(--sora-bg);
+}
+.jlpt-speak-btn.speaking {
+  border-color: var(--error);
+  color: var(--error);
+  background: var(--error-bg);
+}
+.jlpt-section-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--fuji);
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: var(--radius-full);
+  padding: 4px 14px;
+  margin-bottom: 14px;
+}
+.jlpt-quiz-card .question b {
+  font-size: clamp(30px, 8vw, 52px);
+}
+.jlpt-kanji {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: clamp(46px, 12vw, 76px);
+  font-weight: 700;
+  color: var(--fuji);
+  line-height: 1.15;
+  text-shadow: 0 0 18px rgba(0, 0, 0, 0.55);
+}
+.jlpt-pattern {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: clamp(24px, 6vw, 38px);
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.3;
+  text-shadow: 0 0 14px rgba(0, 0, 0, 0.5);
+}
+.jlpt-passage-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.jlpt-sub {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 0 auto 18px;
+  max-width: 640px;
+}
+.jlpt-context {
+  text-align: left;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--sora);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin: 0 auto 18px;
+  max-width: 640px;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 16px;
+  line-height: 2;
+  color: var(--text-main);
+  white-space: pre-line;
+}
+.jlpt-context ruby rt {
+  font-size: 0.48em;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+}
+.jlpt-explain {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.jlpt-quiz-card .next-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Rapikan: semua isi kartu kuis lebarnya sama & rata tengah */
+.jlpt-quiz-card .question,
+.jlpt-quiz-card .jlpt-sub,
+.jlpt-quiz-card .jlpt-context,
+.jlpt-quiz-card .choices-grid,
+.jlpt-quiz-card .result-badge {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.jlpt-quiz-card .question {
+  margin-bottom: 20px;
+}
+.jlpt-quiz-card .choices-grid {
+  margin-bottom: 8px;
+}
+
+/* Daftar soal salah: 2 kolom di layar lebar */
+.jlpt-wrong-grid {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.jlpt-wrong-grid .jlpt-wrong-card {
+  grid-column: auto;
+}
+
+/* Rincian hasil */
+.jlpt-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 24px 0 8px;
+  text-align: left;
+}
+.jlpt-breakdown-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+}
+.jlpt-breakdown-row .jbr-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+  min-width: 110px;
+}
+.jlpt-breakdown-row .jbr-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(15, 23, 42, 0.7);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.jlpt-breakdown-row .jbr-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--fuji), var(--matcha));
+  border-radius: var(--radius-full);
+}
+.jlpt-breakdown-row .jbr-score {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-main);
+  min-width: 52px;
+  text-align: right;
+}
+
+/* Kartu soal salah */
+.jlpt-wrong-card {
+  background: var(--surface);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  grid-column: 1 / -1;
+}
+.jlpt-wrong-card .jwc-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+.jlpt-wrong-card .jwc-prompt {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.3;
+  word-break: break-word;
+}
+.jlpt-wrong-card .jwc-row {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.jlpt-wrong-card .jwc-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  opacity: 0.85;
+  border-left: 2px solid var(--border);
+  padding-left: 10px;
+  margin-top: 4px;
+}
+.setup-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0;
+}
+.setup-desc b {
+  color: var(--text-main);
+}
+
+@media (max-width: 600px) {
+  .jlpt-level-grid {
+    grid-template-columns: 1fr;
+  }
+  .jlpt-context {
+    font-size: 15px;
+    line-height: 1.9;
+  }
+}
+
+/* ================================================================
    FORM QUIZ MODE STYLES
    ================================================================ */
 

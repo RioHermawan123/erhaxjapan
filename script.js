@@ -155,7 +155,8 @@ function hideAll() {
   const views = [
     "menu", "quiz", "kanaPage", "kanaList", "quest", "dragDrop",
     "writing", "vocabMode", "tofuguSetup", "tofuguQuiz", "tofuguResult",
-    "formQuizSetup", "formQuiz", "formQuizResult"
+    "formQuizSetup", "formQuiz", "formQuizResult",
+    "jlptSetup", "jlptQuiz", "jlptResult"
   ];
   views.forEach((id) => {
     const el = document.getElementById(id);
@@ -179,6 +180,7 @@ function hideTabMenu(tabName) {
 }
 
 function switchTab(tabName) {
+  if (tabName !== 'jlpt' && typeof jlptStopSpeak === 'function') jlptStopSpeak();
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
   const btn = document.querySelector(`.tab-btn[onclick*="switchTab('${tabName}')"]`);
@@ -2108,6 +2110,7 @@ function retryFormQuizWrongOnly() {
 window.addEventListener('DOMContentLoaded', () => {
   syncToggleButtons();
   updateActiveData();
+  if (typeof renderJlptLevels === 'function') renderJlptLevels();
   if (document.getElementById("rowChipsContainer")) {
     populateRowChips();
     updateSetupPoolCount();

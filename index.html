@@ -26,6 +26,7 @@
         <button class="tab-btn active" onclick="switchTab('huruf')">📖 Huruf</button>
         <button class="tab-btn" onclick="switchTab('latihan')">🎯 Latihan Kata</button>
         <button class="tab-btn" onclick="switchTab('quiz')">⌨️ Quiz</button>
+        <button class="tab-btn" onclick="switchTab('jlpt')">🎓 JLPT Test</button>
         <button class="tab-btn" onclick="switchTab('santai')">🎨 Santai</button>
       </div>
 
@@ -510,6 +511,131 @@
         </div>
       </div>
 
+      <!-- TAB: JLPT Test -->
+      <div id="tab-jlpt" class="tab-content">
+        <div class="section-header tab-menu" style="margin-bottom: 16px;">
+          <h2>JLPT Test</h2>
+        </div>
+
+        <!-- Kartu level JLPT -->
+        <div class="jlpt-level-grid tab-menu" id="jlptLevelGrid"></div>
+
+        <!-- Setup Trial Test -->
+        <div id="jlptSetup" class="view-section hidden">
+          <div class="section-header">
+            <button class="back-btn" onclick="backToJlptMenu()">&larr; Kembali</button>
+            <h2 id="jlptSetupTitle">Trial Test</h2>
+          </div>
+          <div class="tofugu-setup-container">
+            <div class="setup-card">
+              <h4 class="setup-card-title">📋 Bagian Ujian <span class="setup-card-note">— centang bagian yang mau diuji</span></h4>
+              <div class="setup-row">
+                <div class="checkbox-pills-row jlpt-pills" id="jlptSectionPills"></div>
+                <p class="setup-hint" id="jlptSectionHint"></p>
+              </div>
+            </div>
+            <div class="setup-card">
+              <h4 class="setup-card-title">⚙️ Jumlah Soal per Bagian <span class="setup-card-note">— berlaku untuk tiap bagian yang dicentang</span></h4>
+              <div class="setup-row">
+                <div class="custom-segmented-control" id="jlptCountSeg">
+                  <button type="button" class="seg-btn" data-count="10" onclick="setJlptCount(10)">10 per bagian</button>
+                  <button type="button" class="seg-btn" data-count="20" onclick="setJlptCount(20)">20 per bagian</button>
+                  <button type="button" class="seg-btn active" data-count="0" onclick="setJlptCount(0)">Semua</button>
+                </div>
+                <p class="setup-hint" id="jlptCountHint"></p>
+              </div>
+            </div>
+            <div class="setup-card">
+              <h4 class="setup-card-title">ℹ️ Tentang Level Ini</h4>
+              <div class="setup-row">
+                <p class="setup-desc" id="jlptLevelDesc"></p>
+              </div>
+            </div>
+            <div class="setup-bottom-bar">
+              <div class="setup-pool-badge" id="jlptPoolBadge">📦 <b>0</b> soal dalam trial test</div>
+              <button class="action-btn start-tofugu-btn" onclick="startJlptTest()">🚀 Mulai Trial Test</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kuis JLPT -->
+        <div id="jlptQuiz" class="view-section hidden">
+          <div class="tofugu-top-bar">
+            <div class="top-bar-left">
+              <button class="icon-nav-btn" onclick="exitJlptQuiz()">&larr; JLPT</button>
+            </div>
+            <div class="tofugu-progress-container">
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="jlptProgressBar" style="width: 0%;"></div>
+              </div>
+              <div class="progress-text-label" id="jlptProgressLabel">Soal 1 / 1</div>
+            </div>
+            <div class="tofugu-stat-badges">
+              <div class="stat-pill streak-pill" title="Streak jawaban benar">
+                <span class="streak-icon">🔥</span><span id="jlptStreakNum">0</span>
+              </div>
+              <div class="stat-pill score-pill" title="Total skor">
+                <span class="score-icon">⭐</span><span id="jlptScoreNum">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="question-card jlpt-quiz-card">
+            <div class="jlpt-quiz-head">
+              <div class="jlpt-section-tag" id="jlptSectionTag">漢字読み</div>
+              <button type="button" class="jlpt-speak-btn" id="jlptSpeakBtn" onclick="toggleJlptSpeak()" hidden>🔊 Dengarkan</button>
+            </div>
+            <div class="question" id="jlptQuestion"></div>
+            <div class="jlpt-context hidden" id="jlptContext"></div>
+            <div class="jlpt-sub" id="jlptSub"></div>
+            <div class="choices-grid" id="jlptChoices"></div>
+            <div class="result-badge" id="jlptAnswerBadge"></div>
+            <br>
+            <button class="action-btn next-btn" id="jlptNextBtn" onclick="nextJlptQuestion()" disabled>Soal Berikutnya &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Hasil JLPT -->
+        <div id="jlptResult" class="view-section hidden">
+          <div class="tofugu-result-container">
+            <div class="result-celebration-hero">
+              <div class="result-trophy-badge" id="jlptTrophy">🏆</div>
+              <h2 class="result-main-title" id="jlptResTitle">Trial Test Selesai!</h2>
+              <p class="result-subtitle" id="jlptResSubtitle">Berikut ringkasan hasil trial test kamu:</p>
+            </div>
+            <div class="result-metrics-grid">
+              <div class="metric-card">
+                <div class="metric-val text-accuracy" id="jlptResAccuracy">0%</div>
+                <div class="metric-lbl">Akurasi</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-val text-score" id="jlptResScore">0</div>
+                <div class="metric-lbl">Total Skor</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-val text-correct" id="jlptResCorrect">0 / 0</div>
+                <div class="metric-lbl">Benar / Total</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-val" style="color:#f97316;" id="jlptResWrong">0</div>
+                <div class="metric-lbl">Jawaban Salah</div>
+              </div>
+            </div>
+            <div class="jlpt-breakdown" id="jlptBreakdown"></div>
+            <div class="missed-cards-section hidden" id="jlptWrongSection">
+              <div class="missed-section-head">
+                <h3>Soal yang Perlu Diulang (<span id="jlptWrongCount">0</span>):</h3>
+              </div>
+                <div class="missed-cards-grid jlpt-wrong-grid" id="jlptWrongGrid"></div>
+            </div>
+            <div class="result-action-buttons" style="margin-top: 24px;">
+              <button type="button" class="action-btn" onclick="retryJlptWrongOnly()">🔁 Latih yang Salah Saja</button>
+              <button type="button" class="action-btn secondary" onclick="restartJlptTest()">🔄 Ulangi Trial Test</button>
+              <button type="button" class="action-btn secondary" onclick="backToJlptMenu()">🏠 Menu JLPT</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- TAB: Santai -->
       <div id="tab-santai" class="tab-content">
         <div class="section-header tab-menu" style="margin-bottom: 16px;">
@@ -573,6 +699,13 @@
       </div>
     </main>
   </div>
+  <script src="jlpt/registry.js"></script>
+  <script src="jlpt/levels.js"></script>
+  <script src="jlpt/n5-kanji.js"></script>
+  <script src="jlpt/n5-vocab.js"></script>
+  <script src="jlpt/n5-grammar.js"></script>
+  <script src="jlpt/n5-reading.js"></script>
+  <script src="jlpt/engine.js"></script>
   <script src="vocab/registry.js"></script>
   <script src="vocab/alam.js"></script>
   <script src="vocab/angka.js"></script>
