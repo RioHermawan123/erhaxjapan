@@ -156,7 +156,7 @@ function hideAll() {
     "menu", "quiz", "kanaPage", "kanaList", "quest", "dragDrop",
     "writing", "vocabMode", "tofuguSetup", "tofuguQuiz", "tofuguResult",
     "formQuizSetup", "formQuiz", "formQuizResult",
-    "jlptSetup", "jlptQuiz", "jlptResult"
+    "jlptSetup", "jlptQuiz", "jlptResult", "jlptFormSetup", "jlptFormQuiz", "jlptFormResult"
   ];
   views.forEach((id) => {
     const el = document.getElementById(id);
@@ -2108,6 +2108,8 @@ function retryFormQuizWrongOnly() {
 
 // Initialize on DOM load
 window.addEventListener('DOMContentLoaded', () => {
+  try { if (window.speechSynthesis) { window.speechSynthesis.getVoices(); window.speechSynthesis.addEventListener('voiceschanged', function(){ window.speechSynthesis.getVoices(); }); } } catch(e){}
+  try { if (typeof ensureJlptVoices === 'function') ensureJlptVoices(); } catch(e){}
   syncToggleButtons();
   updateActiveData();
   if (typeof renderJlptLevels === 'function') renderJlptLevels();

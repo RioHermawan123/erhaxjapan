@@ -516,6 +516,9 @@
         <div class="section-header tab-menu" style="margin-bottom: 16px;">
           <h2>JLPT Test</h2>
         </div>
+        <div class="jlpt-quick-actions tab-menu" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+          <button class="action-btn secondary" onclick="openJlptFormSetup()">📝 Kuis Form N5</button>
+        </div>
 
         <!-- Kartu level JLPT -->
         <div class="jlpt-level-grid tab-menu" id="jlptLevelGrid"></div>
@@ -553,7 +556,10 @@
             </div>
             <div class="setup-bottom-bar">
               <div class="setup-pool-badge" id="jlptPoolBadge">📦 <b>0</b> soal dalam trial test</div>
-              <button class="action-btn start-tofugu-btn" onclick="startJlptTest()">🚀 Mulai Trial Test</button>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="action-btn secondary" onclick="openJlptFormSetup()">📝 Kuis Form</button>
+                <button class="action-btn start-tofugu-btn" onclick="startJlptTest()">🚀 Mulai Trial Test</button>
+              </div>
             </div>
           </div>
         </div>
@@ -593,6 +599,102 @@
             <button class="action-btn next-btn" id="jlptNextBtn" onclick="nextJlptQuestion()" disabled>Soal Berikutnya &rarr;</button>
           </div>
         </div>
+
+        <!-- JLPT Kuis Form Setup -->
+        <div id="jlptFormSetup" class="view-section hidden">
+          <div class="section-header">
+            <button class="back-btn" onclick="backToJlptMenu()">&larr; Kembali</button>
+            <h2>Kuis Form JLPT N5</h2>
+          </div>
+          <div class="tofugu-setup-container">
+            <div class="setup-card">
+              <h4 class="setup-card-title">📋 Bagian Ujian</h4>
+              <div class="setup-row">
+                <div class="checkbox-pills-row jlpt-pills" id="jlptFormSectionPills"></div>
+                <p class="setup-hint">Pilih bagian yang mau diuji (semua bisa dipilih).</p>
+              </div>
+            </div>
+            <div class="setup-card">
+              <h4 class="setup-card-title">⚙️ Jumlah Soal</h4>
+              <div class="setup-row">
+                <div class="custom-segmented-control" id="jlptFormCountSeg">
+                  <button type="button" class="seg-btn" data-count="10" onclick="setJlptFormCount(10)">10 Soal</button>
+                  <button type="button" class="seg-btn active" data-count="20" onclick="setJlptFormCount(20)">20 Soal</button>
+                  <button type="button" class="seg-btn" data-count="30" onclick="setJlptFormCount(30)">30 Soal</button>
+                  <button type="button" class="seg-btn" data-count="0" onclick="setJlptFormCount(0)">Semua</button>
+                </div>
+                <p class="setup-hint">Jumlah soal diambil secara acak dari bagian yang dipilih.</p>
+              </div>
+            </div>
+            <div class="setup-bottom-bar">
+              <div class="setup-pool-badge" id="jlptFormPoolBadge">📦 <b>0</b> soal tersedia</div>
+              <button class="action-btn start-tofugu-btn" onclick="startJlptFormQuiz()">📝 Mulai Kuis Form</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- JLPT Kuis Form -->
+        <div id="jlptFormQuiz" class="view-section hidden">
+          <div class="tofugu-top-bar">
+            <div class="top-bar-left">
+              <button class="icon-nav-btn" onclick="confirmExitJlptFormQuiz()">&larr; JLPT</button>
+            </div>
+            <div class="tofugu-progress-container">
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="jlptFormProgressBar" style="width: 100%;"></div>
+              </div>
+              <div class="progress-text-label" id="jlptFormProgressLabel">0 Soal</div>
+            </div>
+            <div style="width:80px;"></div>
+          </div>
+          <div class="fq-info-banner">
+            <span class="fq-info-icon">📝</span>
+            <span>Isi semua jawaban, lalu klik <b>Submit Semua Jawaban</b>. Untuk soal dengan bacaan/kanji bisa klik tombol <b>🔊</b> buat dengerin.</span>
+          </div>
+          <div class="fq-cards-scroll" id="jlptFormCardsContainer"></div>
+          <div class="fq-submit-bar">
+            <div class="fq-completion-counter" id="jlptFormCounter">0 / 0 terisi</div>
+            <button type="button" class="action-btn fq-submit-btn" onclick="submitJlptFormQuiz()">✅ Submit Semua Jawaban</button>
+          </div>
+        </div>
+
+        <!-- Hasil JLPT Kuis Form -->
+        <div id="jlptFormResult" class="view-section hidden">
+          <div class="tofugu-result-container">
+            <div class="result-celebration-hero">
+              <div class="result-trophy-badge" id="jlptFormResTrophy">🏆</div>
+              <h2 class="result-main-title" id="jlptFormResTitle">Kuis Selesai!</h2>
+              <p class="result-subtitle" id="jlptFormResSubtitle">Ringkasan hasil kuis form kamu</p>
+            </div>
+            <div class="result-metrics-grid">
+              <div class="metric-card">
+                <div class="metric-val text-accuracy" id="jlptFormResAccuracy">0%</div>
+                <div class="metric-lbl">Akurasi</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-val text-correct" id="jlptFormResCorrect">0 / 0</div>
+                <div class="metric-lbl">Benar / Total</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-val" style="color:#f97316;" id="jlptFormResWrong">0</div>
+                <div class="metric-lbl">Salah</div>
+              </div>
+            </div>
+            <div class="missed-cards-section" id="jlptFormWrongSection">
+              <div class="missed-section-head">
+                <h3>Review Jawaban</h3>
+              </div>
+              <div class="missed-cards-grid" id="jlptFormReviewGrid"></div>
+            </div>
+            <div class="result-action-buttons" style="margin-top: 24px;">
+              <button type="button" class="action-btn" onclick="retryJlptFormWrongOnly()">🔁 Latih yang Salah Saja</button>
+              <button type="button" class="action-btn secondary" onclick="startJlptFormQuiz()">🔄 Ulangi Kuis Ini</button>
+              <button type="button" class="action-btn secondary" onclick="openJlptFormSetup()">⚙️ Atur Ulang</button>
+              <button type="button" class="action-btn secondary" onclick="backToJlptMenu()">🏠 Menu JLPT</button>
+            </div>
+          </div>
+        </div>
+
 
         <!-- Hasil JLPT -->
         <div id="jlptResult" class="view-section hidden">
@@ -706,6 +808,7 @@
   <script src="jlpt/n5-grammar.js"></script>
   <script src="jlpt/n5-reading.js"></script>
   <script src="jlpt/engine.js"></script>
+  <script src="jlpt/form.js"></script>
   <script src="vocab/registry.js"></script>
   <script src="vocab/alam.js"></script>
   <script src="vocab/angka.js"></script>

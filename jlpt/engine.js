@@ -310,11 +310,43 @@ const jlptTts = {
 function jlptTtsVoices() {
   if (!jlptTts.supported) return [];
   try {
-    return window.speechSynthesis.getVoices() || [];
+    const v = window.speechSynthesis.getVoices();
+    if (Array.isArray(v) && v.length > 0) {
+      window.__jlptVoicesCache = v;
+      return v;
+    }
+    if (Array.isArray(window.__jlptVoicesCache) && window.__jlptVoicesCache.length > 0) {
+      return window.__jlptVoicesCache;
+    }
+    return v || [];
   } catch (e) {
     return [];
   }
 }
+
+function ensureJlptVoices() {
+  if (!jlptTts.supported) return Promise.resolve([]);
+  return new Promise((resolve) => {
+    const existing = jlptTtsVoices();
+    if (existing && existing.length > 0) return resolve(existing);
+    let done = false;
+    const handler = () => {
+      if (done) return;
+      done = true;
+      window.speechSynthesis.removeEventListener("voiceschanged", handler);
+      resolve(jlptTtsVoices());
+    };
+    window.speechSynthesis.addEventListener("voiceschanged", handler);
+    try { window.speechSynthesis.getVoices(); } catch (e) {}
+    setTimeout(() => {
+      if (done) return;
+      done = true;
+      window.speechSynthesis.removeEventListener("voiceschanged", handler);
+      resolve(jlptTtsVoices());
+    }, 1500);
+  });
+}
+
 
 function jlptTtsVoice() {
   const voices = jlptTtsVoices();
@@ -372,7 +404,6 @@ function jlptStopSpeak() {
   try {
     window.speechSynthesis.cancel();
   } catch (e) {
-    /* ignore */
   }
   if (jlptTts.keepAlive) {
     clearInterval(jlptTts.keepAlive);
@@ -381,6 +412,27 @@ function jlptStopSpeak() {
   jlptTts.speaking = false;
   jlptSpeakBtnUpdate();
 }
+
+function jlptSpeakText(text) {
+  if (!jlptTts.supported) {
+    alert("Browser kamu belum mendukung suara. Coba pakai Chrome atau Edge.");
+    return;
+  }
+  if (!text || !text.trim()) {
+    alert("Tidak ada teks untuk dibacakan.");
+    return;
+  }
+  jlptStopSpeak();
+  ensureJlptVoices().then(() => {
+    try {
+      if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+        window.speechSynthesis.cancel();
+      }
+    } catch (e) {}
+    setTimeout(() => jlptDoSpeak(text), 100);
+  });
+}
+
 
 function jlptDoSpeak(text) {
   const utter = new SpeechSynthesisUtterance(text);
@@ -402,13 +454,12 @@ function jlptDoSpeak(text) {
   jlptSpeakBtnUpdate();
   // Chrome berhenti bicara otomatis setelah ~15 detik, jadi di-"resume" berkala
   jlptTts.keepAlive = setInterval(() => {
-    if (!window.speechSynthesis.speaking) {
+    if (!window.speechSynthesis.speaking && !window.speechSynthesis.pending) {
       jlptStopSpeak();
       return;
     }
-    window.speechSynthesis.pause();
-    window.speechSynthesis.resume();
-  }, 8000);
+    try { window.speechSynthesis.resume(); } catch(e){}
+  }, 4000);
 }
 
 function toggleJlptSpeak() {
