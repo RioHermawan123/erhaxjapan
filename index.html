@@ -11,6 +11,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=M+PLUS+Rounded+1c:wght@400;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇯🇵</text></svg>">
 </head>
 
 <body>
@@ -55,25 +56,11 @@
           <h2>Latihan Kata</h2>
         </div>
         <div class="grid-menu tab-menu">
-          <button class="menu-btn btn-sakura" onclick="startLevel(1)">
-            <div class="icon-wrapper">1️⃣</div>
+          <button class="menu-btn btn-sakura" onclick="openTabView('latihan', 'levelSelect')">
+            <div class="icon-wrapper">🔤</div>
             <div class="btn-text">
-              <span class="title">Tebak 1 Huruf</span>
-              <span class="subtitle">Level Pemula</span>
-            </div>
-          </button>
-          <button class="menu-btn btn-fuji" onclick="startLevel(2)">
-            <div class="icon-wrapper">2️⃣</div>
-            <div class="btn-text">
-              <span class="title">Tebak 2 Huruf</span>
-              <span class="subtitle">Level Menengah</span>
-            </div>
-          </button>
-          <button class="menu-btn btn-sora" onclick="startLevel(3)">
-            <div class="icon-wrapper">3️⃣</div>
-            <div class="btn-text">
-              <span class="title">Tebak 3 Huruf</span>
-              <span class="subtitle">Level Lanjut</span>
+              <span class="title">Tebak Huruf</span>
+              <span class="subtitle">Pilih jumlah huruf</span>
             </div>
           </button>
           <button class="menu-btn btn-mikan" onclick="startVocab()">
@@ -92,10 +79,41 @@
           </button>
         </div>
 
+        <!-- Level Select -->
+        <div id="levelSelect" class="view-section hidden">
+          <div class="section-header">
+            <button class="back-btn" onclick="backToTabMenu('latihan')">&larr; Kembali</button>
+            <h2>Tebak Huruf</h2>
+          </div>
+          <div class="grid-menu">
+            <button class="menu-btn btn-sakura" onclick="startLevel(1)">
+              <div class="icon-wrapper">1️⃣</div>
+              <div class="btn-text">
+                <span class="title">Tebak 1 Huruf</span>
+                <span class="subtitle">Level Pemula</span>
+              </div>
+            </button>
+            <button class="menu-btn btn-fuji" onclick="startLevel(2)">
+              <div class="icon-wrapper">2️⃣</div>
+              <div class="btn-text">
+                <span class="title">Tebak 2 Huruf</span>
+                <span class="subtitle">Level Menengah</span>
+              </div>
+            </button>
+            <button class="menu-btn btn-sora" onclick="startLevel(3)">
+              <div class="icon-wrapper">3️⃣</div>
+              <div class="btn-text">
+                <span class="title">Tebak 3 Huruf</span>
+                <span class="subtitle">Level Lanjut</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
         <!-- Level Mode Quiz -->
         <div id="quiz" class="view-section hidden">
           <div class="section-header">
-            <button class="back-btn" onclick="backToTabMenu('latihan')">&larr; Kembali</button>
+            <button class="back-btn" onclick="openTabView('latihan', 'levelSelect')">&larr; Kembali</button>
             <h2 id="quizTitle">Tebak Huruf</h2>
           </div>
           <div class="question-card">

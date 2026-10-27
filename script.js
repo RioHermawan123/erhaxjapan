@@ -154,7 +154,7 @@ function shuffle(a) {
 function hideAll() {
   const views = [
     "menu", "quiz", "kanaPage", "kanaList", "quest", "dragDrop",
-    "writing", "vocabMode", "tofuguSetup", "tofuguQuiz", "tofuguResult",
+    "writing", "vocabMode", "levelSelect", "tofuguSetup", "tofuguQuiz", "tofuguResult",
     "formQuizSetup", "formQuiz", "formQuizResult",
     "jlptSetup", "jlptQuiz", "jlptResult", "jlptFormSetup", "jlptFormQuiz", "jlptFormResult"
   ];

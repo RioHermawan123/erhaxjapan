@@ -181,7 +181,7 @@ JLPTRegistry.addVocab("n5", [
   { h: "海", r: "umi", m: "laut" },
   { h: "空", r: "sora", m: "langit" },
   { h: "木", r: "ki", m: "pohon" },
-  { h: "花", r: "hana", m: "bunga" }
+  { h: "花", r: "hana", m: "bunga" },
 
   // --- Tambahan kosakata (N5) ---
   { h: "頭", r: "atama", m: "kepala" },
