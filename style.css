@@ -52,8 +52,6 @@ html {
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg-color);
-  background-image: radial-gradient(var(--border) 1px, transparent 1px);
-  background-size: 24px 24px;
   color: var(--text-main);
   line-height: 1.5;
   padding: 24px 16px;
@@ -113,7 +111,6 @@ body {
   border-radius: var(--radius-full);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(8px);
 }
 
 .pill-btn, .toggle-btn {
@@ -140,15 +137,14 @@ body {
 
 /* Main Panel */
 .main-panel {
-  background: linear-gradient(160deg, var(--surface) 0%, var(--bg-color) 100%);
+  background: var(--surface);
   border-radius: var(--radius-lg);
   padding: 32px 28px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
   min-height: auto;
   box-sizing: border-box;
   width: 100%;
-  backdrop-filter: blur(12px);
 }
 
 .section-title {
@@ -166,7 +162,7 @@ body {
 }
 
 .menu-btn {
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 24px;
@@ -179,7 +175,6 @@ body {
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(8px);
 }
 
 .menu-btn::before {
@@ -195,8 +190,8 @@ body {
 }
 
 .menu-btn:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
   border-color: var(--fuji);
 }
 
@@ -223,8 +218,8 @@ body {
 }
 
 .menu-btn:hover .icon-wrapper {
-  transform: scale(1.12) rotate(8deg);
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .btn-text {
@@ -265,8 +260,8 @@ body {
 }
 
 .menu-btn:hover .icon-wrapper {
-  transform: scale(1.12) rotate(8deg);
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .btn-text {
@@ -293,30 +288,30 @@ body {
 }
 
 /* Thematic Button Colors */
-.btn-matcha:hover { border-color: var(--matcha); box-shadow: 0 8px 24px rgba(16,185,129,0.25); }
-.btn-matcha .icon-wrapper { background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.05)); color: var(--matcha); }
+.btn-matcha:hover { border-color: var(--matcha); box-shadow: 0 4px 12px rgba(16,185,129,0.25); }
+.btn-matcha .icon-wrapper { background: rgba(16,185,129,0.15); color: var(--matcha); }
 
-.btn-sakura:hover { border-color: var(--sakura); box-shadow: 0 8px 24px rgba(239,68,68,0.25); }
-.btn-sakura .icon-wrapper { background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.05)); color: var(--sakura); }
+.btn-sakura:hover { border-color: var(--sakura); box-shadow: 0 4px 12px rgba(239,68,68,0.25); }
+.btn-sakura .icon-wrapper { background: rgba(239,68,68,0.15); color: var(--sakura); }
 
-.btn-fuji:hover { border-color: var(--fuji); box-shadow: 0 8px 24px rgba(59,130,246,0.25); }
-.btn-fuji .icon-wrapper { background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(59,130,246,0.05)); color: var(--fuji); }
+.btn-fuji:hover { border-color: var(--fuji); box-shadow: 0 4px 12px rgba(59,130,246,0.25); }
+.btn-fuji .icon-wrapper { background: rgba(59,130,246,0.15); color: var(--fuji); }
 
-.btn-mikan:hover { border-color: var(--mikan); box-shadow: 0 8px 24px rgba(249,115,22,0.25); }
-.btn-mikan .icon-wrapper { background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(249,115,22,0.05)); color: var(--mikan); }
+.btn-mikan:hover { border-color: var(--mikan); box-shadow: 0 4px 12px rgba(249,115,22,0.25); }
+.btn-mikan .icon-wrapper { background: rgba(249,115,22,0.15); color: var(--mikan); }
 
-.btn-yuzu:hover { border-color: var(--yuzu); box-shadow: 0 8px 24px rgba(245,158,11,0.25); }
-.btn-yuzu .icon-wrapper { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.05)); color: var(--yuzu); }
+.btn-yuzu:hover { border-color: var(--yuzu); box-shadow: 0 4px 12px rgba(245,158,11,0.25); }
+.btn-yuzu .icon-wrapper { background: rgba(245,158,11,0.15); color: var(--yuzu); }
 
-.btn-murasaki:hover { border-color: var(--murasaki); box-shadow: 0 8px 24px rgba(139,92,246,0.25); }
-.btn-murasaki .icon-wrapper { background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(139,92,246,0.05)); color: var(--murasaki); }
+.btn-murasaki:hover { border-color: var(--murasaki); box-shadow: 0 4px 12px rgba(139,92,246,0.25); }
+.btn-murasaki .icon-wrapper { background: rgba(139,92,246,0.15); color: var(--murasaki); }
 
-.btn-sora:hover { border-color: var(--sora); box-shadow: 0 8px 24px rgba(6,182,212,0.25); }
-.btn-sora .icon-wrapper { background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(6,182,212,0.05)); color: var(--sora); }
+.btn-sora:hover { border-color: var(--sora); box-shadow: 0 4px 12px rgba(6,182,212,0.25); }
+.btn-sora .icon-wrapper { background: rgba(6,182,212,0.15); color: var(--sora); }
 
 /* Form Quiz Menu Button */
-.btn-formquiz:hover { border-color: #a78bfa; box-shadow: 0 8px 24px rgba(167,139,250,0.25); }
-.btn-formquiz .icon-wrapper { background: linear-gradient(135deg, rgba(167,139,250,0.2), rgba(167,139,250,0.05)); color: #a78bfa; }
+.btn-formquiz:hover { border-color: #a78bfa; box-shadow: 0 4px 12px rgba(167,139,250,0.25); }
+.btn-formquiz .icon-wrapper { background: rgba(167,139,250,0.15); color: #a78bfa; }
 
 /* Menu Button for Tofugu */
 .btn-tofugu {
@@ -404,12 +399,12 @@ body {
 }
 
 .kana-card {
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius-md);
   padding: 16px 6px;
   text-align: center;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -433,9 +428,9 @@ body {
 
 .kana-card:not(.empty):hover {
   border-color: var(--fuji);
-  background: linear-gradient(145deg, rgba(59, 130, 246, 0.15), rgba(30, 41, 59, 0.95));
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 10px 24px rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.1);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .kana-card:not(.empty):hover::before {
@@ -474,7 +469,7 @@ body {
 /* Question Area */
 .question-card {
   text-align: center;
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 28px 24px;
@@ -578,7 +573,7 @@ body {
   box-sizing: border-box;
 }
 .choice-btn {
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius-md);
   padding: 20px 12px;
@@ -626,9 +621,9 @@ body {
 .choice-btn:hover {
   border-color: var(--sora);
   color: var(--sora);
-  background: linear-gradient(145deg, rgba(6, 182, 212, 0.15), rgba(30, 41, 59, 0.95));
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(6, 182, 212, 0.25);
+  background: rgba(6, 182, 212, 0.1);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .choice-btn.correct {
@@ -1215,7 +1210,7 @@ canvas {
 }
 
 .alphabet-card {
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 22px 32px;
@@ -1229,7 +1224,6 @@ canvas {
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(8px);
 }
 
 .alphabet-card::before {
@@ -1246,8 +1240,8 @@ canvas {
 
 .alphabet-card:hover {
   border-color: var(--fuji);
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .alphabet-card:hover::before {
@@ -1255,9 +1249,9 @@ canvas {
 }
 
 .alphabet-card.active {
-  background: linear-gradient(145deg, rgba(59, 130, 246, 0.2), rgba(30, 41, 59, 0.95));
+  background: rgba(59, 130, 246, 0.15);
   border-color: var(--fuji);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .alphabet-card.active::before {
@@ -1367,14 +1361,14 @@ canvas {
 /* Hero Banner on Menu */
 .tofugu-hero-card {
   position: relative;
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
-  border: 2px solid rgba(99, 102, 241, 0.5);
+  background: var(--surface);
+  border: 2px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 28px;
   margin-bottom: 28px;
-  box-shadow: 0 12px 32px -6px rgba(99, 102, 241, 0.3), 0 0 20px rgba(59, 130, 246, 0.15);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s;
 }
 
 .tofugu-hero-card::before {
@@ -1494,12 +1488,12 @@ canvas {
   gap: 20px;
 }
 .setup-card {
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 
 .setup-card:hover {
@@ -1953,7 +1947,7 @@ canvas {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  background: linear-gradient(160deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 28px 26px 22px 26px;
@@ -1961,10 +1955,9 @@ canvas {
   flex-direction: column;
   align-items: center;
   position: relative;
-  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s;
   overflow: hidden;
-  backdrop-filter: blur(10px);
 }
 
 .tofugu-card::before {
@@ -1973,20 +1966,9 @@ canvas {
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--fuji), var(--sora), var(--matcha));
-  opacity: 0.8;
-}
-
-.tofugu-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--fuji), var(--sora), var(--matcha));
-  opacity: 0.8;
+  height: 3px;
+  background: var(--fuji);
+  opacity: 0.6;
 }
 .card-top-row {
   width: 100%;
@@ -2581,7 +2563,6 @@ canvas {
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(8px);
 }
 
 .jlpt-level-btn::before {
@@ -2598,8 +2579,8 @@ canvas {
 
 .jlpt-level-btn:hover:not(:disabled) {
   border-color: var(--fuji);
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .jlpt-level-btn:hover:not(:disabled)::before {
@@ -2669,7 +2650,7 @@ canvas {
 /* Kuis JLPT */
 .jlpt-quiz-card {
   margin-top: 20px;
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 28px 24px;
@@ -2910,7 +2891,6 @@ canvas {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(8px);
 }
 
 .jlpt-wrong-card::before {
