@@ -3,7 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0F172A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Belajar Kana Jepang 🇯🇵</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,18 +20,24 @@
 <body>
   <div class="app-container">
     <header class="app-header" id="appHeader">
-      <h1 id="mainTitle">Belajar Hiragana Dasar</h1>
-      <p>Tingkatkan kemampuan bahasa Jepangmu dengan menyenangkan ⛩️</p>
+      <div class="app-brand">
+        <span class="brand-mark" aria-hidden="true">あ</span>
+        <div class="brand-copy">
+          <h1 id="mainTitle">Belajar Hiragana Dasar</h1>
+          <p>Latihan Jepang harian — kana, kosakata, quiz, JLPT</p>
+        </div>
+      </div>
+      <div class="header-accent" aria-hidden="true"></div>
     </header>
 
     <main class="main-panel">
       <!-- Tab Navigation -->
-      <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('huruf')">📖 Huruf</button>
-        <button class="tab-btn" onclick="switchTab('latihan')">🎯 Latihan Kata</button>
-        <button class="tab-btn" onclick="switchTab('quiz')">⌨️ Quiz</button>
-        <button class="tab-btn" onclick="switchTab('jlpt')">🎓 JLPT Test</button>
-        <button class="tab-btn" onclick="switchTab('santai')">🎨 Santai</button>
+      <div class="tab-bar" role="tablist" aria-label="Navigasi utama">
+        <button class="tab-btn active" onclick="switchTab('huruf')" role="tab"><span class="tab-icon">📖</span><span class="tab-label">Huruf</span></button>
+        <button class="tab-btn" onclick="switchTab('latihan')" role="tab"><span class="tab-icon">🎯</span><span class="tab-label">Latihan</span></button>
+        <button class="tab-btn" onclick="switchTab('quiz')" role="tab"><span class="tab-icon">⌨️</span><span class="tab-label">Quiz</span></button>
+        <button class="tab-btn" onclick="switchTab('jlpt')" role="tab"><span class="tab-icon">🎓</span><span class="tab-label">JLPT</span></button>
+        <button class="tab-btn" onclick="switchTab('santai')" role="tab"><span class="tab-icon">🎨</span><span class="tab-label">Santai</span></button>
       </div>
 
       <!-- TAB: Huruf -->
@@ -478,7 +487,7 @@
               </div>
               <div class="progress-text-label" id="fqProgressLabel">20 Soal</div>
             </div>
-            <div style="width:80px;"></div>
+            <div class="top-bar-spacer" aria-hidden="true"></div>
           </div>
           <div class="fq-info-banner">
             <span class="fq-info-icon">📝</span>
@@ -534,7 +543,7 @@
         <div class="section-header tab-menu" style="margin-bottom: 16px;">
           <h2>JLPT Test</h2>
         </div>
-        <div class="jlpt-quick-actions tab-menu" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+        <div class="jlpt-quick-actions tab-menu">
           <button class="action-btn secondary" onclick="openJlptFormSetup()">📝 Kuis Form N5</button>
         </div>
 
@@ -663,7 +672,7 @@
               </div>
               <div class="progress-text-label" id="jlptFormProgressLabel">0 Soal</div>
             </div>
-            <div style="width:80px;"></div>
+            <div class="top-bar-spacer" aria-hidden="true"></div>
           </div>
           <div class="fq-info-banner">
             <span class="fq-info-icon">📝</span>

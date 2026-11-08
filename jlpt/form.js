@@ -9,6 +9,7 @@ const jlptFormState = {
 };
 
 function openJlptFormSetup() {
+  if (typeof setFormQuizActive === 'function') setFormQuizActive(false);
   jlptFormState.level = "n5";
   jlptFormState.sections = { kanji: true, vocab: true, grammar: true, reading: true };
   jlptFormState.count = 20;
@@ -87,6 +88,7 @@ function startJlptFormQuiz() {
 
 function renderJlptFormQuiz() {
   openTabView("jlpt", "jlptFormQuiz");
+  if (typeof setFormQuizActive === 'function') setFormQuizActive(true);
   const total = jlptFormState.questions.length;
   const label = document.getElementById("jlptFormProgressLabel");
   if (label) label.innerText = total + " Soal";
@@ -189,6 +191,7 @@ function jlptFormUpdateCounter() {
 
 function confirmExitJlptFormQuiz() {
   if (confirm("Yakin ingin keluar? Jawaban yang sudah diisi akan hilang.")) {
+    if (typeof setFormQuizActive === 'function') setFormQuizActive(false);
     backToJlptMenu();
   }
 }
@@ -212,6 +215,7 @@ function submitJlptFormQuiz() {
 }
 
 function showJlptFormQuizResult() {
+  if (typeof setFormQuizActive === 'function') setFormQuizActive(false);
   const questions = jlptFormState.questions;
   const answers = jlptFormState.userAnswers;
   let correctCount = 0;

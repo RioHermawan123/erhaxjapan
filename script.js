@@ -181,6 +181,7 @@ function hideTabMenu(tabName) {
 
 function switchTab(tabName) {
   if (tabName !== 'jlpt' && typeof jlptStopSpeak === 'function') jlptStopSpeak();
+  if (typeof setFormQuizActive === 'function') setFormQuizActive(false);
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
   const btn = document.querySelector(`.tab-btn[onclick*="switchTab('${tabName}')"]`);
@@ -193,6 +194,7 @@ function switchTab(tabName) {
 }
 
 function backToTabMenu(tabName) {
+  if (typeof setFormQuizActive === 'function') setFormQuizActive(false);
   hideAll();
   showTabMenu(tabName);
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -625,9 +627,11 @@ function getPointerPos(e) {
   const rect = canvasEl.getBoundingClientRect();
   const clientX = e.touches ? e.touches[0].clientX : e.clientX;
   const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  const scaleX = canvasEl.width / rect.width;
+  const scaleY = canvasEl.height / rect.height;
   return {
-    x: clientX - rect.left,
-    y: clientY - rect.top
+    x: (clientX - rect.left) * scaleX,
+    y: (clientY - rect.top) * scaleY
   };
 }
 
@@ -1789,8 +1793,13 @@ let fqSession = {
   retryPool: null,    // set when retrying wrong answers only
 };
 
+function setFormQuizActive(active) {
+  try { document.body.classList.toggle('fq-active', !!active); } catch (e) {}
+}
+
 // --- Setup helpers ---
 function openFormQuizSetup() {
+  setFormQuizActive(false);
   openTabView('quiz', 'formQuizSetup');
   fqUpdatePoolBadge();
 }
@@ -1883,6 +1892,7 @@ function startFormQuiz() {
 
 function renderFormQuiz() {
   openTabView('quiz', 'formQuiz');
+  setFormQuizActive(true);
 
   const total = fqSession.questions.length;
   const label = document.getElementById('fqProgressLabel');
@@ -1977,6 +1987,7 @@ function fqUpdateCounter() {
 
 function confirmExitFormQuiz() {
   if (confirm('Yakin ingin keluar? Jawaban yang sudah diisi akan hilang.')) {
+    setFormQuizActive(false);
     backToTabMenu('quiz');
   }
 }
@@ -2008,6 +2019,7 @@ function submitFormQuiz() {
 }
 
 function showFormQuizResult() {
+  setFormQuizActive(false);
   const questions = fqSession.questions;
   const answers = fqSession.userAnswers;
 
